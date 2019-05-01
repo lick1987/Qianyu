@@ -31,7 +31,7 @@ def modifyCuster(request,id=None):
         uqq = request.POST.get('uqq', None)
         uname = request.POST.get('uname', None)
         uaddres = request.POST.get('uaddres', None)
-        uchoice = request.POST.get('uchoice', None)
+        # uchoice = request.POST.get('uchoice', None)
         uTax = request.POST.get('uTax', None)
         au = customer.objects.get(id=id)
         au.uphone = uphone
@@ -39,7 +39,7 @@ def modifyCuster(request,id=None):
         au.uqq = uqq
         au.uname = uname
         au.uaddres = uaddres
-        au.uchoice = uchoice
+        # au.uchoice = uchoice
         au.uTax = uTax
         au.save()
         return  HttpResponseRedirect('/customer')
@@ -61,7 +61,7 @@ def addCuster_views(request):
         uqq = request.POST.get('uqq', None)
         uname = request.POST.get('uname', None)
         uaddres = request.POST.get('uaddres', None)
-        uchoice = request.POST.get('uchoice', None)
+        # uchoice = request.POST.get('uchoice', None)
         uTax = request.POST.get('uTax', None)
         #查询是否存在
         getName = customer.objects.filter(uphone=uphone,uwei=uwei,uqq=uqq,uname=uname)
@@ -72,7 +72,7 @@ def addCuster_views(request):
                 'uqq': uqq,
                 'uname': uname,
                 'uaddres': uaddres,
-                'uchoice': uchoice,
+                # 'uchoice': uchoice,
                 'uTax': uTax,
             }
             customer(**dic).save()

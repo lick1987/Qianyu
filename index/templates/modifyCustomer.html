@@ -44,10 +44,10 @@ margin-top: 10px;
 font-weight: bold;
 }
 .elegant-aero input[type="text"], .elegant-aero input[type="email"], .elegant-aero textarea, .elegant-aero select {
-color: #888;
+color: #131313;
 width: 70%;
 padding: 0px 0px 0px 5px;
-border: 1px solid #C5E2FF;
+border: 1px solid #356b4c;
 background: #FBFBFB;
 outline: 0;
 -webkit-box-shadow:inset 0px 1px 6px #ECF3F5;
@@ -107,19 +107,19 @@ background: #3EB1DD;
             收货地址：<input type="text" name='uaddres' value="{{custMess.uaddres}}">
         </p>
 
-        <p>
-            发票类型：
-            <select name='uchoice'>
-            {% ifequal custMess.uchoice "纸质发票" %}
-
-                  <option value ="纸质发票">纸质发票</option>
-                  <option value ="电子发票">电子发票</option>
-            {% else %}
-                  <option value ="电子发票">电子发票</option>
-                  <option value ="纸质发票">纸质发票</option>
-            {% endifequal %}
-            </select>
-        </p>
+{#        <p>#}
+{#            发票类型：#}
+{#            <select name='uchoice'>#}
+{#            {% ifequal custMess.uchoice "纸质发票" %}#}
+{##}
+{#                  <option value ="纸质发票">纸质发票</option>#}
+{#                  <option value ="电子发票">电子发票</option>#}
+{#            {% else %}#}
+{#                  <option value ="电子发票">电子发票</option>#}
+{#                  <option value ="纸质发票">纸质发票</option>#}
+{#            {% endifequal %}#}
+{#            </select>#}
+{#        </p>#}
         <p>
             发票点子：<input type="text" name='uTax' value="{{custMess.uTax}}">
         </p>

@@ -91,8 +91,8 @@ $(function () {
                     'url':'/addUnit',
                     'type':'POST',
                     'data':{
-                        'uname':$('#uname').val(),
-                        'upwd':$('#upwd').val(),
+                        'uname':$('#uname1').val(),
+                        'upwd':$('#upwd1').val(),
                         csrfmiddlewaretoken: $("[name='csrfmiddlewaretoken']").val()
                         },
                     'dataType':'json',
@@ -103,6 +103,8 @@ $(function () {
                             $('#mes').html(html);
                             $("#mes").css("display","block");
                             $("#mes").css("color","red");
+                            $('#uname1').val("");
+                            $('#upwd1').val("");
 
                             }
                         else{
@@ -110,6 +112,8 @@ $(function () {
                             $("#mes").html(html);
                             $("#mes").css("display","block");
                             $("#mes").css("color","blue");
+                            $('#uname1').val("");
+                            $('#upwd1').val("");
                             }
 
                         }

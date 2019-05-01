@@ -98,7 +98,7 @@ background: #3EB1DD;
      <form action="" method='post' class="elegant-aero">
         {%csrf_token%}
         <p>
-            客户名称：<input type="text" name='uname' id="uname">
+            客户名称：<input type="text" name='uname' id="uname2">
         </p>
         <p>
             手机号&nbsp;：<input type="text" name='uphone'  id="uphone">
@@ -113,19 +113,19 @@ background: #3EB1DD;
             收货地址：<input type="text" name='uaddres' id="uaddres">
         </p>
 
-        <p>
-            发票类型：
-            <select name='uchoice' id="uchoice">
-            {% ifequal custMess.uchoice "纸质发票" %}
-
-                  <option value ="纸质发票">纸质发票</option>
-                  <option value ="电子发票">电子发票</option>
-            {% else %}
-                  <option value ="电子发票">电子发票</option>
-                  <option value ="纸质发票">纸质发票</option>
-            {% endifequal %}
-            </select>
-        </p>
+{#        <p>#}
+{#            发票类型：#}
+{#            <select name='uchoice' id="uchoice">#}
+{#            {% ifequal custMess.uchoice "纸质发票" %}#}
+{##}
+{#                  <option value ="纸质发票">纸质发票</option>#}
+{#                  <option value ="电子发票">电子发票</option>#}
+{#            {% else %}#}
+{#                  <option value ="电子发票">电子发票</option>#}
+{#                  <option value ="纸质发票">纸质发票</option>#}
+{#            {% endifequal %}#}
+{#            </select>#}
+{#        </p>#}
         <p>
             发票点子：<input type="text" name='uTax' id="uTax">
         </p>
@@ -149,9 +149,9 @@ background: #3EB1DD;
                         'uphone':$('#uphone').val(),
                         'uwei':$('#uwei').val(),
                         'uqq':$('#uqq').val(),
-                        'uname':$('#uname').val(),
+                        'uname':$('#uname2').val(),
                         'uaddres':$('#uaddres').val(),
-                        'uchoice':$('#uchoice').val(),
+                        {#'uchoice':$('#uchoice').val(),#}
                         'uTax':$('#uTax').val(),
                         csrfmiddlewaretoken: $("[name='csrfmiddlewaretoken']").val()
                         },
