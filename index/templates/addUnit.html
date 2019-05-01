@@ -1,0 +1,37 @@
+
+{%extends 'qianduan.html'%}
+
+{%block title%}
+增加单位
+{%endblock%}
+{% block js %}
+<script src='/static/js/index.js'></script>
+{% endblock %}
+{% block style %}
+<style>
+        #mes{
+            display: none;
+        }
+
+</style>
+{% endblock %}
+{% block body %}
+    <form action="" method='post'>
+        {% csrf_token %}
+
+        <p>
+            单位名称：<input type="text" name='uname' id="uname1">
+        </p>
+        <p>
+            单位税号：<input type="text" name='upwd' id="upwd1">
+        </p>
+        <p id="mes">
+
+        </p>
+        <p>
+            <input type="button" value='增加' id="submitUnit">
+            <a href="/unit">退出</a>
+        </p>
+    </form>
+
+{% endblock %}

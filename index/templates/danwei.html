@@ -1,0 +1,46 @@
+{%extends 'qianduan.html'%}
+{%block title%}
+单位管理
+{%endblock%}
+{% block style %}
+    <style>
+        th{
+           text-align:left;
+
+        }
+      #addCustomer{
+    font-weight: bold;
+    margin-top: 15px;
+    list-style: none;
+    cursor:pointer;
+    color: white;
+    text-decoration:none ;
+    background-color: #614cf3;
+    text-align: left;
+    font-size: 20px;
+    }
+    </style>
+{% endblock %}
+{% block body %}
+<table border="1" class="gridtable">
+    <tr>
+        <th>单位名称</th>
+        <th>单位税号</th>
+        <th>修改单位</th>
+        <th>删除单位</th>
+    </tr>
+    {% for i in uList %}
+     <input type="hidden" name="id" value="{{i.unit.id}}">
+    <tr>
+    <th>{{ i.unit.uname }}</th>
+    <th>{{ i.unit.upwd }}</th>
+    <th><a href="/modifyUnit/{{ i.unit.id }}">修改</a></th>
+    <th><a href="/deletUnit/{{ i.unit.id }}">删除</a></th>
+    </tr>
+    {% endfor %}
+     <div>
+            <a href="/addUnit" id="addCustomer">增加单位</a>
+        </div>
+
+</table>
+{% endblock %}

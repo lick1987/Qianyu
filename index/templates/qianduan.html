@@ -1,0 +1,127 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>
+        {%block title%}
+        芊语记账
+        {% endblock %}
+    </title>
+        {% block css %}
+    <link rel="stylesheet" type="text/css" href="/static/css/index.css">
+        {% endblock %}
+    <script src="/static/js/jquery-1.11.3.js"></script>
+        {% block js %}
+    <script src='/static/js/index.js'></script>
+        {% endblock %}
+        {% block style %}
+        {% endblock %}
+</head>
+<body>
+{% block login %}
+
+    <!--登录框-->
+    <div id="dialog" style="display: none">
+        <form action="">
+              {%csrf_token%}
+        </form>
+        <div class="title">请登录<span class="closeBtn">X</span></div>
+        <div class="loginbtn">
+            <div class='d1'>
+                <input type="text"  name='uname' id="uname" class='text'>
+                <p>账号：</p>
+            </div>
+            <div class='d1'>
+                <input type="password" name='upwd' id="upwd" class='text'>
+                <p>密码：</p>
+                <p></p>
+            </div>
+            <div>
+                <p><input type="checkbox" id='isSaved' name="isSaved" checked="1">是否保存</p>
+
+            </div>
+            <div class='t' id="t" style="display: none;color: red">用户名或者密码错误</div>
+            <div class='d1'>
+                <input type="button" id="button" value="登录" class='btnlo'>
+                <a href="/register" class="btnlo">注册</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+<!--查询主页面-->
+<div id="header">
+    <ul>
+        <li><a href="/">首页</a></li>
+        <li><a href="/unit">单位管理</a></li>
+        <li><a href="/customer">客户管理</a></li>
+        <li><a href="#">开票员管理</a></li>
+        <li><a href="#">新增订单</a></li>
+        <li><a href="#">明日安排</a></li>
+        <li><a href="#">月度汇总</a></li>
+        <li><a href="#">年度汇总</a></li>
+        {% if flag  %}
+            <li id="useload">
+                <a href="">欢迎:{{ uname }}</a>
+                <a href="/exit">退出</a>
+            </li>
+        {% else %}
+            <li id="useload">
+                <a href="javascript:;" class="login">登录</a>
+                <a class="" href="/register">注册</a>
+            </li>
+        {% endif %}
+    </ul>
+</div>
+
+<div id="body">
+    {% block body %}
+        <table border="1" class="gridtable">
+            <tr>
+                <th>本月已接单</th>
+                <th>10000</th>
+                <th>待定</th>
+            </tr>
+            <tr>
+                <th>纸质发票未打完</th>
+                <th>1</th>
+                <th>待定</th>
+            </tr>
+            <tr>
+                <th>电子票剩余未打完</th>
+                <th>1</th>
+                <th>待定</th>
+            </tr>
+            <tr>
+                <th>本月利润</th>
+                <th>1</th>
+                <th>待定</th>
+            </tr>
+            <tr>
+                <th>今日新增</th>
+                <th>8000</th>
+                <th>待定</th>
+            </tr>
+            <tr>
+                <th>今日是否需要拿票</th>
+                <th>否</th>
+                <th>待定</th>
+            </tr>
+            <tr>
+                <th>今天上班人员</th>
+                <th>蒲姐姐，熊晓凤</th>
+                <th>待定</th>
+            </tr>
+        </table>
+
+        {% endblock %}
+        </div>
+
+{#    <div id="bottom">#}
+{#        <span>版权所有 2019&copy; 侵权必究</span>#}
+{#    </div>#}
+</body>
+
+</html>
+{% block end %}
+{% endblock %}

@@ -1,0 +1,173 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>欢迎注册</title>
+    <style>
+        body{
+            background: #f2f2f2;
+        }
+        h1{
+            text-align: center;
+        }
+        #header{
+            width: 700px;
+            height: 60px;
+            margin:0px auto;
+            border-bottom: 1px solid #fff;
+        }
+        #header span{
+            color: red;
+        }
+        #body{
+            width: 700px;
+            height:400px;
+            margin:0 auto;
+        }
+        #body>div{
+            width: 300px;
+            height: 260px;
+            margin:70px auto;
+
+        }
+        .text{
+            float: right;
+            width: 220px;
+            height: 20px;
+        }
+        .line{
+            width: 300px;
+            height: 30px;
+            margin-top:30px;
+            line-height: 30px;
+        }
+        .point{
+            float: right;
+            display: none;
+            color: red;
+        }
+        #submit{
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div id="header">
+        <h1>^_^<span>芊语</span>欢迎您^_^</h1>
+        </div>
+    </header>
+    <div id="body">
+        <div>
+            <form id="formReg" action="/register" method="post">
+                {% csrf_token %}
+            <div class='line' >
+                <span>用户名</span>
+                <input type="text" class='text' id="uname" name='uname'>
+            </div>
+            <div class='point' id="recv">用户名不能为空</div>
+            <div class='line'>
+                <span>邮箱</span>
+                <input type="email" class='text' name='uemail'>
+            </div>
+            <div class='point'>邮箱不能为空</div>
+            <div class='line'>
+                <span>密码</span>
+                <input type="password" class='text' name="upwd">
+            </div>
+            <div class='point'>密码不能为空</div>
+            <div class='line'>
+                <span>确认密码</span>
+                <input type="password" class='text'>
+            </div>
+            <div class='point'>两次密码不相同</div>
+            <div class='line' style="text-align: center;">
+                <input type="submit" value="注册" disabled id='submit'>
+                <a href="">已有账号？登录</a>
+            </div>
+            </form>
+        </div>
+    </div>
+</body>
+<script type="text/javascript" src="{%static '/js/jquery-1.11.3.js'%}"></script>
+<script>
+    $(function(){
+
+        //用户名失去焦点事件
+        $(".text:eq(0)").blur(function(){
+            if($(".text:eq(0)").val()){
+                $(".point:eq(0)").css('display','none');
+                //通过ajax检测用户名是否存在
+                check_name();
+            }else{
+                $(".point:eq(0)").text("用户名不能为空");
+                $(".point:eq(0)").css('display','block');
+                $("#submit:eq(0)").attr('disabled',true);
+            }
+        })
+         //邮箱失去焦点事件
+        $(".text:eq(1)").blur(function(){
+            if($(".text:eq(1)").val()){
+                $(".point:eq(1)").css('display','none');
+            }else{
+                $(".point:eq(1)").text("用户名邮箱为空");
+                $(".point:eq(1)").css('display','block');
+                $("#submit:eq(0)").attr('disabled',true);
+            }
+        })
+        var upwd=0
+        //密码失去焦点事件
+        $(".text:eq(2)").blur(function(){
+            if($(".text:eq(2)").val()){
+                $(".point:eq(2)").css('display','none');
+                upwd=$(".text:eq(2)").val()
+            }else{
+                $(".point:eq(2)").text("密码不能为空");
+                $(".point:eq(2)").css('display','block');
+                $("#submit:eq(0)").attr('disabled',true);
+            }
+        })
+
+        //确认密码
+        $(".text:eq(3)").blur(function(){
+            if($(".text:eq(3)").val()==upwd&&$(".text:eq(3)").val()!=0){
+                $(".point:eq(3)").css('display','none');
+                $("#submit:eq(0)").attr('disabled',false);
+            }else{
+                $(".point:eq(3)").text("两次密码不一致");
+                $(".point:eq(3)").css('display','block');
+                $("#submit:eq(0)").attr('disabled',true);
+            }
+        })
+        function check_name() {
+            var status;
+            $.ajax({
+                    'url':'/checkname/',
+                    'type':'get',
+                    'data':{'uname':$('#uname').val()},
+                    'dataType':'json',
+                    'success':function (data) {
+                        $('#recv').html(data.msg);
+                        if(data.msg=="恭喜你可以注册"){
+                             $('#recv').css('color','green');
+                        }
+                        $('#recv').css('display','block');
+                        status=data.status
+                        return status;
+                        }
+                    });
+            }
+        //判断是否满足提交条件
+        $("#formReg").submit(function(){
+        if($("#upwd").val() != $("#cpwd").val()){
+            return false;
+        }
+        if($('#recv').text()=='用户已经存在'){
+            return false;
+        }
+        return true;
+    });
+    })
+</script>
+</html>
