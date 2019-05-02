@@ -1,7 +1,14 @@
+
 {%extends 'qianduan.html'%}
+
 {%block title%}
-修改客户
+增加开票员
 {%endblock%}
+{% block js %}
+<script src='/static/js/index.js'></script>
+
+
+{% endblock %}
 {% block style %}
 <style>
     .elegant-aero {
@@ -44,10 +51,10 @@ margin-top: 10px;
 font-weight: bold;
 }
 .elegant-aero input[type="text"], .elegant-aero input[type="email"], .elegant-aero textarea, .elegant-aero select {
-color: #131313;
+color: #888;
 width: 70%;
 padding: 0px 0px 0px 5px;
-border: 1px solid #356b4c;
+border: 1px solid #C5E2FF;
 background: #FBFBFB;
 outline: 0;
 -webkit-box-shadow:inset 0px 1px 6px #ECF3F5;
@@ -88,28 +95,27 @@ background: #3EB1DD;
 </style>
 {% endblock %}
 {% block body %}
-   <form action="{% url 'customer:modifyCuster' custMess.id %}" method='post' class="elegant-aero">
+     <form action="" method='post' class="elegant-aero">
         {%csrf_token%}
-        <input type="hidden" name="id" value="{{custMess.id}}">
         <p>
-            客户来源：<input type="text" name='uname' value="{{custMess.uname}}">
+            开票员信息：<input type="text" name='source_uname' id="source_uname">
         </p>
         <p>
-            手机号&nbsp;：<input type="text" name='uphone' value="{{custMess.uphone}}">
+            手机号&nbsp;：<input type="text" name='source_uphone'  id="source_uphone">
         </p>
         <p>
-            微信号&nbsp;：<input type="text" name='uwei' value="{{custMess.uwei}}">
+            微信号&nbsp;：<input type="text" name='source_uwei' id="source_uwei">
         </p>
         <p>
-            QQ&nbsp;&nbsp;号：<input type="text" name='uqq' value="{{custMess.uqq}}">
+            加油站地址：<input type="text" name='source_uaddres' id="source_uaddres">
         </p>
         <p>
-            收货地址：<input type="text" name='uaddres' value="{{custMess.uaddres}}">
+            发票点子：<input type="text" name='source_uTax' id="source_uTax">
         </p>
 
 {#        <p>#}
 {#            发票类型：#}
-{#            <select name='uchoice'>#}
+{#            <select name='uchoice' id="uchoice">#}
 {#            {% ifequal custMess.uchoice "纸质发票" %}#}
 {##}
 {#                  <option value ="纸质发票">纸质发票</option>#}
@@ -121,11 +127,48 @@ background: #3EB1DD;
 {#            </select>#}
 {#        </p>#}
         <p>
-            发票点子：<input type="text" name='uTax' value="{{custMess.uTax}}">
+            <input type="button" value='保存信息' id="submitSource" class="button">
+            <a href="/source"  class="button">退出</a>
         </p>
-        <p>
-            <input type="submit" value='保存'>
-            <a href="/customer">退出</a>
-        </p>
-    </form>
+     </form>
+
+{% endblock %}
+{% block end %}
+    <script>
+    $("#submitSource").click(function(){
+        check_addCust()
+    });
+     function check_addCust() {
+            $.ajax({
+                    'url':'/source/addSource',
+                    'type':'POST',
+                    'data':{
+                        'uphone':$('#source_uphone').val(),
+                        'uwei':$('#source_uwei').val(),
+                        'uname':$('#source_uname').val(),
+                        'uaddres':$('#source_uaddres').val(),
+                        {#'uchoice':$('#uchoice').val(),#}
+                        'uTax':$('#source_uTax').val(),
+                        csrfmiddlewaretoken: $("[name='csrfmiddlewaretoken']").val()
+                        },
+                    'dataType':'json',
+                    'success':function (data) {
+                        console.log(data.status)
+                        {#添加失败#}
+                        if(data.status==1){
+                            html=data.message;
+                            alert(html);
+
+                            }
+                        {#添加成功#}
+                        else{
+                            html=data.message;
+                            alert(html);
+                            window.location.href='/source/';
+                            }
+                        }
+                    });
+            }
+</script>
+
 {% endblock %}

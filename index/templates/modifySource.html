@@ -88,23 +88,20 @@ background: #3EB1DD;
 </style>
 {% endblock %}
 {% block body %}
-   <form action="{% url 'customer:modifyCuster' custMess.id %}" method='post' class="elegant-aero">
+   <form action="{% url 'source:modifyCuster' sourceMess.id %}" method='post' class="elegant-aero">
         {%csrf_token%}
-        <input type="hidden" name="id" value="{{custMess.id}}">
+        <input type="hidden" name="id" value="{{sourceMess.id}}">
         <p>
-            客户来源：<input type="text" name='uname' value="{{custMess.uname}}">
+            开票员名称：<input type="text" name='source_uname' value="{{sourceMess.uname}}">
         </p>
         <p>
-            手机号&nbsp;：<input type="text" name='uphone' value="{{custMess.uphone}}">
+            手机号&nbsp;：<input type="text" name='source_uphone' value="{{sourceMess.uphone}}">
         </p>
-        <p>
-            微信号&nbsp;：<input type="text" name='uwei' value="{{custMess.uwei}}">
-        </p>
-        <p>
-            QQ&nbsp;&nbsp;号：<input type="text" name='uqq' value="{{custMess.uqq}}">
-        </p>
-        <p>
-            收货地址：<input type="text" name='uaddres' value="{{custMess.uaddres}}">
+       <p>
+           微信号：<input type="text" name='source_uwei' value="{{sourceMess.uwei}}">
+       </p>
+       <p>
+            加油站地址：<input type="text" name='source_uaddres' value="{{sourceMess.uaddres}}">
         </p>
 
 {#        <p>#}
@@ -121,11 +118,11 @@ background: #3EB1DD;
 {#            </select>#}
 {#        </p>#}
         <p>
-            发票点子：<input type="text" name='uTax' value="{{custMess.uTax}}">
+            发票点子：<input type="text" name='source_uTax' value="{{sourceMess.uTax}}">
         </p>
         <p>
-            <input type="submit" value='保存'>
-            <a href="/customer">退出</a>
+            <input type="submit" value='保存' class="button">
+            <a href="/source" class="button">退出</a>
         </p>
     </form>
 {% endblock %}

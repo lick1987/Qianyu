@@ -20,30 +20,28 @@
 {% endblock %}
 {% block body %}
      <div>
-            <a href="{% url 'customer:addCuster' %}" id="addCustomer">增加客户</a>
+            <a href="{% url 'source:addSource' %}" id="addCustomer">增加客户</a>
         </div>
    <table border="1" class="gridtable">
     <tr>
-            <th>客户来源</th>
+            <th>开票员名称</th>
             <th>手机号</th>
             <th>微信号</th>
-            <th>QQ号</th>
-            <th>收货地址</th>
+            <th>加油站地址</th>
             <th>发票点子</th>
             <th>修改</th>
             <th>删除</th>
             </tr>
-    {% for i in userCust %}
+    {% for i in userSource %}
         <tr>
-        <th>{{ i.customer.uname }}</th>
-        <th>{{ i.customer.uphone }}</th>
-        <th>{{ i.customer.uwei }}</th>
-        <th>{{ i.customer.uqq }}</th>
-        <th>{{ i.customer.uaddres }}</th>
+            <th>{{ i.source.uname }}</th>
+            <th>{{ i.source.uphone }}</th>
+            <th>{{ i.source.uwei }}</th>
+        <th>{{ i.source.uaddres }}</th>
 {#        <th>{{ i.customer.uchoice }}</th>#}
-        <th>{{ i.customer.uTax }}</th>
-        <th><a href="{% url 'customer:modifyCuster' i.customer.id %}">修改</a></th>
-        <th><a href="/source/deletSource/{{ i.id }}">删除</a></th>
+        <th>{{ i.source.uTax }}</th>
+        <th><a href="{% url 'source:modifyCuster' i.source.id %}">修改</a></th>
+        <th><a href="/customer/deletCuster/{{ i.id }}">删除</a></th>
         </tr>
     {% endfor %}
 
