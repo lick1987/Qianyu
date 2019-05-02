@@ -1,6 +1,5 @@
 $(function () {
     $("#header li").mouseover(function () {
-        console.log($(this).index())
         $("#header li>a").eq($(this).index()).css("color","red");
     })
      $("#header li").mouseout(function () {
@@ -23,7 +22,6 @@ $(function () {
     $('.text:eq(0)').blur(function () {
         if($('.text:eq(0)').val()){
               $('.t:eq(0)').css('display','none')
-              console.log('正确')
         }else{
            $('.t:eq(0)').text('用户名不能为空')
            $('.t:eq(0)').css('display','block')}
@@ -32,15 +30,12 @@ $(function () {
     $('.text:eq(1)').blur(function () {
         if($('.text:eq(1)').val()){
               $('.t:eq(0)').css('display','none')
-              console.log('正确')
         }else{
            $('.t:eq(0)').text('密码不能为空')
            $('.t:eq(0)').css('display','block')}
         })
     // 绑定submit登录事件全为空不能登录
     $('#formReg').submit(function(){
-        // console.log($('.text:eq(0)').val())
-        // console.log($('.text:eq(1)').val())
         if($('.text:eq(0)').val()&&$('.text:eq(1)').val()){
             return true
         }
@@ -97,7 +92,6 @@ $(function () {
                         },
                     'dataType':'json',
                     'success':function (data) {
-                        console.log(data.status)
                         if(data.status==1){
                             html=data.message;
                             $('#mes').html(html);

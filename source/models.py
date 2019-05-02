@@ -16,6 +16,7 @@ class source(models.Model):
     def __str__(self):
         return str(self.uname)
     class Meta:
+        app_label = 'source'
         verbose_name = '加油员信息'
         verbose_name_plural = verbose_name
 #查询单位总表
@@ -27,6 +28,7 @@ class userSourceData(models.Model):
     def __str__(self):
         return str(self.source)
     class Meta:
+        app_label = 'source'
         verbose_name = '加油员总表'
         verbose_name_plural = verbose_name
 

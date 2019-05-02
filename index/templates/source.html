@@ -20,7 +20,7 @@
 {% endblock %}
 {% block body %}
      <div>
-            <a href="{% url 'source:addSource' %}" id="addCustomer">增加客户</a>
+            <a href="{% url 'source:addSource' %}" id="addCustomer">增加开票员</a>
         </div>
    <table border="1" class="gridtable">
     <tr>
@@ -29,6 +29,7 @@
             <th>微信号</th>
             <th>加油站地址</th>
             <th>发票点子</th>
+            <th>发票类型</th>
             <th>修改</th>
             <th>删除</th>
             </tr>
@@ -40,6 +41,7 @@
         <th>{{ i.source.uaddres }}</th>
 {#        <th>{{ i.customer.uchoice }}</th>#}
         <th>{{ i.source.uTax }}</th>
+        <th>{{ i.source.uchoice }}</th>
         <th><a href="{% url 'source:modifyCuster' i.source.id %}">修改</a></th>
         <th><a href="/customer/deletCuster/{{ i.id }}">删除</a></th>
         </tr>

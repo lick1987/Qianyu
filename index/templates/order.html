@@ -1,0 +1,85 @@
+{%extends 'qianduan.html'%}
+{%block title%}
+修改单位
+{%endblock%}
+{% block style %}
+    <style>
+    #addCustomer{
+    font-weight: bold;
+    margin-top: 15px;
+    list-style: none;
+    cursor:pointer;
+    color: white;
+    text-decoration:none ;
+    background-color: #614cf3;
+    text-align: left;
+    font-size: 20px;
+    }
+
+    </style>
+{% endblock %}
+{% block body %}
+     <div>
+            <a href="{% url 'order:addOrder' %}" id="addOrder">增加订单</a>
+        </div>
+   <table border="1" class="gridtable">
+    <tr>
+
+            <th>接单账号</th>
+            <th>客户姓名</th>
+            <th>客户单位</th>
+            <th>客户税号</th>
+            <th>数量</th>
+            <th>接单时间</th>
+            <th>完结时间</th>
+            <th>发票类型</th>
+            <th>备注</th>
+            <th>点子</th>
+            <th>开票员</th>
+        <th>状态</th>
+        <th>修改</th>
+        <th>删除</th>
+            </tr>
+    {% for i in userCust %}
+        <tr>
+        <th>{{ i.customer.uname }}</th>
+        <th>{{ i.customer.uwei }}</th>
+        <th>{{ i.unit.uname }}</th>
+        <th>{{ i.unit.upwd }}</th>
+        <th>{{ i.count }}</th>
+        <th>{{ i.startTime }}</th>
+        <th>{{ i.endTime }}</th>
+        <th>{{ i.style }}</th>
+        <th>{{ i.explain }}</th>
+        <th>{{ i.customer.uTax }}</th>
+        <th>{{ i.source.uname }}</th>
+        <th id="order_style{{ i.id }}">{{ i.status }}</th>
+        <th><a href="{% url 'order:modifyOrder' i.customer.id %}">修改</a></th>
+        <th><a href="/order/deletSource/{{ i.id }}">删除</a></th>
+        </tr>
+    {% endfor %}
+
+
+
+</table>
+{% endblock %}
+{% block end %}
+    <script>
+    $(function () {
+        var j=JSON.parse({{ sourceMes1 }});
+        console.log(j)
+        if($('#order_style').text()=='未安排'){
+            $('.order_style').css('color','green')
+        }
+        else if($('.order_style').text()=='已安排'){
+           $('.order_style').css('color','blue')
+        }
+        else{
+            console.log($('.order_style').text())
+           $('.order_style').css('color','red')
+        }
+        }
+    )
+
+    </script>
+{% endblock %}

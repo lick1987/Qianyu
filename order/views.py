@@ -5,46 +5,52 @@ from index.views import *
 from django.shortcuts import render
 from index.models import *
 from customer.models import *
+from order.models import *
+from source.models import *
 #客户首页视图
-def customer_view(request):
+def order_view(request):
     id = request.session.get('id')
     flag = False
     if id:
         uname = request.session['uname']
         flag = True
-    userCust=userCusterData.objects.filter(user=id,isActive=1)
-    return render(request,'customer.html',locals())
+    userCust=order.objects.filter(user=id,isActive=1)
+    return render(request,'order.html',locals())
 
 #修改客户
-def modifyCuster(request,id=None):
+def modifyOrder(request,id=None):
     if request.method == 'GET':
-        custMess = customer.objects.get(id=id)
+        orderMes = order.objects.get(id=id)
         id = request.session.get('id')
         flag = False
         if id:
             uname = request.session['uname']
             flag = True
-        return render(request,'modifyCustomer.html',locals())
+        sourceMes=userSourceData.objects.filter(user=id,isActive=1)
+        return render(request,'modifyOrder.html',locals())
     if request.method=='POST':
-        uphone = request.POST.get('uphone', None)
-        uwei = request.POST.get('uwei', None)
-        uqq = request.POST.get('uqq', None)
-        uname = request.POST.get('uname', None)
-        uaddres = request.POST.get('uaddres', None)
-        # uchoice = request.POST.get('uchoice', None)
-        uTax = request.POST.get('uTax', None)
-        au = customer.objects.get(id=id)
-        au.uphone = uphone
-        au.uwei = uwei
-        au.uqq = uqq
-        au.uname = uname
-        au.uaddres = uaddres
-        # au.uchoice = uchoice
+        count = request.POST.get('order_count', None)
+        startTime = request.POST.get('order_startTime', None)
+        endTime = request.POST.get('order_endTime', None)
+        status = request.POST.get('order_uchoice', None)
+        uTax = request.POST.get('order_uTax', None)
+        explain = request.POST.get('order_explain', None)
+        sourceName = request.POST.get('order_source', None)
+        style = request.POST.get('order_style', None)
+        sourceMes = source.objects.filter(uname=sourceName)
+        au = order.objects.get(id=id)
+        au.count = count
+        au.startTime = startTime
+        au.endTime = endTime
+        au.status = status
         au.uTax = uTax
+        au.style = style
+        au.source = sourceMes[0]
+        au.explain = explain
         au.save()
-        return  HttpResponseRedirect('/customer')
+        return  HttpResponseRedirect('/order')
 #增加客户
-def addCuster_views(request):
+def addOrder_views(request):
     if request.method == "GET":
         id = request.session.get('id')
         flag = False
@@ -64,7 +70,7 @@ def addCuster_views(request):
         # uchoice = request.POST.get('uchoice', None)
         uTax = request.POST.get('uTax', None)
         #查询是否存在
-        getName = customer.objects.filter(uphone=uphone,uwei=uwei,uqq=uqq,uname=uname,uaddres=uaddres,uTax=uTax)
+        getName = customer.objects.filter(uphone=uphone,uwei=uwei,uqq=uqq,uname=uname)
         if not getName:
             dic = {
                 'uphone': uphone,
@@ -77,7 +83,7 @@ def addCuster_views(request):
             }
             customer(**dic).save()
         #获取新增单位ID
-        custID=customer.objects.get(uphone=uphone,uwei=uwei,uqq=uqq,uname=uname,uaddres=uaddres,uTax=uTax)
+        custID=customer.objects.get(uphone=uphone,uwei=uwei,uqq=uqq,uname=uname)
         #查询表里面是否存在
         result=userCusterData.objects.filter(user=userId[0],customer=custID,isActive=1)
         status=0
@@ -110,7 +116,7 @@ def addCuster_views(request):
     pass
 
 #删除客户
-def deletCuster_views(request,id):
+def deletOrder_views(request,id):
     userCust=userCusterData.objects.filter(id=id)
     if userCust:
         userCust[0].isActive=0

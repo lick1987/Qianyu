@@ -104,21 +104,22 @@ background: #3EB1DD;
             加油站地址：<input type="text" name='source_uaddres' value="{{sourceMess.uaddres}}">
         </p>
 
-{#        <p>#}
-{#            发票类型：#}
-{#            <select name='uchoice'>#}
-{#            {% ifequal custMess.uchoice "纸质发票" %}#}
-{##}
-{#                  <option value ="纸质发票">纸质发票</option>#}
-{#                  <option value ="电子发票">电子发票</option>#}
-{#            {% else %}#}
-{#                  <option value ="电子发票">电子发票</option>#}
-{#                  <option value ="纸质发票">纸质发票</option>#}
-{#            {% endifequal %}#}
-{#            </select>#}
-{#        </p>#}
+
         <p>
             发票点子：<input type="text" name='source_uTax' value="{{sourceMess.uTax}}">
+        </p>
+       <p>
+            发票类型：
+            <select name='uchoice'>
+            {% ifequal custMess.uchoice "纸质发票" %}
+
+                  <option value ="纸质发票">纸质发票</option>
+                  <option value ="电子发票">电子发票</option>
+            {% else %}
+                  <option value ="电子发票">电子发票</option>
+                  <option value ="纸质发票">纸质发票</option>
+            {% endifequal %}
+            </select>
         </p>
         <p>
             <input type="submit" value='保存' class="button">

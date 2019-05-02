@@ -31,7 +31,7 @@ def modifyCuster_view(request,id=None):
         uqq = request.POST.get('source_uqq', None)
         uname = request.POST.get('source_uname', None)
         uaddres = request.POST.get('source_uaddres', None)
-        # uchoice = request.POST.get('uchoice', None)
+        uchoice = request.POST.get('uchoice', None)
         uTax = request.POST.get('source_uTax', None)
         au = source.objects.get(id=id)
         au.uphone = uphone
@@ -39,7 +39,7 @@ def modifyCuster_view(request,id=None):
         au.uqq = uqq
         au.uname = uname
         au.uaddres = uaddres
-        # au.uchoice = uchoice
+        au.uchoice = uchoice
         au.uTax = uTax
         au.save()
         return  HttpResponseRedirect('/source')
@@ -60,7 +60,7 @@ def addSource_views(request):
         uwei = request.POST.get('uwei', None)
         uname = request.POST.get('uname', None)
         uaddres = request.POST.get('uaddres', None)
-        # uchoice = request.POST.get('uchoice', None)
+        uchoice = request.POST.get('uchoice', None)
         uTax = request.POST.get('uTax', None)
         #查询是否存在
         getName = source.objects.filter(uphone=uphone,uwei=uwei,uname=uname)
@@ -70,7 +70,7 @@ def addSource_views(request):
                 'uwei': uwei,
                 'uname': uname,
                 'uaddres': uaddres,
-                # 'uchoice': uchoice,
+                'uchoice': uchoice,
                 'uTax': uTax,
             }
             source(**dic).save()
