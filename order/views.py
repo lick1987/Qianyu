@@ -1,3 +1,4 @@
+from django.core import serializers
 from django.urls import reverse
 
 from customer.models import userCusterData
@@ -15,6 +16,20 @@ def order_view(request):
         uname = request.session['uname']
         flag = True
     userCust=order.objects.filter(user=id,isActive=1)
+    s=json.dumps({'List':json.dumps(list(range(100)))})
+    return render(request,'order.html',locals())
+#获取状态信息
+def get_status(request):
+    id = request.session.get('id')
+    userCust = order.objects.filter(user=id, isActive=1)
+    userCust1 = serializers.serialize('json', userCust)
+    return HttpResponse(userCust1)
+#status1状态显示
+def status1_views(request,status):
+    id = request.session.get('id')
+    # status = request.GET.get('status', None)
+    print(status)
+    userCust = order.objects.filter(user=id, isActive=1,status=status)
     return render(request,'order.html',locals())
 
 #修改客户

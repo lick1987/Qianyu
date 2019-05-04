@@ -15,7 +15,21 @@
     text-align: left;
     font-size: 20px;
     }
+    #change_show{
+        cursor: pointer;
+    }
+    #float_status{
+        background-color: white;
+         width: 50px;
+         height: 220px;
+        border:1px solid #131313;
+        position: absolute;
+        right: 84px;
+        top: 144px;
+        display: none;
+        cursor:pointer;
 
+    }
     </style>
 {% endblock %}
 {% block body %}
@@ -23,42 +37,50 @@
             <a href="{% url 'order:addOrder' %}" id="addOrder">增加订单</a>
         </div>
    <table border="1" class="gridtable">
+    <div id="float_status">
+        <p id="status1">未安排</p>
+        <p id="status2">已安排</p>
+        <p id="status3">待寄出</p>
+        <p id="status4">待付款</p>
+        <p id="status5">已完结</p>
+    </div>
     <tr>
 
-            <th>接单账号</th>
-            <th>客户姓名</th>
-            <th>客户单位</th>
-            <th>客户税号</th>
-            <th>数量</th>
-            <th>接单时间</th>
-            <th>完结时间</th>
-            <th>发票类型</th>
-            <th>备注</th>
-            <th>点子</th>
-            <th>开票员</th>
-        <th>状态</th>
+        <th>接单时间</th>
+        <th>接单账号</th>
+        <th>客户姓名</th>
+        <th>客户单位</th>
+        <th>客户税号</th>
+        <th>要求</th>
+        <th>数量</th>
+        <th>完结时间</th>
+        <th>发票类型</th>
+        <th>点子</th>
+        <th>开票员</th>
+        <th id="change_show">状态▼</th>
         <th>修改</th>
         <th>删除</th>
             </tr>
+    <div id="table_body">
     {% for i in userCust %}
         <tr>
-        <th>{{ i.customer.uname }}</th>
-        <th>{{ i.customer.uwei }}</th>
-        <th>{{ i.unit.uname }}</th>
-        <th>{{ i.unit.upwd }}</th>
-        <th>{{ i.count }}</th>
-        <th>{{ i.startTime }}</th>
-        <th>{{ i.endTime }}</th>
-        <th>{{ i.style }}</th>
-        <th>{{ i.explain }}</th>
-        <th>{{ i.customer.uTax }}</th>
-        <th>{{ i.source.uname }}</th>
-        <th id="order_style{{ i.id }}">{{ i.status }}</th>
-        <th><a href="{% url 'order:modifyOrder' i.customer.id %}">修改</a></th>
-        <th><a href="/order/deletSource/{{ i.id }}">删除</a></th>
+            <th>{{ i.startTime }}</th>
+            <th>{{ i.customer.uname }}</th>
+            <th>{{ i.customer.uwei }}</th>
+            <th>{{ i.unit.uname }}</th>
+            <th>{{ i.unit.upwd }}</th>
+            <th>{{ i.explain }}</th>
+            <th>{{ i.count }}</th>
+            <th>{{ i.endTime }}</th>
+            <th>{{ i.style }}</th>
+            <th>{{ i.customer.uTax }}</th>
+            <th>{{ i.source.uname }}</th>
+            <th id="order_style{{ i.id }}">{{ i.status }}</th>
+            <th><a href="{% url 'order:modifyOrder' i.customer.id %}">修改</a></th>
+            <th><a href="/order/deletSource/{{ i.id }}">删除</a></th>
         </tr>
     {% endfor %}
-
+    </div>
 
 
 </table>
@@ -66,20 +88,66 @@
 {% block end %}
     <script>
     $(function () {
-        var j=JSON.parse({{ sourceMes1 }});
-        console.log(j)
-        if($('#order_style').text()=='未安排'){
-            $('.order_style').css('color','green')
-        }
-        else if($('.order_style').text()=='已安排'){
-           $('.order_style').css('color','blue')
-        }
-        else{
-            console.log($('.order_style').text())
-           $('.order_style').css('color','red')
-        }
-        }
-    )
+        //点击状态显示事件
+        $("#change_show").click(function(){
+            if ($("#float_status").css('display')=="none"){
+                $("#float_status").css('display','block')
+            }else{
+                $("#float_status").css('display','none')
+            }
 
+    });
+
+        $("#change_show").mouseover(function(){
+            $('#change_show').css('color','red');
+    });
+        $("#change_show").mouseout(function(){
+            $('#change_show').css('color','#363B36');
+    })
+    });
+    //动态改变状态颜色
+     $("#float_status p").mouseover(function () {
+        $("#float_status p").eq($(this).index()).css("color","red");
+    });
+     $("#float_status p").mouseout(function () {
+        $("#float_status p").eq($(this).index()).css("color","#0F0F0F");
+    });
+     $.get(
+            '/order/getStatus',
+            function(data){
+                $.each(data,function(i,obj){
+                    var str_oreder='#order_style'+obj.pk;
+                    var order_style=$(str_oreder).text();
+                    if(order_style=='未安排'){
+                    $(str_oreder).css('color','#272822');
+                    }else if(order_style=='已安排'){
+                    $(str_oreder).css('color','orange');
+                    }else if(order_style=='待寄出'){
+                    $(str_oreder).css('color','blue');
+                    }else if(order_style=='待付款'){
+                    $(str_oreder).css('color','red');
+                    }else{
+                    $(str_oreder).css('color','#4B9A2D');
+                }
+                                })
+            },
+            'json'
+            );
+    //动态改变状态颜色
+     $("#status1").click(function () {
+         window.location.href="/order/status1/未安排";
+    });
+     $("#status2").click(function () {
+         window.location.href="/order/status1/已安排";
+    });
+      $("#status3").click(function () {
+         window.location.href="/order/status1/待寄出";
+    });
+       $("#status4").click(function () {
+         window.location.href="/order/status1/待付款";
+    });
+        $("#status5").click(function () {
+         window.location.href="/order/status1/已完结";
+    });
     </script>
 {% endblock %}
