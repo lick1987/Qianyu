@@ -36,28 +36,54 @@
      <div>
             <a href="{% url 'order:addOrder' %}" id="addOrder">增加订单</a>
         </div>
-   <table border="1" class="gridtable">
-    <div id="float_status">
-        <p id="status1">未安排</p>
-        <p id="status2">已安排</p>
-        <p id="status3">待寄出</p>
-        <p id="status4">待付款</p>
-        <p id="status5">已完结</p>
+    <div>
+{#    月份：#}
+{#            <select name='uchoice'>#}
+{#            {% ifequal custMess.uchoice "纸质发票" %}#}
+{##}
+{#                  <option value ="纸质发票">纸质发票</option>#}
+{#                  <option value ="电子发票">电子发票</option>#}
+{#            {% else %}#}
+{#                  <option value ="电子发票">电子发票</option>#}
+{#                  <option value ="纸质发票">纸质发票</option>#}
+{#            {% endifequal %}#}
+{#            </select>#}
+    订单状态：
+            <select onchange="window.location=this.value;">
+             <option value ="/order">所有状态</option>
+            {% for key,value in dic.items %}
+                {% ifequal status key %}
+                     <option value ="/order/status/{{ key }}" selected>{{ value }}</option>
+                     {% else %}
+                    <option value ="/order/status/{{ key }}">{{ value }}</option>
+                {% endifequal %}
+            {% endfor %}
+            </select>
     </div>
+   <table border="1" class="gridtable">
     <tr>
 
         <th>接单时间</th>
-        <th>接单账号</th>
+        <th>联系方式</th>
         <th>客户姓名</th>
         <th>客户单位</th>
         <th>客户税号</th>
         <th>要求</th>
         <th>数量</th>
-        <th>完结时间</th>
-        <th>发票类型</th>
-        <th>点子</th>
+        <th>未打完</th>
         <th>开票员</th>
-        <th id="change_show">状态▼</th>
+        <th>截止时间</th>
+        <th>发票类型</th>
+        <th >状态</th>
+        <th >拿取方式</th>
+        <th >地址</th>
+        <th>点子</th>
+        <th>应收</th>
+        <th>实收</th>
+        <th>预计成本</th>
+        <th>实际成本</th>
+        <th>预计利润</th>
+        <th>实际利润</th>
         <th>修改</th>
         <th>删除</th>
             </tr>
@@ -71,11 +97,20 @@
             <th>{{ i.unit.upwd }}</th>
             <th>{{ i.explain }}</th>
             <th>{{ i.count }}</th>
+            <th>{{ i.notComple }}</th>
+            <th>{{ i.source.uname }}</th>
             <th>{{ i.endTime }}</th>
             <th>{{ i.style }}</th>
-            <th>{{ i.customer.uTax }}</th>
-            <th>{{ i.source.uname }}</th>
             <th id="order_style{{ i.id }}">{{ i.status }}</th>
+            <th >{{ i.Delivery }}</th>
+            <th >{{ i.customer.uaddres }}</th>
+            <th>{{ i.customer.uTax }}</th>
+            <th>{{ i.recivable }}</th>
+            <th>{{ i.netReceiots }}</th>
+            <th>{{ i.estimateCost }}</th>
+            <th>{{ i.actualCost }}</th>
+            <th>{{ i.estimatProfit }}</th>
+            <th>{{ i.actualProfit }}</th>
             <th><a href="{% url 'order:modifyOrder' i.customer.id %}">修改</a></th>
             <th><a href="/order/deletSource/{{ i.id }}">删除</a></th>
         </tr>
@@ -88,22 +123,6 @@
 {% block end %}
     <script>
     $(function () {
-        //点击状态显示事件
-        $("#change_show").click(function(){
-            if ($("#float_status").css('display')=="none"){
-                $("#float_status").css('display','block')
-            }else{
-                $("#float_status").css('display','none')
-            }
-
-    });
-
-        $("#change_show").mouseover(function(){
-            $('#change_show').css('color','red');
-    });
-        $("#change_show").mouseout(function(){
-            $('#change_show').css('color','#363B36');
-    })
     });
     //动态改变状态颜色
      $("#float_status p").mouseover(function () {
@@ -133,21 +152,5 @@
             },
             'json'
             );
-    //动态改变状态颜色
-     $("#status1").click(function () {
-         window.location.href="/order/status1/未安排";
-    });
-     $("#status2").click(function () {
-         window.location.href="/order/status1/已安排";
-    });
-      $("#status3").click(function () {
-         window.location.href="/order/status1/待寄出";
-    });
-       $("#status4").click(function () {
-         window.location.href="/order/status1/待付款";
-    });
-        $("#status5").click(function () {
-         window.location.href="/order/status1/已完结";
-    });
     </script>
 {% endblock %}

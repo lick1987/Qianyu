@@ -11,6 +11,14 @@ from source.models import *
 #客户首页视图
 def order_view(request):
     id = request.session.get('id')
+    dic = {
+        '0': '未安排',
+        '1': '已安排',
+        '2': '待寄出',
+        '3': '待付款',
+        '4': '已完结',
+
+    }
     flag = False
     if id:
         uname = request.session['uname']
@@ -25,14 +33,21 @@ def get_status(request):
     userCust1 = serializers.serialize('json', userCust)
     return HttpResponse(userCust1)
 #status1状态显示
-def status1_views(request,status):
+def status_views(request,status):
     id = request.session.get('id')
+    dic={
+        '0':'未安排',
+        '1':'已安排',
+        '2':'待寄出',
+        '3':'待付款',
+        '4':'已完结'
+    }
     # status = request.GET.get('status', None)
-    print(status)
-    userCust = order.objects.filter(user=id, isActive=1,status=status)
+    status1=dic[status]
+    userCust = order.objects.filter(user=id, isActive=1,status=status1)
     return render(request,'order.html',locals())
 
-#修改客户
+#修改订单
 def modifyOrder(request,id=None):
     if request.method == 'GET':
         orderMes = order.objects.get(id=id)
@@ -53,16 +68,21 @@ def modifyOrder(request,id=None):
         sourceName = request.POST.get('order_source', None)
         style = request.POST.get('order_style', None)
         sourceMes = source.objects.filter(uname=sourceName)
+        # customer1 = customer.objects.filter()
         au = order.objects.get(id=id)
+
         au.count = count
         au.startTime = startTime
         au.endTime = endTime
         au.status = status
-        au.uTax = uTax
+        au.customer.uTax = uTax
         au.style = style
         au.source = sourceMes[0]
         au.explain = explain
         au.save()
+        customer = au.customer
+        customer.uTax=uTax
+        customer.save()
         return  HttpResponseRedirect('/order')
 #增加客户
 def addOrder_views(request):

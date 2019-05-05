@@ -60,28 +60,3 @@ class allData(models.Model):
         verbose_name = '总表'
         verbose_name_plural = verbose_name
         ordering = ['unit']
-#订单总表
-# class order(models.Model):
-#     status_choice  = (
-#         (0, '未安排'),
-#         (1, '已安排'),
-#         (2, '待寄出'),
-#         (3, '待付款'),
-#         (4, '已完结')
-#     )
-#     user=models.ForeignKey(user,True)
-#     customer=models.ForeignKey(customer,True)
-#     unit=models.ForeignKey(unit,True)
-#     count=models.CharField(max_length=100,verbose_name='数量')
-#     #状态
-#     isActive = models.BooleanField(default=0, verbose_name='状态',choices=status_choice)
-#     #接单时间
-#     startTime = models.DateTimeField(auto_now_add=True,verbose_name='接单时间')
-#     #完结时间
-#     endTime=models.DateTimeField(verbose_name='预期完结时间')
-#     def __str__(self):
-#         return str(self.customer)
-#
-#     class Meta:
-#         verbose_name = '订单总表'
-#         verbose_name_plural = verbose_name

@@ -11,5 +11,5 @@ urlpatterns = [
     url(r'^modifyOrder/(\d*)$',modifyOrder,name='modifyOrder'),
     url(r'^addOrder$',addOrder_views,name='addOrder'),
     url(r'^getStatus$',get_status,name='getStatus'),
-    url(r'^status1/(.+)/$',status1_views,name='status1'),
+    url(r'^status/(.+)/$',status_views,name='status'),
 ]
