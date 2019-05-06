@@ -25,7 +25,6 @@ class customer(models.Model):
     uname = models.CharField(max_length=20,verbose_name='用户名')
     uaddres=models.CharField(max_length=200,verbose_name='收货地址')
     uchoice=models.CharField(max_length=10,verbose_name='发票类型',default='纸质发票')
-    uTax=models.CharField(max_length=10,verbose_name='发票点子',default='4')
     isActive = models.BooleanField(default=True,verbose_name='状态')
     unit=models.ManyToManyField(unit)
     def __str__(self):

@@ -104,14 +104,14 @@
             <th id="order_style{{ i.id }}">{{ i.status }}</th>
             <th >{{ i.Delivery }}</th>
             <th >{{ i.customer.uaddres }}</th>
-            <th>{{ i.customer.uTax }}</th>
+            <th>{{ i.uTax }}</th>
             <th>{{ i.recivable }}</th>
             <th>{{ i.netReceiots }}</th>
             <th>{{ i.estimateCost }}</th>
             <th>{{ i.actualCost }}</th>
             <th>{{ i.estimatProfit }}</th>
             <th>{{ i.actualProfit }}</th>
-            <th><a href="{% url 'order:modifyOrder' i.customer.id %}">修改</a></th>
+            <th><a href="{% url 'order:modifyOrder' i.id %}">修改</a></th>
             <th><a href="/order/deletSource/{{ i.id }}">删除</a></th>
         </tr>
     {% endfor %}

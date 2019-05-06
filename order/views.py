@@ -56,7 +56,6 @@ def modifyOrder(request,id=None):
         if id:
             uname = request.session['uname']
             flag = True
-        sourceMes=userSourceData.objects.filter(user=id,isActive=1)
         return render(request,'modifyOrder.html',locals())
     if request.method=='POST':
         count = request.POST.get('order_count', None)
@@ -75,14 +74,11 @@ def modifyOrder(request,id=None):
         au.startTime = startTime
         au.endTime = endTime
         au.status = status
-        au.customer.uTax = uTax
+        au.uTax = uTax
         au.style = style
         au.source = sourceMes[0]
         au.explain = explain
         au.save()
-        customer = au.customer
-        customer.uTax=uTax
-        customer.save()
         return  HttpResponseRedirect('/order')
 #增加客户
 def addOrder_views(request):

@@ -32,7 +32,7 @@ def modifyCuster(request,id=None):
         uname = request.POST.get('uname', None)
         uaddres = request.POST.get('uaddres', None)
         # uchoice = request.POST.get('uchoice', None)
-        uTax = request.POST.get('uTax', None)
+        # uTax = request.POST.get('uTax', None)
         au = customer.objects.get(id=id)
         au.uphone = uphone
         au.uwei = uwei
@@ -40,7 +40,7 @@ def modifyCuster(request,id=None):
         au.uname = uname
         au.uaddres = uaddres
         # au.uchoice = uchoice
-        au.uTax = uTax
+        # au.uTax = uTax
         au.save()
         return  HttpResponseRedirect('/customer')
 #增加客户
@@ -62,9 +62,9 @@ def addCuster_views(request):
         uname = request.POST.get('uname', None)
         uaddres = request.POST.get('uaddres', None)
         # uchoice = request.POST.get('uchoice', None)
-        uTax = request.POST.get('uTax', None)
+        # uTax = request.POST.get('uTax', None)
         #查询是否存在
-        getName = customer.objects.filter(uphone=uphone,uwei=uwei,uqq=uqq,uname=uname,uaddres=uaddres,uTax=uTax)
+        getName = customer.objects.filter(uphone=uphone,uwei=uwei,uqq=uqq,uname=uname,uaddres=uaddres)
         if not getName:
             dic = {
                 'uphone': uphone,
@@ -72,12 +72,10 @@ def addCuster_views(request):
                 'uqq': uqq,
                 'uname': uname,
                 'uaddres': uaddres,
-                # 'uchoice': uchoice,
-                'uTax': uTax,
             }
             customer(**dic).save()
-        #获取新增单位ID
-        custID=customer.objects.get(uphone=uphone,uwei=uwei,uqq=uqq,uname=uname,uaddres=uaddres,uTax=uTax)
+        #获取新增客户ID
+        custID=customer.objects.get(uphone=uphone,uwei=uwei,uqq=uqq,uname=uname,uaddres=uaddres,isActive=1)
         #查询表里面是否存在
         result=userCusterData.objects.filter(user=userId[0],customer=custID,isActive=1)
         status=0
@@ -89,6 +87,7 @@ def addCuster_views(request):
 
             }
             resp = HttpResponse(json.dumps(dic))
+            print(dic)
         #没有则保存
         else:
             result=userCusterData.objects.filter(user=userId[0],customer=custID,isActive=0)
@@ -107,7 +106,6 @@ def addCuster_views(request):
             }
             resp = HttpResponse(json.dumps(dic))
         return resp
-    pass
 
 #删除客户
 def deletCuster_views(request,id):
