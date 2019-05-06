@@ -56,6 +56,7 @@ def modifyOrder(request,id=None):
         if id:
             uname = request.session['uname']
             flag = True
+        sourceMes = userSourceData.objects.filter(user=id, isActive=1)
         return render(request,'modifyOrder.html',locals())
     if request.method=='POST':
         count = request.POST.get('order_count', None)
