@@ -12,4 +12,5 @@ urlpatterns = [
     url(r'^addOrder$',addOrder_views,name='addOrder'),
     url(r'^getStatus$',get_status,name='getStatus'),
     url(r'^status/(.+)/$',status_views,name='status'),
+    url(r'^changeShow$',change_show,name='changeShow'),
 ]

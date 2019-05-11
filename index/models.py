@@ -22,7 +22,7 @@ class customer(models.Model):
     uphone = models.CharField(max_length=11,verbose_name='手机号')
     uwei = models.CharField(max_length=20,verbose_name='微信')
     uqq = models.CharField(max_length=15,verbose_name='QQ')
-    uname = models.CharField(max_length=20,verbose_name='用户名')
+    uname = models.CharField(max_length=20,verbose_name='客户来源')
     uaddres=models.CharField(max_length=200,verbose_name='收货地址')
     uchoice=models.CharField(max_length=10,verbose_name='发票类型',default='纸质发票')
     isActive = models.BooleanField(default=True,verbose_name='状态')

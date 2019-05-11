@@ -104,12 +104,30 @@ background: #3EB1DD;
             客户税号&nbsp;：<input type="text" name='order_uphone' value="{{orderMes.unit.upwd}}" disabled="disabled">
         </p>
         <p>
+            需求：<input type="text" name='order_explain' value="{{orderMes.explain}}">
+        </p>
+        <p>
             数量&nbsp;：<input type="text" name='order_count' value="{{orderMes.count}}">
+        </p>
+        <p>
+            未打完：<input type="text" name='order_explain' value="{{orderMes.notComple}}">
         </p>
         <p>
             接单时间：<input type="date" name='order_startTime' value="{{orderMes.startTime}}">
         </p>
         <p>
+            开票员：<select name='order_source' >
+                {% for i in sourceMes %}
+                  {% ifequal orderMes.source.uname i.uname %}
+                  <option value ="{{ i.source.uname }}" selected>{{ i.source.uname }}</option>
+                  {% else %}
+
+                  <option value ="{{ i.source.uname }}">{{ i.source.uname }}</option>
+                  {% endifequal %}
+                {% endfor %}
+            </select>
+        </p>
+         <p>
             完结时间：<input type="date" name='order_endTime' value="{{orderMes.endTime}}">
         </p>
        <p>
@@ -161,21 +179,8 @@ background: #3EB1DD;
         <p>
             点子：<input type="text" name='order_uTax' value="{{orderMes.uTax}}">
         </p>
-        <p>
-            备注：<input type="text" name='order_explain' value="{{orderMes.explain}}">
-        </p>
-        <p>
-            开票员：<select name='order_source' >
-                {% for i in sourceMes %}
-                  {% ifequal orderMes.source.uname i.uname %}
-                  <option value ="{{ i.source.uname }}" selected>{{ i.source.uname }}</option>
-                  {% else %}
 
-                  <option value ="{{ i.source.uname }}">{{ i.source.uname }}</option>
-                  {% endifequal %}
-                {% endfor %}
-            </select>
-        </p>
+
         <p>
             <input type="submit" value='保存' class="button">
             <a href="/order" class="button">退出</a>
