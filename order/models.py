@@ -5,9 +5,16 @@ from source.models import *
 #订单总表
 class order(models.Model):
     user=models.ForeignKey(user,True)
-    customer=models.ForeignKey(customer,True)
-    unit=models.ForeignKey(unit,True)
-    source=models.ForeignKey(source,True)
+    # customer=models.ForeignKey(customer,True)
+    # unit=models.ForeignKey(unit,True)
+    # source=models.ForeignKey(source,True)
+    #接单账号
+    orderName=models.CharField(max_length=100,verbose_name='接单账号',default='微信-李旭')
+    customerName=models.CharField(max_length=100,verbose_name='客户姓名',default='暂无')
+    customerUnit=models.CharField(max_length=100,verbose_name='客户单位',default='暂无')
+    customerPwd=models.CharField(max_length=100,verbose_name='客户税号',default='暂无')
+    customerAddress=models.CharField(max_length=100,verbose_name='客户地址',default='暂无')
+    sourceName=models.CharField(max_length=100,verbose_name='开票员',default='暂无')
     count=models.CharField(max_length=100,verbose_name='数量')
     #状态
     status = models.CharField(max_length=20, verbose_name='状态')
@@ -32,7 +39,52 @@ class order(models.Model):
     actualProfit=models.IntegerField(verbose_name='实际利润', default=0)
     isActive = models.BooleanField(default=True, verbose_name='状态')
     def __str__(self):
-        return str(self.customer)
+        return str(self.customerName)
+    def to_dict(self):
+        dic={}
+        dic['id'] = self.id
+        # 接单时间
+        dic['startTime'] = self.startTime
+        # 客户来源
+        dic['tel'] = self.orderName
+        dic['customerName'] = self.customerName
+        # 客户单位
+        dic['unit_name'] = self.customerUnit
+        # 客户税号
+        dic['unit_pwd'] = self.customerPwd
+        # 要求
+        dic['explain'] = self.explain
+        # 数量
+        dic['count'] = self.count
+        # 未打完
+        dic['notComple'] = self.notComple
+        # 开票员
+        dic['source'] = self.sourceName
+        # 截止时间
+        dic['endTime'] = self.endTime
+        # 发票类型
+        dic['style'] = self.style
+        # 状态
+        dic['status'] = self.status
+        # 拿取方式
+        dic['Delivery'] = self.Delivery
+        # 地址
+        dic['address'] = self.customerAddress
+        # 点子
+        dic['uTax'] = self.uTax
+        # 应收
+        dic['recivable'] = self.recivable
+        # 实收
+        dic['netReceiots'] = self.netReceiots
+        # 预计成本
+        dic['estimateCost'] = self.estimateCost
+        # 实际成本
+        dic['actualCost'] = self.actualCost
+        # 预计利润
+        dic['estimatProfit'] = self.estimatProfit
+        # 实际利润
+        dic['actualProfit'] = self.actualProfit
+        return dic
 
     class Meta:
         app_label='order'

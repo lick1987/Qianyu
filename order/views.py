@@ -77,55 +77,9 @@ def change_show(request):
         userCust = order.objects.filter(user=id, isActive=1, status=status)
     userList=[]
     for i in userCust:
-        dic={}
         if startTime in i.startTime:
-            dic['id']=i.id
-            #接单时间
-            dic['startTime']=i.startTime
-            #客户来源
-            dic['tel']=i.customer.uname
-            #客户微信或者QQ
-            if i.customer.uwei:
-                dic['customerName']=i.customer.uwei
-            else:
-                dic['customerName'] = i.customer.uqq
-            #客户单位
-            dic['unit_name']=i.unit.uname
-            #客户税号
-            dic['unit_pwd']=i.unit.upwd
-            #要求
-            dic['explain']=i.explain
-            #数量
-            dic['count']=i.count
-            #未打完
-            dic['notComple']=i.notComple
-            #开票员
-            dic['source']=i.source.uname
-            #截止时间
-            dic['endTime']=i.endTime
-            #发票类型
-            dic['style']=i.style
-            #状态
-            dic['status']=i.status
-            #拿取方式
-            dic['Delivery']=i.Delivery
-            #地址
-            dic['address']=i.customer.uaddres
-            #点子
-            dic['uTax']=i.uTax
-            #应收
-            dic['recivable']=i.recivable
-            #实收
-            dic['netReceiots']=i.netReceiots
-            #预计成本
-            dic['estimateCost']=i.estimateCost
-            #实际成本
-            dic['actualCost']=i.actualCost
-            #预计利润
-            dic['estimatProfit']=i.estimatProfit
-            #实际利润
-            dic['actualProfit']=i.actualProfit
-            userList.append(dic)
+            s=i.to_dict()
+            userList.append(s)
     return HttpResponse(json.dumps(userList))
 #修改订单
 def modifyOrder(request,id=None):
@@ -139,28 +93,78 @@ def modifyOrder(request,id=None):
         sourceMes = userSourceData.objects.filter(user=id, isActive=1)
         return render(request,'modifyOrder.html',locals())
     if request.method=='POST':
-        count = request.POST.get('order_count', None)
-        startTime = request.POST.get('order_startTime', None)
-        endTime = request.POST.get('order_endTime', None)
-        status = request.POST.get('order_uchoice', None)
-        uTax = request.POST.get('order_uTax', None)
-        explain = request.POST.get('order_explain', None)
-        sourceName = request.POST.get('order_source', None)
-        style = request.POST.get('order_style', None)
-        sourceMes = source.objects.filter(uname=sourceName)
-        # customer1 = customer.objects.filter()
+        order_orderName = request.POST.get('order_orderName', None)
+        order_startTime = request.POST.get('order_startTime', None)
+        order_customerName = request.POST.get('order_customerName', None)
+        order_customerUnit = request.POST.get('order_customerUnit', None)
+        order_customerPwd = request.POST.get('order_customerPwd', None)
+        order_source = request.POST.get('order_sourceName', None)
+        #订购数量
+        order_count = request.POST.get('order_count', None)
+        #未完成
+        order_notComple = request.POST.get('order_notComple', None)
+        order_endTime = request.POST.get('order_endTime', None)
+        order_style = request.POST.get('order_style', None)
+        #
+        order_status = request.POST.get('order_status', None)
+        order_Delivery = request.POST.get('order_Delivery', None)
+        order_customerAddress = request.POST.get('order_customerAddress', None)
+        #点子
+        order_uTax = request.POST.get('order_uTax', None)
+        #
+        # order_recivable = request.POST.get('order_recivable', None)
+        order_netReceiots = request.POST.get('order_netReceiots', None)
+        # order_estimateCost = request.POST.get('order_estimateCost', None)
+        order_actualCost = request.POST.get('order_actualCost', None)
+        # order_estimatProfit = request.POST.get('order_estimatProfit', None)
+        # order_actualProfit = request.POST.get('order_actualProfit', None)
         au = order.objects.get(id=id)
-
-        au.count = count
-        au.startTime = startTime
-        au.endTime = endTime
-        au.status = status
-        au.uTax = uTax
-        au.style = style
-        au.source = sourceMes[0]
-        au.explain = explain
+        au.orderName=order_orderName
+        au.startTime=order_startTime
+        au.customerName=order_customerName
+        au.customerUnit=order_customerUnit
+        au.customerPwd=order_customerPwd
+        au.sourceName=order_source
+        au.count=order_count
+        au.notComple=order_notComple
+        au.endTime=order_endTime
+        au.style=order_style
+        au.status=order_status
+        au.Delivery=order_Delivery
+        au.customerAddress=order_customerAddress
+        au.uTax=order_uTax
+        #应收
+        recivable=int(order_count)*int(order_uTax)/100.0
+        au.recivable=recivable
+        au.netReceiots=order_netReceiots
+        #预计成本
+        au.estimateCost=int(order_count)*0.03
+        #实际成本
+        au.actualCost=order_actualCost
+        #预计利润
+        estimatProfit=int(order_count)*int(order_uTax)/100.0-int(order_count)*0.03
+        au.estimatProfit=estimatProfit
+        #如果输入实际成本
+        if int(order_actualCost):
+            #如果输入实收
+            if int(order_netReceiots):
+                au.actualProfit =int(order_netReceiots)-int(order_actualCost)
+            else:
+                #实际利润
+                au.actualProfit=int(order_count)*int(order_uTax)/100.0-int(order_netReceiots)
+        else:
+            #如果输入了实收
+            if int(order_netReceiots):
+                au.actualProfit=int(order_netReceiots)-au.estimateCost
+            else:
+                au.actualProfit=estimatProfit
         au.save()
         return  HttpResponseRedirect('/order')
+def get_Customer(request):
+    order_customerName = request.GET.get('order_customerName', None)
+    customer1=customer.objects.filter(uwei__contains=order_customerName)
+    customer1 = serializers.serialize('json', customer1)
+    return HttpResponse(customer1)
 #增加客户
 def addOrder_views(request):
     if request.method == "GET":

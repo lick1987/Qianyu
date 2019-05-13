@@ -1,6 +1,6 @@
 {%extends 'qianduan.html'%}
 {%block title%}
-修改单位
+我的订单
 {%endblock%}
 {% block style %}
     <style>
@@ -75,7 +75,7 @@
    <table border="1" class="gridtable" id="orader_body">
     <tr>
         <th>接单时间</th>
-        <th>联系方式</th>
+        <th>接单账号</th>
         <th>客户姓名</th>
         <th>客户单位</th>
         <th>客户税号</th>
@@ -101,19 +101,19 @@
     {% for i in userCust %}
         <tr>
             <th contenteditable="false">{{ i.startTime }}</th>
-            <th contenteditable="false">{{ i.customer.uname }}</th>
-            <th contenteditable="false">{{ i.customer.uwei }}</th>
-            <th contenteditable="false">{{ i.unit.uname }}</th>
-            <th contenteditable="false">{{ i.unit.upwd }}</th>
+            <th contenteditable="false">{{ i.orderName }}</th>
+            <th contenteditable="false">{{ i.customerName }}</th>
+            <th contenteditable="false">{{ i.customerUnit }}</th>
+            <th contenteditable="false">{{ i.customerPwd }}</th>
             <th contenteditable="false">{{ i.explain }}</th>
             <th contenteditable="false">{{ i.count }}</th>
             <th contenteditable="false">{{ i.notComple }}</th>
-            <th contenteditable="false">{{ i.source.uname }}</th>
+            <th contenteditable="false">{{ i.sourceName }}</th>
             <th contenteditable="false">{{ i.endTime }}</th>
             <th contenteditable="false">{{ i.style }}</th>
             <th contenteditable="false" id="order_style{{ i.id }}">{{ i.status }}</th>
             <th contenteditable="false">{{ i.Delivery }}</th>
-            <th contenteditable="false">{{ i.customer.uaddres }}</th>
+            <th contenteditable="false">{{ i.customerAddress }}</th>
             <th contenteditable="false">{{ i.uTax }}</th>
             <th contenteditable="false">{{ i.recivable }}</th>
             <th contenteditable="false">{{ i.netReceiots }}</th>

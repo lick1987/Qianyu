@@ -26,9 +26,8 @@ class customer(models.Model):
     uaddres=models.CharField(max_length=200,verbose_name='收货地址')
     uchoice=models.CharField(max_length=10,verbose_name='发票类型',default='纸质发票')
     isActive = models.BooleanField(default=True,verbose_name='状态')
-    unit=models.ManyToManyField(unit)
     def __str__(self):
-        return str(self.uname)
+        return str(self.uwei)
     class Meta:
         verbose_name = '客户信息'
         verbose_name_plural = verbose_name

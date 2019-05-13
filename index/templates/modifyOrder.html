@@ -4,85 +4,102 @@
 {%endblock%}
 {% block style %}
 <style>
-    .elegant-aero {
-margin-left:auto;
-margin-right:auto;
-max-width: 500px;
-background: #D2E9FF;
-padding: 20px 20px 20px 20px;
-font: 12px Arial, Helvetica, sans-serif;
-color: #131313;
+{#    .elegant-aero {#}
+{#margin-left:auto;#}
+{#margin-right:auto;#}
+{#max-width: 500px;#}
+{#background: #D2E9FF;#}
+{#padding: 20px 20px 20px 20px;#}
+{#font: 12px Arial, Helvetica, sans-serif;#}
+{#color: #131313;#}
+{#}#}
+{#.elegant-aero h1 {#}
+{#font: 24px "Trebuchet MS", Arial, Helvetica, sans-serif;#}
+{#padding: 10px 10px 10px 20px;#}
+{#display: block;#}
+{#background: #C0E1FF;#}
+{#border-bottom: 1px solid #B8DDFF;#}
+{#margin: -20px -20px 15px;#}
+{#}#}
+{#.elegant-aero h1>span {#}
+{#display: block;#}
+{#font-size: 11px;#}
+{#}#}
+{##}
+{#.elegant-aero label>span {#}
+{#float: left;#}
+{#z-index: 9998;#}
+{#margin-top: 10px;#}
+{#color: #5E5E5E;#}
+{#}#}
+{#.elegant-aero label {#}
+{#display: block;#}
+{#margin: 0px 0px 5px;#}
+{#}#}
+{#.elegant-aero label>span {#}
+{#float: left;#}
+{#z-index: 9998;#}
+{#width: 20%;#}
+{#text-align: right;#}
+{#padding-right: 15px;#}
+{#margin-top: 10px;#}
+{#font-weight: bold;#}
+{#}#}
+{#.elegant-aero input[type="text"], .elegant-aero input[type="email"], .elegant-aero textarea, .elegant-aero select {#}
+{#color: #131313;#}
+{#width: 70%;#}
+{#padding: 0px 0px 0px 5px;#}
+{#border: 1px solid #356b4c;#}
+{#background: #FBFBFB;#}
+{#outline: 0;#}
+{#-webkit-box-shadow:inset 0px 1px 6px #ECF3F5;#}
+{#box-shadow: inset 0px 1px 6px #ECF3F5;#}
+{#font: 200 12px/25px Arial, Helvetica, sans-serif;#}
+{#height: 30px;#}
+{#line-height:15px;#}
+{#margin: 2px 6px 16px 0px;#}
+{#}#}
+{#.elegant-aero textarea{#}
+{#height:100px;#}
+{#padding: 5px 0px 0px 5px;#}
+{#width: 70%;#}
+{#}#}
+{#.elegant-aero select {#}
+{#appearance:none;#}
+{#-webkit-appearance:none;#}
+{#-moz-appearance: none;#}
+{#text-indent: 0.01px;#}
+{#text-overflow: '';#}
+{#width: 70%;#}
+{#}#}
+{#.elegant-aero .button{#}
+{#padding: 10px 30px 10px 30px;#}
+{#background: #66C1E4;#}
+{#border: none;#}
+{#color: #FFF;#}
+{#box-shadow: 1px 1px 1px #4C6E91;#}
+{#-webkit-box-shadow: 1px 1px 1px #4C6E91;#}
+{#-moz-box-shadow: 1px 1px 1px #4C6E91;#}
+{#text-shadow: 1px 1px 1px #5079A3;#}
+{##}
+{#}#}
+{#.elegant-aero .button:hover{#}
+{#background: #3EB1DD;#}
+{#}#}
+#order_customerName_p{
+    position: relative;
 }
-.elegant-aero h1 {
-font: 24px "Trebuchet MS", Arial, Helvetica, sans-serif;
-padding: 10px 10px 10px 20px;
-display: block;
-background: #C0E1FF;
-border-bottom: 1px solid #B8DDFF;
-margin: -20px -20px 15px;
-}
-.elegant-aero h1>span {
-display: block;
-font-size: 11px;
-}
-
-.elegant-aero label>span {
-float: left;
-margin-top: 10px;
-color: #5E5E5E;
-}
-.elegant-aero label {
-display: block;
-margin: 0px 0px 5px;
-}
-.elegant-aero label>span {
-float: left;
-width: 20%;
-text-align: right;
-padding-right: 15px;
-margin-top: 10px;
-font-weight: bold;
-}
-.elegant-aero input[type="text"], .elegant-aero input[type="email"], .elegant-aero textarea, .elegant-aero select {
-color: #131313;
-width: 70%;
-padding: 0px 0px 0px 5px;
-border: 1px solid #356b4c;
-background: #FBFBFB;
-outline: 0;
--webkit-box-shadow:inset 0px 1px 6px #ECF3F5;
-box-shadow: inset 0px 1px 6px #ECF3F5;
-font: 200 12px/25px Arial, Helvetica, sans-serif;
-height: 30px;
-line-height:15px;
-margin: 2px 6px 16px 0px;
-}
-.elegant-aero textarea{
-height:100px;
-padding: 5px 0px 0px 5px;
-width: 70%;
-}
-.elegant-aero select {
-appearance:none;
--webkit-appearance:none;
--moz-appearance: none;
-text-indent: 0.01px;
-text-overflow: '';
-width: 70%;
-}
-.elegant-aero .button{
-padding: 10px 30px 10px 30px;
-background: #66C1E4;
-border: none;
-color: #FFF;
-box-shadow: 1px 1px 1px #4C6E91;
--webkit-box-shadow: 1px 1px 1px #4C6E91;
--moz-box-shadow: 1px 1px 1px #4C6E91;
-text-shadow: 1px 1px 1px #5079A3;
-
-}
-.elegant-aero .button:hover{
-background: #3EB1DD;
+#order_customerName_div{
+    width:200px;
+    position:absolute;
+    {#border:1px solid #000;#}
+    float: left;
+    {#z-index: 9997;#}
+    left: 280px;
+    z-index: 998;
+    background-color: #131313;
+    opacity: .7;
+    color: #ffffff;
 }
 
 </style>
@@ -92,16 +109,23 @@ background: #3EB1DD;
         {%csrf_token%}
         <input type="hidden" name="id" value="{{custMess.id}}">
         <p>
-            接单账号：<input type="text" name='order_uname' value="{{orderMes.customer.uname}} " disabled="disabled">
+            接单时间：<input type="date" name='order_startTime' value="{{orderMes.startTime}}">
         </p>
        <p>
-            客户姓名：<input type="text" name='order_uwei' value="{{orderMes.customer.uwei}} " disabled="disabled">
+            接单账号：<input type="text" name='order_orderName' value="{{orderMes.orderName}}">
+        </p>
+        <p id="order_customerName_p">
+            客户姓名：<input type="text" id="order_customerName" name='order_customerName' value="{{orderMes.customerName}}">
+            <div id="order_customerName_div">
+
+            </div>
+        </p>
+
+        <p>
+            客户单位&nbsp;：<input type="text" name='order_customerUnit' value="{{orderMes.customerUnit}}">
         </p>
         <p>
-            客户单位&nbsp;：<input type="text" name='order_upwd' value="{{orderMes.unit.uname}}" disabled="disabled">
-        </p>
-        <p>
-            客户税号&nbsp;：<input type="text" name='order_uphone' value="{{orderMes.unit.upwd}}" disabled="disabled">
+            客户税号&nbsp;：<input type="text" name='order_customerPwd' value="{{orderMes.customerPwd}}">
         </p>
         <p>
             需求：<input type="text" name='order_explain' value="{{orderMes.explain}}">
@@ -110,15 +134,12 @@ background: #3EB1DD;
             数量&nbsp;：<input type="text" name='order_count' value="{{orderMes.count}}">
         </p>
         <p>
-            未打完：<input type="text" name='order_explain' value="{{orderMes.notComple}}">
+            未打完：<input type="text" name='order_notComple' value="{{orderMes.notComple}}">
         </p>
         <p>
-            接单时间：<input type="date" name='order_startTime' value="{{orderMes.startTime}}">
-        </p>
-        <p>
-            开票员：<select name='order_source' >
+            开票员：<select name='order_sourceName' >
                 {% for i in sourceMes %}
-                  {% ifequal orderMes.source.uname i.uname %}
+                  {% ifequal i.source.uname orderMes.sourceName %}
                   <option value ="{{ i.source.uname }}" selected>{{ i.source.uname }}</option>
                   {% else %}
 
@@ -147,7 +168,7 @@ background: #3EB1DD;
         </p>
         <p>
             状态：
-            <select name='order_uchoice' >
+            <select name='order_status' >
                   {% ifequal orderMes.status '未安排' %}
                   <option value ="未安排" selected>未安排</option>
                   {% else %}
@@ -176,14 +197,80 @@ background: #3EB1DD;
 
             </select>
         </p>
+         <p>
+            拿取方式：<input type="text" name='order_Delivery' value="{{orderMes.Delivery}}">
+        </p>
+        <p>
+            地址：<input type="text" id="order_customerAddress" name='order_customerAddress' value="{{orderMes.customerAddress}}">
+        </p>
         <p>
             点子：<input type="text" name='order_uTax' value="{{orderMes.uTax}}">
         </p>
-
-
+{#       <p>#}
+{#            应收：<input type="text" name='order_recivable' value="{{orderMes.recivable}}">#}
+{#        </p>#}
+       <p>
+            实收：<input type="text" name='order_netReceiots' value="{{orderMes.netReceiots}}">
+        </p>
+{#       <p>#}
+{#            预计成本：<input type="text" name='order_estimateCost' value="{{orderMes.estimateCost}}">#}
+{#        </p>#}
+        <p>
+            实际成本：<input type="text" name='order_actualCost' value="{{orderMes.actualCost}}">
+        </p>
+{#        <p>#}
+{#            预计利润：<input type="text" name='order_estimatProfit' value="{{orderMes.estimatProfit}}">#}
+{#        </p>#}
+{#        <p>#}
+{#            实际利润：<input type="text" name='order_actualProfit' value="{{orderMes.actualProfit}}">#}
+{#        </p>#}
         <p>
             <input type="submit" value='保存' class="button">
             <a href="/order" class="button">退出</a>
         </p>
     </form>
+{% endblock %}
+{% block end %}
+    <script>
+        $('#order_customerName').keyup(function () {
+            $.ajax({
+                    'url':'/order/getCustomer',
+                    'type':'GET',
+                    'data':{
+                        'order_customerName':$('#order_customerName').val(),
+                        },
+                    'dataType':'json',
+                    'success':function (data) {
+                        {#console.log(data);#}
+                        html='';
+                        for(var i=0;i<data.length;i++){
+                            html+="<p class='lixu'>"+data[i].fields.uwei+"</p>"
+                        }
+                        $('#order_customerName_div').html(html)
+                        $("#order_customerName_div p").mouseover(function () {
+                        $("#order_customerName_div p").eq($(this).index()).css("color","red");
+                         $("#order_customerAddress").val(data[$(this).index()].fields.uaddres);
+                         $("#order_customerName").val(data[$(this).index()].fields.uwei);
+                        });
+                        $("#order_customerName_div p").mouseout(function () {
+                        $("#order_customerName_div p").eq($(this).index()).css("color","white");
+                        });
+                        {#$("#order_customerName_div").on('click',".lixu",function () {#}
+                        {#    $("#order_customerAddress").val(data[$(this).index()].fields.uaddres);#}
+                        {#    $("#order_customerName").val(data[$(this).index()].fields.uwei);#}
+                        {##}
+                        {#    $('#order_customerName_div').css("display",'none')#}
+                        //});
+                        }
+                    });
+        });
+        $('#order_customerName').blur(function () {
+            $('#order_customerName_div').css("display",'none')
+        });
+        $('#order_customerName').focus(function () {
+            $('#order_customerName_div').css("display",'block')
+        });
+
+
+    </script>
 {% endblock %}
