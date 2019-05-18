@@ -34,7 +34,7 @@
 {% endblock %}
 {% block body %}
     <div>
-            <a href="{% url 'order:addOrder' %}" id="addOrder">增加订单</a>
+            <a href="{% url 'order:modifyOrder' 0 %}" id="addOrder">增加订单</a>
     </div>
     <div>
     年份：
@@ -100,36 +100,67 @@
     </tr>
     {% for i in userCust %}
         <tr>
-            <th contenteditable="false">{{ i.startTime }}</th>
-            <th contenteditable="false">{{ i.orderName }}</th>
-            <th contenteditable="false">{{ i.customerName }}</th>
-            <th contenteditable="false">{{ i.customerUnit }}</th>
-            <th contenteditable="false">{{ i.customerPwd }}</th>
-            <th contenteditable="false">{{ i.explain }}</th>
-            <th contenteditable="false">{{ i.count }}</th>
-            <th contenteditable="false">{{ i.notComple }}</th>
-            <th contenteditable="false">{{ i.sourceName }}</th>
-            <th contenteditable="false">{{ i.endTime }}</th>
-            <th contenteditable="false">{{ i.style }}</th>
-            <th contenteditable="false" id="order_style{{ i.id }}">{{ i.status }}</th>
-            <th contenteditable="false">{{ i.Delivery }}</th>
-            <th contenteditable="false">{{ i.customerAddress }}</th>
-            <th contenteditable="false">{{ i.uTax }}</th>
-            <th contenteditable="false">{{ i.recivable }}</th>
-            <th contenteditable="false">{{ i.netReceiots }}</th>
-            <th contenteditable="false">{{ i.estimateCost }}</th>
-            <th contenteditable="false">{{ i.actualCost }}</th>
-            <th contenteditable="false">{{ i.estimatProfit }}</th>
-            <th contenteditable="false">{{ i.actualProfit }}</th>
-            <th contenteditable="false"><a href="{% url 'order:modifyOrder' i.id %}">修改</a></th>
-            <th contenteditable="false"><a href="/order/deletSource/{{ i.id }}">删除</a></th>
+            <th class="change" contenteditable="false">{{ i.startTime }}</th>
+            <th class="change" contenteditable="false">{{ i.orderName }}</th>
+            <th class="change" contenteditable="false">{{ i.customerName }}</th>
+            <th class="change" contenteditable="false">{{ i.customerUnit }}</th>
+            <th class="change" contenteditable="false">{{ i.customerPwd }}</th>
+            <th class="change" contenteditable="false">{{ i.explain }}</th>
+            <th class="change" contenteditable="false">{{ i.count }}</th>
+            <th class="change" contenteditable="false">{{ i.notComple }}</th>
+            <th class="change" contenteditable="false">{{ i.sourceName }}</th>
+            <th class="change" contenteditable="false">{{ i.endTime }}</th>
+            <th class="change" contenteditable="false">{{ i.style }}</th>
+            <th class="change" contenteditable="false" id="order_style{{ i.id }}">{{ i.status }}</th>
+            <th class="change" contenteditable="false">{{ i.Delivery }}</th>
+            <th class="change" contenteditable="false">{{ i.customerAddress }}</th>
+            <th class="change" contenteditable="false">{{ i.uTax }}</th>
+            <th class="change" contenteditable="false">{{ i.recivable }}</th>
+            <th class="change" contenteditable="false">{{ i.netReceiots }}</th>
+            <th class="change" contenteditable="false">{{ i.estimateCost }}</th>
+            <th class="change" contenteditable="false">{{ i.actualCost }}</th>
+            <th class="change" contenteditable="false">{{ i.estimatProfit }}</th>
+            <th class="change" contenteditable="false">{{ i.actualProfit }}</th>
+            <th ><a href="{% url 'order:modifyOrder' i.id %}">修改</a></th>
+            <th ><a href="/order/deletSource/{{ i.id }}">删除</a></th>
         </tr>
     {% endfor %}
+
+   <tr>
+            <th class="change" contenteditable="false">合计</th>
+            <th class="change" contenteditable="false"></th>
+            <th class="change" contenteditable="false"></th>
+            <th class="change" contenteditable="false"></th>
+            <th class="change" contenteditable="false"></th>
+            <th class="change" contenteditable="false"></th>
+            <th class="change" contenteditable="false"></th>
+            <th class="change" contenteditable="false"></th>
+            <th class="change" contenteditable="false"></th>
+            <th class="change" contenteditable="false"></th>
+            <th class="change" contenteditable="false"></th>
+            <th class="change" contenteditable="false"></th>
+            <th class="change" contenteditable="false"></th>
+            <th class="change" contenteditable="false"></th>
+            <th class="change" contenteditable="false"></th>
+            <th class="change" contenteditable="false">{{ recivable }}</th>
+            <th class="change" contenteditable="false">{{ netReceiots }}</th>
+            <th class="change" contenteditable="false">{{ estimateCost }}</th>
+            <th class="change" contenteditable="false">{{ actualCost }}</th>
+            <th class="change" contenteditable="false">{{ estimatProfit }}</th>
+            <th class="change" contenteditable="false">{{ actualProfit  }}</th>
+            <th ></th>
+            <th ></th>
+        </tr>
 </table>
 {% endblock %}
 {% block end %}
     <script>
     $(function () {
+        $('.change').dblclick(function () {
+            var rows = $(this).parent().parent().find('tr').index($(this).parent());
+            var href=$('table tr').eq(rows).find('a').eq(0).attr('href');
+            window.location.href=href
+        });
         $("#mouth_select").change(function () {
              $.ajax({
                     'url':'/order/changeShow',
@@ -290,15 +321,15 @@
                     var str_oreder='#order_style'+obj.pk;
                     var order_style=$(str_oreder).text();
                     if(order_style=='未安排'){
-                    $(str_oreder).css('color','#272822');
+                    $(str_oreder).css('color','#b7ca03');
                     }else if(order_style=='已安排'){
-                    $(str_oreder).css('color','orange');
+                    $(str_oreder).css('color','#1f8110');
                     }else if(order_style=='待寄出'){
-                    $(str_oreder).css('color','blue');
+                    $(str_oreder).css('color','#ff3109');
                     }else if(order_style=='待付款'){
-                    $(str_oreder).css('color','red');
+                    $(str_oreder).css('color','#ff1bd1');
                     }else{
-                    $(str_oreder).css('color','#4B9A2D');
+                    $(str_oreder).css('color','#131313');
                 }
                                 })
             },

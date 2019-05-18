@@ -109,32 +109,32 @@
         {%csrf_token%}
         <input type="hidden" name="id" value="{{custMess.id}}">
         <p>
-            接单时间：<input type="date" name='order_startTime' value="{{orderMes.startTime}}">
+            接单时间：<input type="date" name='order_startTime' >
         </p>
        <p>
-            接单账号：<input type="text" name='order_orderName' value="{{orderMes.orderName}}">
+            接单账号：<input type="text" name='order_orderName' >
         </p>
         <p id="order_customerName_p">
-            客户姓名：<input type="text" id="order_customerName" name='order_customerName' value="{{orderMes.customerName}}">
+            客户姓名：<input type="text" id="order_customerName" name='order_customerName' >
             <div id="order_customerName_div">
 
             </div>
         </p>
 
         <p>
-            客户单位&nbsp;：<input type="text" id="order_customerUnit" name='order_customerUnit' value="{{orderMes.customerUnit}}">
+            客户单位&nbsp;：<input type="text" id="order_customerUnit" name='order_customerUnit' >
         </p>
         <p>
-            客户税号&nbsp;：<input type="text" id="order_customerPwd" name='order_customerPwd' value="{{orderMes.customerPwd}}">
+            客户税号&nbsp;：<input type="text" id="order_customerPwd" name='order_customerPwd'>
         </p>
         <p>
-            需求：<input type="text" name='order_explain' value="{{orderMes.explain}}">
+            需求：<input type="text" id="order_explain" name='order_explain' >
         </p>
         <p>
-            数量&nbsp;：<input type="text" name='order_count' value="{{orderMes.count}}">
+            数量&nbsp;：<input type="text" id="order_count" name='order_count'>
         </p>
         <p>
-            未打完：<input type="text" name='order_notComple' value="{{orderMes.notComple}}">
+            未打完：<input type="text" name='order_notComple'>
         </p>
         <p>
             开票员：<select name='order_sourceName' >
@@ -149,7 +149,7 @@
             </select>
         </p>
          <p>
-            完结时间：<input type="date" name='order_endTime' value="{{orderMes.endTime}}">
+            完结时间：<input type="date" name='order_endTime'>
         </p>
        <p>
        发票类型：
@@ -198,7 +198,7 @@
             </select>
         </p>
          <p>
-            拿取方式：<input type="text" name='order_Delivery' value="{{orderMes.Delivery}}">
+            拿取方式：<input type="text" name='order_Delivery'>
         </p>
         <p>
             地址：<input type="text" id="order_customerAddress" name='order_customerAddress' value="{{orderMes.customerAddress}}">
@@ -287,6 +287,7 @@
                         $("#order_customerName_div p").mouseout(function () {
                         $("#order_customerName_div p").eq($(this).index()).css("color","white");
                         });
+
                         {#$("#order_customerName_div").on('click',".lixu",function () {#}
                         {#    $("#order_customerAddress").val(data[$(this).index()].fields.uaddres);#}
                         {#    $("#order_customerName").val(data[$(this).index()].fields.uwei);#}
@@ -301,6 +302,7 @@
         });
         $('#order_customerName').focus(function () {
             $('#order_customerName_div').css("display",'block')
+
         });
          $('#order_customerUnit').blur(function () {
             $('#order_customerName_div').css("display",'none')
