@@ -172,65 +172,11 @@
                         },
                     'dataType':'json',
                     'success':function (data) {
-                        html1="<tr>\n" +
-                            "        <th>接单时间</th>\n" +
-                            "        <th>接单号码</th>\n" +
-                            "        <th>客户姓名</th>\n" +
-                            "        <th>客户单位</th>\n" +
-                            "        <th>客户税号</th>\n" +
-                            "        <th>要求</th>\n" +
-                            "        <th>数量</th>\n" +
-                            "        <th>未打完</th>\n" +
-                            "        <th>开票员</th>\n" +
-                            "        <th>截止时间</th>\n" +
-                            "        <th>发票类型</th>\n" +
-                            "        <th>状态</th>\n" +
-                            "        <th>拿取方式</th>\n" +
-                            "        <th>地址</th>\n" +
-                            "        <th>点子</th>\n" +
-                            "        <th>应收</th>\n" +
-                            "        <th>实收</th>\n" +
-                            "        <th>预计成本</th>\n" +
-                            "        <th>实际成本</th>\n" +
-                            "        <th>预计利润</th>\n" +
-                            "        <th>实际利润</th>\n" +
-                            "        <th>修改</th>\n" +
-                            "        <th>删除</th>\n" +
-                            "    </tr>";
-
-                        for(var i=0;i<data.length;i++){
-                            html1+="<tr>\n" +
-                                "            <th contenteditable=\"false\">"+data[i].startTime+"</th>\n" +
-                                "            <th contenteditable=\"false\">"+data[i].tel+"</th>\n" +
-                                "            <th contenteditable=\"false\">"+data[i].customerName+"</th>\n" +
-                                "            <th contenteditable=\"false\">"+data[i].unit_name+"</th>\n" +
-                                "            <th contenteditable=\"false\">"+data[i].unit_pwd+"</th>\n" +
-                                "            <th contenteditable=\"false\">"+data[i].explain+"</th>\n" +
-                                "            <th contenteditable=\"false\">"+data[i].count+"</th>\n" +
-                                "            <th contenteditable=\"false\">"+data[i].notComple+"</th>\n" +
-                                "            <th contenteditable=\"false\">"+data[i].source+"</th>\n" +
-                                "            <th contenteditable=\"false\">"+data[i].endTime+"</th>\n" +
-                                "            <th contenteditable=\"false\">"+data[i].style+"</th>\n" +
-                                "            <th contenteditable=\"false\" id=\"order_style"+data[i].id+"\">"+data[i].status+"</th>\n" +
-                                "            <th contenteditable=\"false\">"+data[i].Delivery+"</th>\n" +
-                                "            <th contenteditable=\"false\">"+data[i].address+"</th>\n" +
-                                "            <th contenteditable=\"false\">"+data[i].uTax+"</th>\n" +
-                                "            <th contenteditable=\"false\">"+data[i].recivable+"</th>\n" +
-                                "            <th contenteditable=\"false\">"+data[i].netReceiots+"</th>\n" +
-                                "            <th contenteditable=\"false\">"+data[i].estimateCost+"</th>\n" +
-                                "            <th contenteditable=\"false\">"+data[i].actualCost+"</th>\n" +
-                                "            <th contenteditable=\"false\">"+data[i].estimatProfit+"</th>\n" +
-                                "            <th contenteditable=\"false\">"+data[i].actualProfit+"</th>\n" +
-                                "            <th contenteditable=\"false\"><a href=\"/order/modifyOrder/"+data[i].id+"\">修改</a></th>\n" +
-                                "            <th contenteditable=\"false\"><a href=\"/order/deletSource/"+data[i].id+"\">删除</a></th>\n" +
-                                "        </tr>";
-                        }
-                        $("#orader_body").html(html1)
-                        chane_color()
-                        }
+                        get_allOrder(data)
+                    }
                     });
 
-        })
+        });
         $("#status_select").change(function () {
              $.ajax({
                     'url':'/order/changeShow',
@@ -242,61 +188,7 @@
                         },
                     'dataType':'json',
                     'success':function (data) {
-                        html1="<tr>\n" +
-                            "        <th>接单时间</th>\n" +
-                            "        <th>接单号码</th>\n" +
-                            "        <th>客户姓名</th>\n" +
-                            "        <th>客户单位</th>\n" +
-                            "        <th>客户税号</th>\n" +
-                            "        <th>要求</th>\n" +
-                            "        <th>数量</th>\n" +
-                            "        <th>未打完</th>\n" +
-                            "        <th>开票员</th>\n" +
-                            "        <th>截止时间</th>\n" +
-                            "        <th>发票类型</th>\n" +
-                            "        <th>状态</th>\n" +
-                            "        <th>拿取方式</th>\n" +
-                            "        <th>地址</th>\n" +
-                            "        <th>点子</th>\n" +
-                            "        <th>应收</th>\n" +
-                            "        <th>实收</th>\n" +
-                            "        <th>预计成本</th>\n" +
-                            "        <th>实际成本</th>\n" +
-                            "        <th>预计利润</th>\n" +
-                            "        <th>实际利润</th>\n" +
-                            "        <th>修改</th>\n" +
-                            "        <th>删除</th>\n" +
-                            "    </tr>";
-
-                        for(var i=0;i<data.length;i++){
-                            html1+="<tr>\n" +
-                                "            <th contenteditable=\"false\">"+data[i].startTime+"</th>\n" +
-                                "            <th contenteditable=\"false\">"+data[i].tel+"</th>\n" +
-                                "            <th contenteditable=\"false\">"+data[i].customerName+"</th>\n" +
-                                "            <th contenteditable=\"false\">"+data[i].unit_name+"</th>\n" +
-                                "            <th contenteditable=\"false\">"+data[i].unit_pwd+"</th>\n" +
-                                "            <th contenteditable=\"false\">"+data[i].explain+"</th>\n" +
-                                "            <th contenteditable=\"false\">"+data[i].count+"</th>\n" +
-                                "            <th contenteditable=\"false\">"+data[i].notComple+"</th>\n" +
-                                "            <th contenteditable=\"false\">"+data[i].source+"</th>\n" +
-                                "            <th contenteditable=\"false\">"+data[i].endTime+"</th>\n" +
-                                "            <th contenteditable=\"false\">"+data[i].style+"</th>\n" +
-                                "            <th contenteditable=\"false\" id=\"order_style"+data[i].id+"\">"+data[i].status+"</th>\n" +
-                                "            <th contenteditable=\"false\">"+data[i].Delivery+"</th>\n" +
-                                "            <th contenteditable=\"false\">"+data[i].address+"</th>\n" +
-                                "            <th contenteditable=\"false\">"+data[i].uTax+"</th>\n" +
-                                "            <th contenteditable=\"false\">"+data[i].recivable+"</th>\n" +
-                                "            <th contenteditable=\"false\">"+data[i].netReceiots+"</th>\n" +
-                                "            <th contenteditable=\"false\">"+data[i].estimateCost+"</th>\n" +
-                                "            <th contenteditable=\"false\">"+data[i].actualCost+"</th>\n" +
-                                "            <th contenteditable=\"false\">"+data[i].estimatProfit+"</th>\n" +
-                                "            <th contenteditable=\"false\">"+data[i].actualProfit+"</th>\n" +
-                                "            <th contenteditable=\"false\"><a href=\"/order/modifyOrder/"+data[i].id+"\">修改</a></th>\n" +
-                                "            <th contenteditable=\"false\"><a href=\"/order/deletSource/"+data[i].id+"\">删除</a></th>\n" +
-                                "        </tr>";
-                        }
-                        $("#orader_body").html(html1)
-                        chane_color()
+                        get_allOrder(data)
                         }
                     });
 
@@ -312,7 +204,105 @@
      $(function(){
          chane_color()
      });
+     function get_allOrder(data) {
+         $(function () {
+             console.log(data);
+             var recivable = 0;
+             var netReceiots = 0;
+             var estimateCost = 0;
+             var actualCost = 0;
+             var estimatProfit = 0;
+             var actualProfit = 0;
+             html1 = "<tr>\n" +
+                 "        <th>接单时间</th>\n" +
+                 "        <th>接单号码</th>\n" +
+                 "        <th>客户姓名</th>\n" +
+                 "        <th>客户单位</th>\n" +
+                 "        <th>客户税号</th>\n" +
+                 "        <th>要求</th>\n" +
+                 "        <th>数量</th>\n" +
+                 "        <th>未打完</th>\n" +
+                 "        <th>开票员</th>\n" +
+                 "        <th>截止时间</th>\n" +
+                 "        <th>发票类型</th>\n" +
+                 "        <th>状态</th>\n" +
+                 "        <th>拿取方式</th>\n" +
+                 "        <th>地址</th>\n" +
+                 "        <th>点子</th>\n" +
+                 "        <th>应收</th>\n" +
+                 "        <th>实收</th>\n" +
+                 "        <th>预计成本</th>\n" +
+                 "        <th>实际成本</th>\n" +
+                 "        <th>预计利润</th>\n" +
+                 "        <th>实际利润</th>\n" +
+                 "        <th>修改</th>\n" +
+                 "        <th>删除</th>\n" +
+                 "    </tr>";
 
+             for (var i = 0; i < data.length; i++) {
+                 recivable += data[i].recivable;
+                 netReceiots += data[i].netReceiots;
+                 estimateCost += data[i].estimateCost;
+                 actualCost += data[i].actualCost;
+                 estimatProfit += data[i].estimatProfit;
+                 actualProfit += data[i].actualProfit;
+                 html1 += "<tr>\n" +
+                     "            <th class=\"change\"  contenteditable=\"false\">" + data[i].startTime + "</th>\n" +
+                     "            <th class=\"change\"  contenteditable=\"false\">" + data[i].tel + "</th>\n" +
+                     "            <th class=\"change\"  contenteditable=\"false\">" + data[i].customerName + "</th>\n" +
+                     "            <th class=\"change\"  contenteditable=\"false\">" + data[i].unit_name + "</th>\n" +
+                     "            <th class=\"change\"  contenteditable=\"false\">" + data[i].unit_pwd + "</th>\n" +
+                     "            <th class=\"change\"  contenteditable=\"false\">" + data[i].explain + "</th>\n" +
+                     "            <th class=\"change\"  contenteditable=\"false\">" + data[i].count + "</th>\n" +
+                     "            <th class=\"change\"  contenteditable=\"false\">" + data[i].notComple + "</th>\n" +
+                     "            <th class=\"change\" contenteditable=\"false\">" + data[i].source + "</th>\n" +
+                     "            <th class=\"change\" contenteditable=\"false\">" + data[i].endTime + "</th>\n" +
+                     "            <th class=\"change\" contenteditable=\"false\">" + data[i].style + "</th>\n" +
+                     "            <th class=\"change\" contenteditable=\"false\" id=\"order_style" + data[i].id + "\">" + data[i].status + "</th>\n" +
+                     "            <th class=\"change\" contenteditable=\"false\">" + data[i].Delivery + "</th>\n" +
+                     "            <th class=\"change\" contenteditable=\"false\">" + data[i].address + "</th>\n" +
+                     "            <th class=\"change\" contenteditable=\"false\">" + data[i].uTax + "</th>\n" +
+                     "            <th class=\"change\" contenteditable=\"false\">" + data[i].recivable + "</th>\n" +
+                     "            <th class=\"change\" contenteditable=\"false\">" + data[i].netReceiots + "</th>\n" +
+                     "            <th class=\"change\" contenteditable=\"false\">" + data[i].estimateCost + "</th>\n" +
+                     "            <th class=\"change\" contenteditable=\"false\">" + data[i].actualCost + "</th>\n" +
+                     "            <th class=\"change\" contenteditable=\"false\">" + data[i].estimatProfit + "</th>\n" +
+                     "            <th class=\"change\" contenteditable=\"false\">" + data[i].actualProfit + "</th>\n" +
+                     "            <th contenteditable=\"false\"><a href=\"/order/modifyOrder/" + data[i].id + "\">修改</a></th>\n" +
+                     "            <th contenteditable=\"false\"><a href=\"/order/deletSource/" + data[i].id + "\">删除</a></th>\n" +
+                     "        </tr>";
+             }
+             html1 += "<tr>\n" +
+                 "            <th  contenteditable=\"false\">合计</th>\n" +
+                 "            <th contenteditable=\"false\"></th>\n" +
+                 "            <th contenteditable=\"false\"></th>\n" +
+                 "            <th contenteditable=\"false\"></th>\n" +
+                 "            <th contenteditable=\"false\"></th>\n" +
+                 "            <th contenteditable=\"false\"></th>\n" +
+                 "            <th contenteditable=\"false\"></th>\n" +
+                 "            <th contenteditable=\"false\"></th>\n" +
+                 "            <th contenteditable=\"false\"></th>\n" +
+                 "            <th contenteditable=\"false\"></th>\n" +
+                 "            <th contenteditable=\"false\"></th>\n" +
+                 "            <th contenteditable=\"false\"></th>\n" +
+                 "            <th contenteditable=\"false\"></th>\n" +
+                 "            <th contenteditable=\"false\"></th>\n" +
+                 "            <th contenteditable=\"false\"></th>\n" +
+                 "            <th contenteditable=\"false\">" + recivable + "</th>\n" +
+                 "            <th contenteditable=\"false\">" + netReceiots + "</th>\n" +
+                 "            <th contenteditable=\"false\">" + estimateCost + "</th>\n" +
+                 "            <th contenteditable=\"false\">" + actualCost + "</th>\n" +
+                 "            <th contenteditable=\"false\">" + estimatProfit + "</th>\n" +
+                 "            <th contenteditable=\"false\">" + actualProfit + "</th>\n" +
+                 "            <th ></th>\n" +
+                 "            <th ></th>\n" +
+                 "        </tr>";
+             $("#orader_body").html(html1);
+             chane_color()
+
+
+         });
+     }
      function chane_color() {
          $.get(
             '/order/getStatus',

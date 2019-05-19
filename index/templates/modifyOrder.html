@@ -105,7 +105,7 @@
 </style>
 {% endblock %}
 {% block body %}
-   <form action="{% url 'order:modifyOrder' orderMes.id %}" method='post' class="elegant-aero">
+   <form action="{% url 'order:modifyOrder' orderMes.id %}" method='post' class="elegant-aero" onkeydown="if(event.keyCode==13){return false;}">
         {%csrf_token%}
         <input type="hidden" name="id" value="{{custMess.id}}">
         <p>
@@ -217,6 +217,9 @@
 {#        </p>#}
         <p>
             实际成本：<input type="text" name='order_actualCost' value="{{orderMes.actualCost}}">
+        </p>
+        <p>
+            <input type="text" style="display: none">
         </p>
 {#        <p>#}
 {#            预计利润：<input type="text" name='order_estimatProfit' value="{{orderMes.estimatProfit}}">#}
