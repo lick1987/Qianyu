@@ -267,10 +267,6 @@
                         }
                     });
         });
-        var now=new Date();
-        var time=now.getFullYear()+"-"+((now.getMonth()+1)<10?"0":"")+(now.getMonth()+1)+"-"+(now.getDate()<10?"0":"")+now.getDate();
-        console.log(time);
-        $(".date").val(time);
 
         $('#order_customerUnit').keyup(function () {
             $.ajax({

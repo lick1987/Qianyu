@@ -109,13 +109,16 @@ def modifyOrder(request,getId=None):
             orderMes = order.objects.get(id=getId)
             return render(request,'modifyOrder.html',locals())
         else:
+            getTime = time.strftime('%Y-%m-%d', time.localtime(time.time()))
             orderMes={
                 'id':0,
                 'notComple':0,
                 'netReceiots':0,
                 'actualCost':0,
                 'uTax':4,
-                'count':0
+                'count':0,
+                'startTime':getTime,
+                'endTime':getTime,
             }
             return render(request,'modifyOrder.html',locals())
     if request.method=='POST':
@@ -151,6 +154,7 @@ def modifyOrder(request,getId=None):
         #增加订单
         if int(getId)!=0:
             au = order.objects.get(id=getId)
+
             au.orderName=order_orderName
             au.startTime=order_startTime
             au.customerName=order_customerName
