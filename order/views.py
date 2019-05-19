@@ -121,6 +121,7 @@ def modifyOrder(request,getId=None):
     if request.method=='POST':
         id=request.session.get('id')
         user1=user.objects.get(id=id)
+        userId = user.objects.filter(id=id)
         order_orderName = request.POST.get('order_orderName', None)
         order_startTime = request.POST.get('order_startTime', None)
         order_customerName = request.POST.get('order_customerName', None)
@@ -147,6 +148,7 @@ def modifyOrder(request,getId=None):
         order_actualCost = request.POST.get('order_actualCost', None)
         # order_estimatProfit = request.POST.get('order_estimatProfit', None)
         # order_actualProfit = request.POST.get('order_actualProfit', None)
+        #增加订单
         if int(getId)!=0:
             au = order.objects.get(id=getId)
             au.orderName=order_orderName
@@ -190,7 +192,35 @@ def modifyOrder(request,getId=None):
                 else:
                     au.actualProfit=estimatProfit
             au.save()
+            #如果单位不存在就保存在单位数据库
+            # 查询是否存在
+            getName = unit.objects.filter(uname=order_customerUnit, upwd=order_customerPwd)
+            if not getName:
+                dic = {
+                    'upwd': order_customerPwd,
+                    'uname': order_customerUnit,
+                }
+                unit(**dic).save()
+            # 获取新增单位ID
+            unitID = unit.objects.get(uname=order_customerUnit, upwd=order_customerPwd)
+            # 查询表里面是否存在
+            result = allData.objects.filter(user=userId[0], unit=unitID, isActive=1)
+            status = 0
+            if result:
+                pass
+            else:
+                result = allData.objects.filter(user=userId[0], unit=unitID, isActive=0)
+                if result:
+                    result[0].isActive = 1
+                    result[0].save()
+                else:
+                    dic = {
+                        'user': userId[0],
+                        'unit': unitID
+                    }
+                    allData(**dic).save()
             return  HttpResponseRedirect('/order')
+        #修改订单
         else:
             if int(order_actualCost):
                 #如果输入实收
@@ -233,8 +263,34 @@ def modifyOrder(request,getId=None):
                 'estimatProfit':(int(order_count) * int(order_uTax) / 100.0 - int(order_count) * 0.03),
                 'actualProfit':int(actualProfit)
             }
-            print(dic)
             order(**dic).save()
+            # 如果单位不存在就保存在单位数据库
+            # 查询是否存在
+            getName = unit.objects.filter(uname=order_customerUnit, upwd=order_customerPwd)
+            if not getName:
+                dic = {
+                    'upwd': order_customerPwd,
+                    'uname': order_customerUnit,
+                }
+                unit(**dic).save()
+            # 获取新增单位ID
+            unitID = unit.objects.get(uname=order_customerUnit, upwd=order_customerPwd)
+            # 查询表里面是否存在
+            result = allData.objects.filter(user=userId[0], unit=unitID, isActive=1)
+            status = 0
+            if result:
+                pass
+            else:
+                result = allData.objects.filter(user=userId[0], unit=unitID, isActive=0)
+                if result:
+                    result[0].isActive = 1
+                    result[0].save()
+                else:
+                    dic = {
+                        'user': userId[0],
+                        'unit': unitID
+                    }
+                    allData(**dic).save()
             return HttpResponseRedirect('/order')
 def get_Customer(request):
     order_customerName = request.GET.get('order_customerName', None)

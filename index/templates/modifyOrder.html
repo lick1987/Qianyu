@@ -109,7 +109,7 @@
         {%csrf_token%}
         <input type="hidden" name="id" value="{{custMess.id}}">
         <p>
-            接单时间：<input type="date" name='order_startTime' value="{{orderMes.startTime}}">
+            接单时间：<input type="date" name='order_startTime' class="date" id='order_startTime' value="{{orderMes.startTime}}">
         </p>
        <p>
             接单账号：<input type="text" name='order_orderName' value="{{orderMes.orderName}}">
@@ -149,7 +149,7 @@
             </select>
         </p>
          <p>
-            完结时间：<input type="date" name='order_endTime' value="{{orderMes.endTime}}">
+            完结时间：<input type="date" name='order_endTime' class="date"  value="{{orderMes.endTime}}">
         </p>
        <p>
        发票类型：
@@ -267,6 +267,11 @@
                         }
                     });
         });
+        var now=new Date();
+        var time=now.getFullYear()+"-"+((now.getMonth()+1)<10?"0":"")+(now.getMonth()+1)+"-"+(now.getDate()<10?"0":"")+now.getDate();
+        console.log(time);
+        $(".date").val(time);
+
         $('#order_customerUnit').keyup(function () {
             $.ajax({
                     'url':'/order/getUnit',

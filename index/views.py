@@ -135,8 +135,6 @@ def addUnit_view(request):
         userId=user.objects.filter(id=id)
         uname = request.POST.get('uname', None)
         upwd = request.POST.get('upwd', None)
-        print(uname)
-        print(upwd)
         #查询是否存在
         getName = unit.objects.filter(uname=uname,upwd=upwd)
         if not getName:
