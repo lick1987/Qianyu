@@ -1,3 +1,4 @@
+import re
 import time
 
 from django.core import serializers
@@ -196,6 +197,7 @@ def modifyOrder(request,getId=None):
                 else:
                     au.actualProfit=estimatProfit
             au.save()
+
             #如果单位不存在就保存在单位数据库
             # 查询是否存在
             getName = unit.objects.filter(uname=order_customerUnit, upwd=order_customerPwd)
@@ -223,6 +225,7 @@ def modifyOrder(request,getId=None):
                         'unit': unitID
                     }
                     allData(**dic).save()
+
             return  HttpResponseRedirect('/order')
         #修改订单
         else:
@@ -306,7 +309,46 @@ def get_Unit(request):
     customerUnit=unit.objects.filter(uname__contains=order_customerUnit)
     customerUnit1 = serializers.serialize('json', customerUnit)
     return HttpResponse(customerUnit1)
-
+#预期安排
+def orderDate_views(request,getid):
+    id = request.session.get('id')
+    flag = False
+    if id:
+        uname = request.session['uname']
+        flag = True
+    oDate = orderDate.objects.filter(order=int(getid))
+    DList = {}
+    if oDate:
+        oDate=oDate[0]
+        dateList=oDate.saveNumber.split(',')
+        for index,i in enumerate(dateList):
+            try:
+                DList['d%d'%index]=int(i)
+            except:
+                DList['d%d' % index] = ''
+    else:
+        for i in range(155):
+            DList['d%d'%i]=''
+    return render(request,'orderDate.html',locals())
+def changeOrderDate_views(request):
+    getId=request.GET.get('id')
+    totalStr=request.GET.get('total')[:-1]
+    id = request.session.get('id')
+    print(totalStr)
+    user1=user.objects.get(id=id)
+    order1=order.objects.get(id=getId)
+    orderDate1=orderDate.objects.filter(user=user1,order=order1)
+    if orderDate1:
+        orderDate1[0].saveNumber=totalStr
+        orderDate1[0].save()
+    else:
+        dic={
+            'user':user1,
+            'order':order1,
+            'saveNumber':totalStr
+        }
+        orderDate(**dic).save()
+    return  HttpResponse(json.dumps('修改成功'))
 #删除客户
 def deletOrder_views(request,id):
     userCust=order.objects.filter(id=id)

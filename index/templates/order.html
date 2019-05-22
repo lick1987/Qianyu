@@ -122,7 +122,7 @@
             <th class="change" contenteditable="false">{{ i.actualCost }}</th>
             <th class="change" contenteditable="false">{{ i.estimatProfit }}</th>
             <th class="change" contenteditable="false">{{ i.actualProfit }}</th>
-            <th ><a href="{% url 'order:modifyOrder' i.id %}">预期安排</a></th>
+            <th ><a href="{% url 'order:orderDate' i.id %}">预期安排</a></th>
             <th ><a href="{% url 'order:modifyOrder' i.id %}">修改</a></th>
             <th ><a href="/order/deletSource/{{ i.id }}">删除</a></th>
         </tr>
@@ -283,7 +283,7 @@
                      "            <th class=\"change\" contenteditable=\"false\">" + data[i].actualCost + "</th>\n" +
                      "            <th class=\"change\" contenteditable=\"false\">" + data[i].estimatProfit + "</th>\n" +
                      "            <th class=\"change\" contenteditable=\"false\">" + data[i].actualProfit + "</th>\n" +
-                     "            <th contenteditable=\"false\"><a href=\"/order/modifyOrder/" + data[i].id + "\">预期安排</a></th>\n" +
+                     "            <th contenteditable=\"false\"><a href=\"/order/orderDate/" + data[i].id + "\">预期安排</a></th>\n" +
                      "            <th contenteditable=\"false\"><a href=\"/order/modifyOrder/" + data[i].id + "\">修改</a></th>\n" +
                      "            <th contenteditable=\"false\"><a href=\"/order/deletSource/" + data[i].id + "\">删除</a></th>\n" +
                      "        </tr>";

@@ -90,3 +90,7 @@ class order(models.Model):
         app_label='order'
         verbose_name = '订单总表'
         verbose_name_plural = verbose_name
+class orderDate(models.Model):
+    user = models.ForeignKey(user, True)
+    order = models.ForeignKey(order, True)
+    saveNumber = models.CharField(max_length=15000, verbose_name='安排')
