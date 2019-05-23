@@ -1,0 +1,38 @@
+{%extends 'qianduan.html'%}
+{%block title%}
+修改单位
+{%endblock%}
+{% block style %}
+    <style>
+    #addCustomer{
+    font-weight: bold;
+    margin-top: 15px;
+    list-style: none;
+    cursor:pointer;
+    color: white;
+    text-decoration:none ;
+    background-color: #614cf3;
+    text-align: left;
+    font-size: 20px;
+    }
+
+    </style>
+{% endblock %}
+{% block body %}
+   <table border="1" class="gridtable">
+   <tr>
+       <th>单位</th>
+       <th>税号</th>
+       <th>金额</th>
+       <th>开票员</th>
+   </tr>
+   {% for i in tomorrowList %}
+       <tr>
+           <th>{{ i.customerUnit }}</th>
+           <th>{{ i.customerPwd }}</th>
+           <th>{{ i.arrange }}</th>
+           <th>{{ i.sourceName }}</th>
+       </tr>
+   {% endfor %}
+</table>
+{% endblock %}

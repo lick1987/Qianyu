@@ -17,11 +17,8 @@ from django.conf.urls import url
 from django.contrib import admin
 from django.urls import include
 
+from .views import *
+
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
-    url(r'^', include('index.urls')),
-    url(r'^customer/', include('customer.urls')),
-    url(r'^source/', include('source.urls')),
-    url(r'^order/', include('order.urls')),
-    url(r'^tomorrow/', include('tomorrow.urls')),
+    url(r'^$',tomorrow_views),
 ]

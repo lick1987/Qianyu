@@ -31,14 +31,34 @@ def order_view(request):
     getTime = time.strftime('%Y-%m', time.localtime(time.time()))
     month=int(time.strftime('%m', time.localtime(time.time())))
     year=int(time.strftime('%Y', time.localtime(time.time())))
+    day=int(time.strftime('%d', time.localtime(time.time())))
     monthList=list(range(1,13))
     yearList=list(range(2019,2030))
     # 只显示当前月份的所有信息
+
     userMes=[]
     for i in userCust:
         if getTime in i.startTime:
             userMes.append(i)
     userCust=userMes
+    #获取剩余的
+    for i in userCust:
+        total = orderDate.objects.filter(user=id,order=i)
+        #已打金额
+        totalNumber=0
+        if total:
+            s=total[0].saveNumber.split(',')
+            for index,j in enumerate(s):
+                if index<5*day:
+                    if j:
+                        totalNumber+=int(j)
+            #剩余金额
+            s1=int(i.count)-totalNumber
+            if s1!=int(i.notComple):
+                i.notComple=s1
+                i.save()
+
+
     #获取总共数量等
     #应收数量
     recivable=0
@@ -152,6 +172,7 @@ def modifyOrder(request,getId=None):
         order_actualCost = request.POST.get('order_actualCost', None)
         # order_estimatProfit = request.POST.get('order_estimatProfit', None)
         # order_actualProfit = request.POST.get('order_actualProfit', None)
+
         #增加订单
         if int(getId)!=0:
             au = order.objects.get(id=getId)
