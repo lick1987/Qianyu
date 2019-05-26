@@ -60,7 +60,6 @@ def addSource_views(request):
         uwei = request.POST.get('uwei', None)
         uname = request.POST.get('uname', None)
         uaddres = request.POST.get('uaddres', None)
-        uchoice = request.POST.get('uchoice', None)
         uTax = request.POST.get('uTax', None)
         #查询是否存在
         getName = source.objects.filter(uphone=uphone,uwei=uwei,uname=uname)
@@ -70,7 +69,6 @@ def addSource_views(request):
                 'uwei': uwei,
                 'uname': uname,
                 'uaddres': uaddres,
-                'uchoice': uchoice,
                 'uTax': uTax,
             }
             source(**dic).save()

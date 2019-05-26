@@ -26,7 +26,7 @@ def order_view(request):
     if id:
         uname = request.session['uname']
         flag = True
-    userCust=order.objects.filter(user=id,isActive=1)
+    userCust=order.objects.filter(user=id,isActive=1).order_by('startTime','customerName')
     # 获取当前月份和年份
     getTime = time.strftime('%Y-%m', time.localtime(time.time()))
     month=int(time.strftime('%m', time.localtime(time.time())))
@@ -57,8 +57,6 @@ def order_view(request):
             if s1!=int(i.notComple):
                 i.notComple=s1
                 i.save()
-
-
     #获取总共数量等
     #应收数量
     recivable=0
@@ -70,8 +68,8 @@ def order_view(request):
     for i in userCust:
         recivable+=i.recivable
         netReceiots+=i.netReceiots
-        estimatProfit+=i.estimatProfit
-        actualProfit+=i.actualProfit
+        estimateCost+=i.estimateCost
+        actualCost+=i.actualCost
         estimatProfit+=i.estimatProfit
         actualProfit+=i.actualProfit
     return render(request,'order.html',locals())
@@ -173,10 +171,9 @@ def modifyOrder(request,getId=None):
         # order_estimatProfit = request.POST.get('order_estimatProfit', None)
         # order_actualProfit = request.POST.get('order_actualProfit', None)
 
-        #增加订单
+        #修改订单
         if int(getId)!=0:
             au = order.objects.get(id=getId)
-
             au.orderName=order_orderName
             au.startTime=order_startTime
             au.customerName=order_customerName
@@ -248,7 +245,7 @@ def modifyOrder(request,getId=None):
                     allData(**dic).save()
 
             return  HttpResponseRedirect('/order')
-        #修改订单
+        #增加订单
         else:
             if int(order_actualCost):
                 #如果输入实收
@@ -263,6 +260,7 @@ def modifyOrder(request,getId=None):
                     actualProfit=int(order_netReceiots)-int(order_count)*0.03
                 else:
                     actualProfit=int(order_count)*int(order_uTax)/100.0-int(order_count)*0.03
+
             dic={
                 'user':user1,
                 'orderName':order_orderName,
@@ -291,6 +289,9 @@ def modifyOrder(request,getId=None):
                 'estimatProfit':(int(order_count) * int(order_uTax) / 100.0 - int(order_count) * 0.03),
                 'actualProfit':int(actualProfit)
             }
+            order_List=order.objects.filter(**dic)
+            if len(order_List)!=0:
+                return HttpResponseRedirect('/order')
             order(**dic).save()
             # 如果单位不存在就保存在单位数据库
             # 查询是否存在
@@ -355,7 +356,6 @@ def changeOrderDate_views(request):
     getId=request.GET.get('id')
     totalStr=request.GET.get('total')[:-1]
     id = request.session.get('id')
-    print(totalStr)
     user1=user.objects.get(id=id)
     order1=order.objects.get(id=getId)
     orderDate1=orderDate.objects.filter(user=user1,order=order1)
