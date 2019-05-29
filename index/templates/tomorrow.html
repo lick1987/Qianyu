@@ -21,17 +21,21 @@
 {% block body %}
    <table border="1" class="gridtable">
    <tr>
+       <th>行号</th>
        <th>单位</th>
        <th>税号</th>
        <th>金额</th>
        <th>开票员</th>
+       <th>客户</th>
    </tr>
    {% for i in tomorrowList %}
        <tr>
+            <th>{{ forloop.counter }}</th>
            <th>{{ i.customerUnit }}</th>
            <th>{{ i.customerPwd }}</th>
            <th>{{ i.arrange }}</th>
            <th>{{ i.sourceName }}</th>
+       <th>{{ i.customer }}</th>
        </tr>
    {% endfor %}
 </table>

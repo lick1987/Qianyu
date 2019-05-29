@@ -69,7 +69,7 @@
                 {% endifequal %}
             {% endfor %}
             </select>
-
+    单位搜索：<input type="text" id="unitSerch" name="'unitSerch">
     </div>
 
    <table border="1" class="gridtable" id="orader_body">
@@ -77,11 +77,12 @@
         <th>接单时间</th>
         <th>接单账号</th>
         <th>客户姓名</th>
-        <th>客户单位</th>
-        <th>客户税号</th>
+        <th>抬头</th>
         <th>要求</th>
         <th>数量</th>
         <th>未打完</th>
+         <th>预期安排</th>
+         <th>再次下单</th>
         <th>开票员</th>
         <th>截止时间</th>
         <th>发票类型</th>
@@ -95,7 +96,7 @@
         <th>实际成本</th>
         <th>预计利润</th>
         <th>实际利润</th>
-        <th>预期安排</th>
+
         <th>修改</th>
         <th>删除</th>
     </tr>
@@ -104,11 +105,12 @@
             <th class="change" contenteditable="false">{{ i.startTime }}</th>
             <th class="change" contenteditable="false">{{ i.orderName }}</th>
             <th class="change" contenteditable="false">{{ i.customerName }}</th>
-            <th class="change" contenteditable="false">{{ i.customerUnit }}</th>
-            <th class="change" contenteditable="false">{{ i.customerPwd }}</th>
+            <th class="change" contenteditable="false">{{ i.customerUnit }}<br>{{ i.customerPwd }}</th>
             <th class="change" contenteditable="false">{{ i.explain }}</th>
             <th class="change" contenteditable="false">{{ i.count }}</th>
             <th class="change" contenteditable="false">{{ i.notComple }}</th>
+             <th ><a href="{% url 'order:orderDate' i.id %}">预期安排</a></th>
+             <th ><a href="{% url 'order:againOrder' i.id %}">再次下单</a></th>
             <th class="change" contenteditable="false">{{ i.sourceName }}</th>
             <th class="change" contenteditable="false">{{ i.endTime }}</th>
             <th class="change" contenteditable="false">{{ i.style }}</th>
@@ -122,7 +124,7 @@
             <th class="change" contenteditable="false">{{ i.actualCost }}</th>
             <th class="change" contenteditable="false">{{ i.estimatProfit }}</th>
             <th class="change" contenteditable="false">{{ i.actualProfit }}</th>
-            <th ><a href="{% url 'order:orderDate' i.id %}">预期安排</a></th>
+
             <th ><a href="{% url 'order:modifyOrder' i.id %}">修改</a></th>
             <th ><a href="/order/deletSource/{{ i.id }}">删除</a></th>
         </tr>
@@ -161,7 +163,7 @@
     $(function () {
         $('.change').dblclick(function () {
             var rows = $(this).parent().parent().find('tr').index($(this).parent());
-            var href=$('table tr').eq(rows).find('a').eq(1).attr('href');
+            var href=$('table tr').eq(rows).find('a').eq(2).attr('href');
             window.location.href=href
         });
         $("#mouth_select").change(function () {
@@ -180,7 +182,7 @@
                     });
               $(document).on('dblclick','.change',function () {
             var rows = $(this).parent().parent().find('tr').index($(this).parent());
-            var href=$('table tr').eq(rows).find('a').eq(1).attr('href');
+            var href=$('table tr').eq(rows).find('a').eq(2).attr('href');
 
             window.location.href=href
         });
@@ -203,7 +205,7 @@
             $(document).on('dblclick','.change',function () {
                 console.log('测试');
             var rows = $(this).parent().parent().find('tr').index($(this).parent());
-            var href=$('table tr').eq(rows).find('a').eq(1).attr('href');
+            var href=$('table tr').eq(rows).find('a').eq(2).attr('href');
             window.location.href=href
         });
 
@@ -231,11 +233,12 @@
                  "        <th>接单时间</th>\n" +
                  "        <th>接单号码</th>\n" +
                  "        <th>客户姓名</th>\n" +
-                 "        <th>客户单位</th>\n" +
-                 "        <th>客户税号</th>\n" +
+                 "        <th>抬头</th>\n" +
                  "        <th>要求</th>\n" +
                  "        <th>数量</th>\n" +
                  "        <th>未打完</th>\n" +
+                 "        <th>预期安排</th>\n" +
+                 "        <th>再次下单</th>\n" +
                  "        <th>开票员</th>\n" +
                  "        <th>截止时间</th>\n" +
                  "        <th>发票类型</th>\n" +
@@ -249,7 +252,6 @@
                  "        <th>实际成本</th>\n" +
                  "        <th>预计利润</th>\n" +
                  "        <th>实际利润</th>\n" +
-                 "        <th>预期安排</th>\n" +
                  "        <th>修改</th>\n" +
                  "        <th>删除</th>\n" +
                  "    </tr>";
@@ -265,11 +267,12 @@
                      "            <th class=\"change\"  contenteditable=\"false\">" + data[i].startTime + "</th>\n" +
                      "            <th class=\"change\"  contenteditable=\"false\">" + data[i].tel + "</th>\n" +
                      "            <th class=\"change\"  contenteditable=\"false\">" + data[i].customerName + "</th>\n" +
-                     "            <th class=\"change\"  contenteditable=\"false\">" + data[i].unit_name + "</th>\n" +
-                     "            <th class=\"change\"  contenteditable=\"false\">" + data[i].unit_pwd + "</th>\n" +
+                     "            <th class=\"change\"  contenteditable=\"false\">" + data[i].unit_name + "<br>"+data[i].unit_pwd + "</th>\n" +
                      "            <th class=\"change\"  contenteditable=\"false\">" + data[i].explain + "</th>\n" +
                      "            <th class=\"change\"  contenteditable=\"false\">" + data[i].count + "</th>\n" +
                      "            <th class=\"change\"  contenteditable=\"false\">" + data[i].notComple + "</th>\n" +
+                     "<th contenteditable=\"false\"><a href=\"/order/orderDate/" + data[i].id + "\">预期安排</a></th>\n" +
+                     "<th contenteditable=\"false\"><a href=\"/order/againOrder/" + data[i].id + "\">再次下单</a></th>\n" +
                      "            <th class=\"change\" contenteditable=\"false\">" + data[i].source + "</th>\n" +
                      "            <th class=\"change\" contenteditable=\"false\">" + data[i].endTime + "</th>\n" +
                      "            <th class=\"change\" contenteditable=\"false\">" + data[i].style + "</th>\n" +
@@ -283,7 +286,6 @@
                      "            <th class=\"change\" contenteditable=\"false\">" + data[i].actualCost + "</th>\n" +
                      "            <th class=\"change\" contenteditable=\"false\">" + data[i].estimatProfit + "</th>\n" +
                      "            <th class=\"change\" contenteditable=\"false\">" + data[i].actualProfit + "</th>\n" +
-                     "            <th contenteditable=\"false\"><a href=\"/order/orderDate/" + data[i].id + "\">预期安排</a></th>\n" +
                      "            <th contenteditable=\"false\"><a href=\"/order/modifyOrder/" + data[i].id + "\">修改</a></th>\n" +
                      "            <th contenteditable=\"false\"><a href=\"/order/deletSource/" + data[i].id + "\">删除</a></th>\n" +
                      "        </tr>";
@@ -316,8 +318,6 @@
                  "        </tr>";
              $("#orader_body").html(html1);
              chane_color()
-
-
          });
      }
      function chane_color() {
@@ -328,13 +328,13 @@
                     var str_oreder='#order_style'+obj.pk;
                     var order_style=$(str_oreder).text();
                     if(order_style=='未安排'){
-                    $(str_oreder).css('color','#b7ca03');
+                    $(str_oreder).css('color','#e13be0');
                     }else if(order_style=='已安排'){
                     $(str_oreder).css('color','#1f8110');
                     }else if(order_style=='待寄出'){
-                    $(str_oreder).css('color','#ff3109');
+                    $(str_oreder).css('color','#1821b4');
                     }else if(order_style=='待付款'){
-                    $(str_oreder).css('color','#ff1bd1');
+                    $(str_oreder).css('color','#fe0f2e');
                     }else{
                     $(str_oreder).css('color','#131313');
                 }

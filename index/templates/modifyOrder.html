@@ -90,12 +90,12 @@
     position: relative;
 }
 #order_customerName_div{
-    width:200px;
+    width:311px;
     position:absolute;
     {#border:1px solid #000;#}
     float: left;
     {#z-index: 9997;#}
-    left: 280px;
+    left: 557px;
     z-index: 998;
     background-color: #131313;
     opacity: .7;
@@ -110,48 +110,11 @@
         <input type="hidden" name="id" value="{{custMess.id}}">
         <p>
             接单时间：<input type="date" name='order_startTime' class="date" id='order_startTime' value="{{orderMes.startTime}}">
-        </p>
-       <p>
-            接单账号：<input type="text" name='order_orderName' value="{{orderMes.orderName}}">
-        </p>
-        <p id="order_customerName_p">
-            客户姓名：<input type="text" id="order_customerName" name='order_customerName' value="{{orderMes.customerName}}">
-            <div id="order_customerName_div">
-
-            </div>
-        </p>
-
-        <p>
-            客户单位&nbsp;：<input type="text" id="order_customerUnit" name='order_customerUnit' value="{{orderMes.customerUnit}}">
-        </p>
-        <p>
-            客户税号&nbsp;：<input type="text" id="order_customerPwd" name='order_customerPwd' value="{{orderMes.customerPwd}}">
-        </p>
-        <p>
-            需求：<input type="text" name='order_explain' value="{{orderMes.explain}}">
-        </p>
-        <p>
-            数量&nbsp;：<input type="text" name='order_count' value="{{orderMes.count}}">
-        </p>
-        <p>
-            未打完：<input type="text" name='order_notComple' value="{{orderMes.notComple}}">
-        </p>
-        <p>
-            开票员：<select name='order_sourceName' >
-                {% for i in sourceMes %}
-                  {% ifequal i.source.uname orderMes.sourceName %}
-                  <option value ="{{ i.source.uname }}" selected>{{ i.source.uname }}</option>
-                  {% else %}
-
-                  <option value ="{{ i.source.uname }}">{{ i.source.uname }}</option>
-                  {% endifequal %}
-                {% endfor %}
-            </select>
-        </p>
-         <p>
-            完结时间：<input type="date" name='order_endTime' class="date"  value="{{orderMes.endTime}}">
-        </p>
-       <p>
+        {% if orderMes.orderName %}
+            接单账号：<input type="text" name='order_orderName' value="{{orderMes.orderName}}" style="width: 90px">
+        {% else %}
+             接单账号：<input type="text" name='order_orderName'  value="微信-李旭">
+        {% endif %}
        发票类型：
              <select name='order_style' >
                   {% ifequal orderMes.style '纸质发票' %}
@@ -166,9 +129,12 @@
                   {% endifequal %}
              </select>
         </p>
-        <p>
-            状态：
-            <select name='order_status' >
+        <p id="order_customerName_p">
+             寄出时间：<input type="date" name='order_endTime' class="date"  value="{{orderMes.endTime}}">
+             客户姓名：<input type="text" id="order_customerName" name='order_customerName' value="{{orderMes.customerName}}" style="width: 90px">
+             点子：<input type="text" name='order_uTax' value="{{orderMes.uTax}}" style="width: 20px">
+             状态：
+              <select name='order_status' >
                   {% ifequal orderMes.status '未安排' %}
                   <option value ="未安排" selected>未安排</option>
                   {% else %}
@@ -194,39 +160,49 @@
                   {% else %}
                   <option value ="已完结">已完结</option>
                   {% endifequal %}
+              </select>
 
+        </p>
+    <div id="order_customerName_div">
+            </div>
+
+        <p>
+            开票员：<select name='order_sourceName' >
+                {% for i in sourceMes %}
+                  {% ifequal i.source.uname orderMes.sourceName %}
+                  <option value ="{{ i.source.uname }}" selected>{{ i.source.uname }}</option>
+                  {% else %}
+
+                  <option value ="{{ i.source.uname }}">{{ i.source.uname }}</option>
+                  {% endifequal %}
+                {% endfor %}
             </select>
+            数量&nbsp;：<input type="text" name='order_count' value="{{orderMes.count}}" style="width: 50px">
+            实收：<input type="text" name='order_netReceiots' value="{{orderMes.netReceiots}}" style="width: 50px">
+            实际成本：<input type="text" name='order_actualCost' value="{{orderMes.actualCost}}" style="width: 50px">
         </p>
          <p>
-            拿取方式：<input type="text" name='order_Delivery' value="{{orderMes.Delivery}}">
+             抬头单位&nbsp;：<input type="text" id="order_customerUnit" name='order_customerUnit' value="{{orderMes.customerUnit}}" style="width: 300px">
+             抬头税号&nbsp;：<input type="text" id="order_customerPwd" name='order_customerPwd' value="{{orderMes.customerPwd}}">
+
         </p>
         <p>
-            地址：<input type="text" id="order_customerAddress" name='order_customerAddress' value="{{orderMes.customerAddress}}">
+
+           需求：<textarea  name='order_explain' style="width: 500px; height: 50px;  vertical-align: top">{{orderMes.explain}}</textarea>
         </p>
-        <p>
-            点子：<input type="text" name='order_uTax' value="{{orderMes.uTax}}">
-        </p>
-{#       <p>#}
-{#            应收：<input type="text" name='order_recivable' value="{{orderMes.recivable}}">#}
-{#        </p>#}
        <p>
-            实收：<input type="text" name='order_netReceiots' value="{{orderMes.netReceiots}}">
+       <p>
+       {% if orderMes.Delivery %}
+              拿取方式：<input type="text" name='order_Delivery' value="{{orderMes.Delivery}}" style="width: 60px">
+       {% else %}
+              拿取方式：<input type="text" name='order_Delivery' value="韵达快递" style="width: 60px">
+        {% endif %}
+              地址：<input type="text" id="order_customerAddress" name='order_customerAddress' value="{{orderMes.customerAddress}}" style="width: 500px">
         </p>
-{#       <p>#}
-{#            预计成本：<input type="text" name='order_estimateCost' value="{{orderMes.estimateCost}}">#}
-{#        </p>#}
-        <p>
-            实际成本：<input type="text" name='order_actualCost' value="{{orderMes.actualCost}}">
-        </p>
+
         <p>
             <input type="text" style="display: none">
         </p>
-{#        <p>#}
-{#            预计利润：<input type="text" name='order_estimatProfit' value="{{orderMes.estimatProfit}}">#}
-{#        </p>#}
-{#        <p>#}
-{#            实际利润：<input type="text" name='order_actualProfit' value="{{orderMes.actualProfit}}">#}
-{#        </p>#}
         <p>
             <input type="submit" value='保存' class="button">
             <a href="/order" class="button">退出</a>

@@ -98,7 +98,7 @@ background: #3EB1DD;
      <form action="" method='post' class="elegant-aero">
         {%csrf_token%}
         <p>
-            客户来源：<input type="text" name='uname' id="uname2">
+            客户来源：<input type="text" name='uname' id="uname2" value="微信-李旭">
         </p>
         <p>
             手机号&nbsp;：<input type="text" name='uphone'  id="uphone">
@@ -107,7 +107,7 @@ background: #3EB1DD;
             微信号&nbsp;：<input type="text" name='uwei' id="uwei">
         </p>
         <p>
-            QQ&nbsp;&nbsp;号：<input type="text" name='uqq' id="uqq">
+            QQ&nbsp;&nbsp;号：<input type="text" name='uqq' id="uqq" value="无">
         </p>
         <p>
             收货地址：<input type="text" name='uaddres' id="uaddres">
@@ -139,18 +139,14 @@ background: #3EB1DD;
                         },
                     'dataType':'json',
                     'success':function (data) {
-                        console.log(data.status)
                         {#添加失败#}
                         if(data.status==1){
                             html=data.message;
-                            alert(html);
-
                             }
                         {#添加成功#}
                         else{
                             html=data.message;
-                            alert(html);
-                            window.location.href='/customer/';
+                            window.location.href='/customer';
                             }
                         }
                     });
