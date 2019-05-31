@@ -18,7 +18,7 @@ class order(models.Model):
     count=models.CharField(max_length=100,verbose_name='数量')
     #状态
     status = models.CharField(max_length=20, verbose_name='状态')
-    notComple = models.IntegerField(verbose_name='完成情况',default=0)
+    notComple = models.CharField(max_length=20,verbose_name='完成情况')
     #接单时间
     startTime = models.CharField(max_length=50,verbose_name='接单时间')
     #完结时间
@@ -70,6 +70,50 @@ class order(models.Model):
         dic['Delivery'] = self.Delivery
         # 地址
         dic['address'] = self.customerAddress
+        # 点子
+        dic['uTax'] = self.uTax
+        # 应收
+        dic['recivable'] = self.recivable
+        # 实收
+        dic['netReceiots'] = self.netReceiots
+        # 预计成本
+        dic['estimateCost'] = self.estimateCost
+        # 实际成本
+        dic['actualCost'] = self.actualCost
+        # 预计利润
+        dic['estimatProfit'] = self.estimatProfit
+        # 实际利润
+        dic['actualProfit'] = self.actualProfit
+        return dic
+
+    def to_dict1(self):
+        dic = {}
+        dic['startTime'] = self.startTime
+        # 客户来源
+        dic['orderName'] = self.orderName
+        dic['customerName'] = self.customerName
+        # 客户单位
+        dic['customerUnit'] = self.customerUnit
+        # 客户税号
+        dic['customerPwd'] = self.customerPwd
+        # 要求
+        dic['explain'] = self.explain
+        # 数量
+        dic['count'] = self.count
+        # 未打完
+        dic['notComple'] = self.notComple
+        # 开票员
+        dic['sourceName'] = self.sourceName
+        # 截止时间
+        dic['endTime'] = self.endTime
+        # 发票类型
+        dic['style'] = self.style
+        # 状态
+        dic['status'] = self.status
+        # 拿取方式
+        dic['Delivery'] = self.Delivery
+        # 地址
+        dic['customerAddress'] = self.customerAddress
         # 点子
         dic['uTax'] = self.uTax
         # 应收

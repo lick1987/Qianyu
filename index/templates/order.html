@@ -58,6 +58,8 @@
                 {% endifequal %}
             {% endfor %}
             </select>
+{#    月份选择：<input type="text" style="width: 15px" value="{{ month }}">-#}
+{#    <input type="text" style="width: 15px" value="{{ month }}">#}
     订单状态：
             <select id="status_select" name='status_select'>
              <option value ="所有状态">所有状态</option>
@@ -69,7 +71,13 @@
                 {% endifequal %}
             {% endfor %}
             </select>
-    单位搜索：<input type="text" id="unitSerch" name="'unitSerch">
+{#    状态选择：#}
+{#        <input type="checkbox" ><span style="color: #e13be0">未安排</span>#}
+{#        <input type="checkbox" ><span style="color: #1f8110">已安排</span>#}
+{#        <input type="checkbox" ><span style="color: #1821b4">待寄出</span>#}
+{#        <input type="checkbox" ><span style="color: #fe0f2e">待付款</span>#}
+{#        <input type="checkbox" ><span style="color: #131313">已完结</span>#}
+{#    单位搜索：<input type="text" id="unitSerch" name="'unitSerch">#}
     </div>
 
    <table border="1" class="gridtable" id="orader_body">
@@ -136,7 +144,8 @@
             <th class="change" contenteditable="false"></th>
             <th class="change" contenteditable="false"></th>
             <th class="change" contenteditable="false"></th>
-            <th class="change" contenteditable="false"></th>
+            <th class="change" contenteditable="false">{{ totalCount }}</th>
+            <th class="change" contenteditable="false">{{ notComple }}</th>
             <th class="change" contenteditable="false"></th>
             <th class="change" contenteditable="false"></th>
             <th class="change" contenteditable="false"></th>
@@ -152,7 +161,6 @@
             <th class="change" contenteditable="false">{{ actualCost }}</th>
             <th class="change" contenteditable="false">{{ estimatProfit }}</th>
             <th class="change" contenteditable="false">{{ actualProfit  }}</th>
-            <th ></th>
             <th ></th>
             <th ></th>
         </tr>
@@ -306,13 +314,13 @@
                  "            <th contenteditable=\"false\"></th>\n" +
                  "            <th contenteditable=\"false\"></th>\n" +
                  "            <th contenteditable=\"false\"></th>\n" +
+                 "            <th contenteditable=\"false\"></th>\n" +
                  "            <th contenteditable=\"false\">" + recivable + "</th>\n" +
                  "            <th contenteditable=\"false\">" + netReceiots + "</th>\n" +
                  "            <th contenteditable=\"false\">" + estimateCost + "</th>\n" +
                  "            <th contenteditable=\"false\">" + actualCost + "</th>\n" +
                  "            <th contenteditable=\"false\">" + estimatProfit + "</th>\n" +
                  "            <th contenteditable=\"false\">" + actualProfit + "</th>\n" +
-                 "            <th ></th>\n" +
                  "            <th ></th>\n" +
                  "            <th ></th>\n" +
                  "        </tr>";

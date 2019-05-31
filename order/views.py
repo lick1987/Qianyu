@@ -26,14 +26,14 @@ def order_view(request):
     if id:
         uname = request.session['uname']
         flag = True
-    userCust=order.objects.filter(user=id,isActive=1).order_by('startTime','customerName')
+    userCust=order.objects.filter(user=id,isActive=1).order_by('-startTime','customerName')
     # 获取当前月份和年份
     getTime = time.strftime('%Y-%m', time.localtime(time.time()))
     month=int(time.strftime('%m', time.localtime(time.time())))
     year=int(time.strftime('%Y', time.localtime(time.time())))
     day=int(time.strftime('%d', time.localtime(time.time())))
-    monthList=list(range(1,13))
-    yearList=list(range(2019,2030))
+    monthList=['所有月份']+list(range(1,13))
+    yearList=['所有年份']+list(range(2019,2030))
     # 只显示当前月份的所有信息
 
     userMes=[]
@@ -65,6 +65,8 @@ def order_view(request):
     actualCost=0
     estimatProfit=0
     actualProfit=0
+    totalCount=0
+    notComple=0
     for i in userCust:
         recivable+=i.recivable
         netReceiots+=i.netReceiots
@@ -72,6 +74,8 @@ def order_view(request):
         actualCost+=i.actualCost
         estimatProfit+=i.estimatProfit
         actualProfit+=i.actualProfit
+        totalCount+=int(i.count)
+        notComple+=int(i.notComple)
     return render(request,'order.html',locals())
 #获取状态信息用于状态颜色显示
 def get_status(request):
@@ -182,7 +186,6 @@ def modifyOrder(request,getId=None):
             au.sourceName=order_source
             au.explain=order_explain
             au.count=order_count
-            au.notComple=order_notComple
             au.endTime=order_endTime
             au.style=order_style
             au.status=order_status
@@ -200,8 +203,9 @@ def modifyOrder(request,getId=None):
             #预计利润
             estimatProfit=int(order_count)*int(order_uTax)/100.0-int(order_count)*0.03
             au.estimatProfit=estimatProfit
+            print(estimatProfit)
             #如果输入实际成本
-            if order_actualCost:
+            if int(order_actualCost):
                 #如果输入实收
                 if int(order_netReceiots):
                     au.actualProfit =int(order_netReceiots)-int(order_actualCost)
@@ -210,7 +214,7 @@ def modifyOrder(request,getId=None):
                     au.actualProfit=int(order_count)*int(order_uTax)/100.0-int(order_netReceiots)
             else:
                 #如果输入了实收
-                if order_netReceiots:
+                if int(order_netReceiots):
                     au.actualProfit=int(order_netReceiots)-au.estimateCost
                 else:
                     au.actualProfit=estimatProfit
@@ -247,9 +251,10 @@ def modifyOrder(request,getId=None):
             return  HttpResponseRedirect('/order')
         #增加订单
         else:
+            #如果输入实际成本
             if int(order_actualCost):
                 #如果输入实收
-                if order_netReceiots:
+                if int(order_netReceiots):
                     actualProfit =int(order_netReceiots)-int(order_actualCost)
                 else:
                     #实际利润
@@ -271,7 +276,6 @@ def modifyOrder(request,getId=None):
                 'explain':order_explain,
                 'sourceName':order_source,
                 'count':order_count,
-                'notComple' :order_notComple,
                 'endTime' :order_endTime,
                 'style' : order_style,
                 'status':  order_status,
@@ -370,6 +374,32 @@ def changeOrderDate_views(request):
         }
         orderDate(**dic).save()
     return  HttpResponse(json.dumps('修改成功'))
+#再次下单
+def againOrder_views(request,getId):
+    id = request.session.get('id')
+    user1 = user.objects.get(id=id)
+    getTime = time.strftime('%Y-%m-%d', time.localtime(time.time()))
+    orderMes = order.objects.get(id=getId)
+    mesDic=orderMes.to_dict1()
+    mesDic['startTime']=getTime
+    mesDic['status']='未安排'
+    mesDic['recivable'] = 0
+    mesDic['notComple'] = '0'
+    mesDic['user'] =user1
+    # 实收
+    mesDic['netReceiots'] = 0
+    # 预计成本
+    mesDic['estimateCost'] = 0
+    # 实际成本
+    mesDic['actualCost'] = 0
+    # 预计利润
+    mesDic['estimatProfit'] = 0
+    # 实际利润
+    mesDic['actualProfit'] = 0
+    mesDic['count'] =0
+    print(mesDic)
+    order(**mesDic).save()
+    return HttpResponseRedirect('/order')
 #删除客户
 def deletOrder_views(request,id):
     userCust=order.objects.filter(id=id)

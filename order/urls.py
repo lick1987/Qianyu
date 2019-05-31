@@ -17,4 +17,5 @@ urlpatterns = [
     url(r'^deletSource/(\d*)$', deletOrder_views, name='deletSource'),
     url(r'^orderDate/(\d*)$', orderDate_views, name='orderDate'),
     url(r'^changeOrderDate$', changeOrderDate_views, name='changeOrderDate'),
+    url(r'^againOrder/(\d*)$', againOrder_views, name='againOrder'),
 ]
