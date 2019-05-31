@@ -203,7 +203,6 @@ def modifyOrder(request,getId=None):
             #预计利润
             estimatProfit=int(order_count)*int(order_uTax)/100.0-int(order_count)*0.03
             au.estimatProfit=estimatProfit
-            print(estimatProfit)
             #如果输入实际成本
             if int(order_actualCost):
                 #如果输入实收
