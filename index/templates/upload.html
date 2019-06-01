@@ -1,0 +1,20 @@
+{%extends 'qianduan.html'%}
+{%block title%}
+上传二维码
+{%endblock%}
+
+{% block body %}
+    <form method="POST" enctype="multipart/form-data" action="/order/upload/{{ getId }}" style="margin-left: 200px ">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">上传</button>
+    </form>
+    {% for i in imgs %}
+        <div style="float: left; margin-left: 50px">
+            <p><img src="{{ i.filePath }}" alt="" style="width: 200px;height: 400px;"></p>
+            <p><a href="{% url 'order:deltUpload' i.id %}">删除</a></p>
+        </div>
+
+    {% endfor %}
+
+{% endblock %}

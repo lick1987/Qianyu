@@ -138,3 +138,9 @@ class orderDate(models.Model):
     user = models.ForeignKey(user, True)
     order = models.ForeignKey(order, True)
     saveNumber = models.CharField(max_length=15000, verbose_name='安排')
+#保存图片
+class img(models.Model):
+    user = models.ForeignKey(user, True)
+    order=models.ForeignKey(order,True)
+    isActive=models.BooleanField(default=True, verbose_name='状态')
+    filePath=models.CharField(max_length=500, verbose_name='图片路径')

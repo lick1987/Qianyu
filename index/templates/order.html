@@ -91,6 +91,7 @@
         <th>未打完</th>
          <th>预期安排</th>
          <th>再次下单</th>
+         <th>二维码</th>
         <th>开票员</th>
         <th>截止时间</th>
         <th>发票类型</th>
@@ -119,6 +120,7 @@
             <th class="change" contenteditable="false">{{ i.notComple }}</th>
              <th ><a href="{% url 'order:orderDate' i.id %}">预期安排</a></th>
              <th ><a href="{% url 'order:againOrder' i.id %}">再次下单</a></th>
+             <th ><a href="{% url 'order:upload' i.id %}">二维码</a></th>
             <th class="change" contenteditable="false">{{ i.sourceName }}</th>
             <th class="change" contenteditable="false">{{ i.endTime }}</th>
             <th class="change" contenteditable="false">{{ i.style }}</th>
@@ -155,6 +157,7 @@
             <th class="change" contenteditable="false"></th>
             <th class="change" contenteditable="false"></th>
             <th class="change" contenteditable="false"></th>
+            <th class="change" contenteditable="false"></th>
             <th class="change" contenteditable="false">{{ recivable }}</th>
             <th class="change" contenteditable="false">{{ netReceiots }}</th>
             <th class="change" contenteditable="false">{{ estimateCost }}</th>
@@ -171,7 +174,7 @@
     $(function () {
         $('.change').dblclick(function () {
             var rows = $(this).parent().parent().find('tr').index($(this).parent());
-            var href=$('table tr').eq(rows).find('a').eq(2).attr('href');
+            var href=$('table tr').eq(rows).find('a').eq(3).attr('href');
             window.location.href=href
         });
         $("#mouth_select").change(function () {
@@ -190,7 +193,7 @@
                     });
               $(document).on('dblclick','.change',function () {
             var rows = $(this).parent().parent().find('tr').index($(this).parent());
-            var href=$('table tr').eq(rows).find('a').eq(2).attr('href');
+            var href=$('table tr').eq(rows).find('a').eq(3).attr('href');
 
             window.location.href=href
         });
@@ -213,7 +216,7 @@
             $(document).on('dblclick','.change',function () {
                 console.log('测试');
             var rows = $(this).parent().parent().find('tr').index($(this).parent());
-            var href=$('table tr').eq(rows).find('a').eq(2).attr('href');
+            var href=$('table tr').eq(rows).find('a').eq(3).attr('href');
             window.location.href=href
         });
 
@@ -247,6 +250,7 @@
                  "        <th>未打完</th>\n" +
                  "        <th>预期安排</th>\n" +
                  "        <th>再次下单</th>\n" +
+                 "        <th>二维码</th>\n" +
                  "        <th>开票员</th>\n" +
                  "        <th>截止时间</th>\n" +
                  "        <th>发票类型</th>\n" +
@@ -281,6 +285,7 @@
                      "            <th class=\"change\"  contenteditable=\"false\">" + data[i].notComple + "</th>\n" +
                      "<th contenteditable=\"false\"><a href=\"/order/orderDate/" + data[i].id + "\">预期安排</a></th>\n" +
                      "<th contenteditable=\"false\"><a href=\"/order/againOrder/" + data[i].id + "\">再次下单</a></th>\n" +
+                     "<th contenteditable=\"false\"><a href=\"/order/upload/" + data[i].id + "\">二维码</a></th>\n" +
                      "            <th class=\"change\" contenteditable=\"false\">" + data[i].source + "</th>\n" +
                      "            <th class=\"change\" contenteditable=\"false\">" + data[i].endTime + "</th>\n" +
                      "            <th class=\"change\" contenteditable=\"false\">" + data[i].style + "</th>\n" +
@@ -300,6 +305,7 @@
              }
              html1 += "<tr>\n" +
                  "            <th  contenteditable=\"false\">合计</th>\n" +
+                 "            <th contenteditable=\"false\"></th>\n" +
                  "            <th contenteditable=\"false\"></th>\n" +
                  "            <th contenteditable=\"false\"></th>\n" +
                  "            <th contenteditable=\"false\"></th>\n" +

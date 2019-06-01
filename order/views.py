@@ -1,6 +1,8 @@
+import random
 import re
 import time
 
+from django.conf import settings
 from django.core import serializers
 from django.urls import reverse
 
@@ -9,6 +11,8 @@ from index.views import *
 from django.shortcuts import render
 from index.models import *
 from customer.models import *
+from lib.FileTool.base import handle_uploaded_file
+from order.forms import UploadFileForm
 from order.models import *
 from source.models import *
 #客户首页视图显示当前月份信息
@@ -334,6 +338,47 @@ def get_Unit(request):
     customerUnit=unit.objects.filter(uname__contains=order_customerUnit)
     customerUnit1 = serializers.serialize('json', customerUnit)
     return HttpResponse(customerUnit1)
+#上传图片
+def upload_views(request,getId):
+    id = request.session.get('id')
+
+    flag = False
+    if id:
+        uname = request.session['uname']
+        flag = True
+    if request.method == 'POST':
+        form = UploadFileForm(request.POST, request.FILES) # 注意获取数据的方式
+        if form.is_valid():
+            f=request.FILES['file']
+            title=request.POST.get('title',None)
+            imgName=re.sub(r'[\s\S]*\.','%s.'%title,f.name)
+            r1 = random.randint(0, 1000)
+            r2 = random.randint(0, 1000)
+            r3 = random.randint(0, 1000)
+            r4 = random.randint(0, 1000)
+            r5 = random.randint(0, 1000)
+            r6 = random.randint(0, 1000)
+            r = str(r1) + str(r2) + str(r3) + str(r4) + str(r6)
+            imgName='%s%s'%(r,imgName)
+            url = settings.STATICFILES_DIRS[0]+'/index/static/upload/%s'%imgName
+            handle_uploaded_file(f,url)
+            #保存进数据库
+            user1=user.objects.get(id=id)
+            order1=order.objects.get(id=getId)
+            imgs = img.objects.filter(user=user1,order=order1,filePath='/static/upload/%s'%imgName)
+            dic={
+                'user':user1,
+                'order':order1,
+                'filePath':'/static/upload/%s'%imgName,
+                'isActive':True,
+                'title':title
+            }
+            img(**dic).save()
+            imgs = img.objects.filter(order=getId, isActive=1)
+    else:
+        form = UploadFileForm()
+        imgs=img.objects.filter(order=getId,isActive=1)
+    return render(request, 'upload.html', locals())
 #预期安排
 def orderDate_views(request,getid):
     id = request.session.get('id')
@@ -396,9 +441,26 @@ def againOrder_views(request,getId):
     # 实际利润
     mesDic['actualProfit'] = 0
     mesDic['count'] =0
-    print(mesDic)
     order(**mesDic).save()
+    id1=order.objects.filter(user=user1).order_by('-id')[0]
+    order1=order.objects.filter(user=user1,id=getId)
+    imgMes1 = img.objects.filter(user=user1, order=order1[0],isActive=1)
+    print(imgMes1)
+    for imgMes in imgMes1:
+        dic={
+            'user':user1,
+            'order':id1,
+            'filePath':imgMes.filePath
+        }
+        img(**dic).save()
     return HttpResponseRedirect('/order')
+def deltUpload_views(request,getId):
+    IMG=img.objects.filter(id=getId)[0]
+    IMG.isActive=0
+    IMG.save()
+    orderId=IMG.order.id
+    return HttpResponseRedirect('/order/upload/%s'%orderId)
+    # return HttpResponseRedirect(‘)
 #删除客户
 def deletOrder_views(request,id):
     userCust=order.objects.filter(id=id)

@@ -18,4 +18,6 @@ urlpatterns = [
     url(r'^orderDate/(\d*)$', orderDate_views, name='orderDate'),
     url(r'^changeOrderDate$', changeOrderDate_views, name='changeOrderDate'),
     url(r'^againOrder/(\d*)$', againOrder_views, name='againOrder'),
+    url(r'^upload/(\d*)$', upload_views, name='upload'),
+    url(r'^deltUpload/(\d*)$', deltUpload_views, name='deltUpload'),
 ]
