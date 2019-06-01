@@ -35,6 +35,7 @@
 {% block body %}
     <div>
             <a href="{% url 'order:modifyOrder' 0 %}" id="addOrder">增加订单</a>
+        <a href="{% url 'order:saveOrder' %}">保存订单</a>
     </div>
     <div>
     年份：
@@ -47,7 +48,6 @@
                 {% endifequal %}
             {% endfor %}
             </select>
-            </select>
     月份：
             <select id="mouth_select" name='mouth_select'>
             {% for i in monthList %}
@@ -58,8 +58,26 @@
                 {% endifequal %}
             {% endfor %}
             </select>
-{#    月份选择：<input type="text" style="width: 15px" value="{{ month }}">-#}
-{#    <input type="text" style="width: 15px" value="{{ month }}">#}
+    月份选择： <select id="year_select" name='year_select' style="width: 56px" >
+            {% for i in yearList %}
+                {% ifequal i year %}
+                     <option value ="{{ i }}" selected>{{ i }}</option>
+                     {% else %}
+                    <option value ="{{ i }}">{{ i }}</option>
+                {% endifequal %}
+            {% endfor %}
+            </select>
+            <input type="text" style="width: 15px" value="{{ month }}">-
+             <select id="year_select" name='year_select'  style="width: 56px" >
+            {% for i in yearList %}
+                {% ifequal i year %}
+                     <option value ="{{ i }}" selected>{{ i }}</option>
+                     {% else %}
+                    <option value ="{{ i }}">{{ i }}</option>
+                {% endifequal %}
+            {% endfor %}
+            </select>
+            <input type="text" style="width: 15px" value="{{ month }}">
     订单状态：
             <select id="status_select" name='status_select'>
              <option value ="所有状态">所有状态</option>
@@ -71,13 +89,13 @@
                 {% endifequal %}
             {% endfor %}
             </select>
-{#    状态选择：#}
-{#        <input type="checkbox" ><span style="color: #e13be0">未安排</span>#}
-{#        <input type="checkbox" ><span style="color: #1f8110">已安排</span>#}
-{#        <input type="checkbox" ><span style="color: #1821b4">待寄出</span>#}
-{#        <input type="checkbox" ><span style="color: #fe0f2e">待付款</span>#}
-{#        <input type="checkbox" ><span style="color: #131313">已完结</span>#}
-{#    单位搜索：<input type="text" id="unitSerch" name="'unitSerch">#}
+    状态选择：
+        <input type="checkbox" checked value="未安排" class="check_box_list"><span style="color: #e13be0" >未安排</span>
+        <input type="checkbox" checked value="已安排" class="check_box_list"><span style="color: #1f8110" >已安排</span>
+        <input type="checkbox" checked value="待寄出" class="check_box_list"><span style="color: #1821b4" >待寄出</span>
+        <input type="checkbox" checked value="待付款" class="check_box_list"><span style="color: #fe0f2e" >待付款</span>
+        <input type="checkbox" checked value="已完结" class="check_box_list"><span style="color: #131313" >已完结</span>
+    单位搜索：<input type="text" id="unitSerch" name="'unitSerch">
     </div>
 
    <table border="1" class="gridtable" id="orader_body">
@@ -172,6 +190,11 @@
 {% block end %}
     <script>
     $(function () {
+        var checked='';
+      $.each($('input:checkbox:checked'),function(){
+          checked+=$(this).val()+',';
+        });
+      console.log(checked);
         $('.change').dblclick(function () {
             var rows = $(this).parent().parent().find('tr').index($(this).parent());
             var href=$('table tr').eq(rows).find('a').eq(3).attr('href');

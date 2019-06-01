@@ -2,6 +2,7 @@ import random
 import re
 import time
 
+import xlwt
 from django.conf import settings
 from django.core import serializers
 from django.urls import reverse
@@ -461,6 +462,47 @@ def deltUpload_views(request,getId):
     orderId=IMG.order.id
     return HttpResponseRedirect('/order/upload/%s'%orderId)
     # return HttpResponseRedirect(‘)
+def saveOrder_views(request):
+    getTime = time.strftime('%Y-%m', time.localtime(time.time()))
+    id = request.session.get('id')
+    user1 = user.objects.get(id=id)
+    # 打开文件
+    workbook = xlwt.Workbook(encoding='utf-8')
+    # 获取所有sheet
+    # 创建一个worksheet
+    worksheet = workbook.add_sheet('getTime')
+    # 写入excel
+    # 参数对应 行, 列, 值
+    exList = ['接单时间', '接单账号', '客户姓名', '抬头', '要求', '数量',
+              '未打完', '开票员', '截止日期', '发票类型', '状态', '拿取方式',
+              '地址', '点子', '应收', '实收', '预计成本', '实际成本', '预计利润', '实际利润']
+    for index, i in enumerate(exList):
+        worksheet.write(0, index, label=i)
+    order1 = order.objects.filter(user=user1,isActive=1).order_by('startTime')
+    for index,orders in enumerate(order1):
+        worksheet.write(index+1,0,label=orders.startTime)
+        worksheet.write(index+1,1,label=orders.orderName)
+        worksheet.write(index+1,2,label=orders.customerName)
+        worksheet.write(index+1,3,label=orders.customerUnit+'\n'+orders.customerPwd)
+        worksheet.write(index+1,4,label=orders.explain)
+        worksheet.write(index+1,5,label=orders.count)
+        worksheet.write(index+1,6,label=orders.notComple)
+        worksheet.write(index+1,7,label=orders.sourceName)
+        worksheet.write(index+1,8,label=orders.endTime)
+        worksheet.write(index+1,9,label=orders.style)
+        worksheet.write(index+1,10,label=orders.status)
+        worksheet.write(index+1,11,label=orders.Delivery)
+        worksheet.write(index+1,12,label=orders.customerAddress)
+        worksheet.write(index+1,13,label=orders.uTax)
+        worksheet.write(index+1,14,label=orders.recivable)
+        worksheet.write(index+1,15,label=orders.netReceiots)
+        worksheet.write(index+1,16,label=orders.estimateCost)
+        worksheet.write(index+1,17,label=orders.actualCost)
+        worksheet.write(index+1,18,label=orders.estimatProfit)
+        worksheet.write(index+1,19,label=orders.actualProfit)
+    url = settings.STATICFILES_DIRS[0] + '/index/static/excel/%s'+'.xls'
+    workbook.save(url%getTime)
+    return HttpResponseRedirect('/order')
 #删除客户
 def deletOrder_views(request,id):
     userCust=order.objects.filter(id=id)
