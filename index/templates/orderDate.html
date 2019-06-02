@@ -14,7 +14,7 @@
     </style>
 {% endblock %}
 {% block body %}
-    <p><a href="{% url 'order:delteDate' getid %}">一键清除</a></p>
+
    <table border="1" class="gridtable">
     <tr>
             <th>01</th>
@@ -252,19 +252,23 @@
        </th>
    </tr>
        <input type="button" value="保存更改" id="order_button">
+        <input type="button" id="orderDate_button" value="一键清空">
        <input type="hidden" value="{{ getid }}" id="order_hidden">
 </table>
 {% endblock %}
 {% block end %}
     <script>
-
+    $('#orderDate_button').click(function () {
+        for(var i=7;i<162;i++){
+            s1=$('body input').eq(i).val('');
+        }
+    });
     $('#order_button').click(function () {
         var s='';
-        for(var i=6;i<161;i++){
+        for(var i=7;i<162;i++){
             s1=$('body input').eq(i).val();
                s+=s1+',';
         }
-        console.log(s);
          $.ajax({
                     'url':'/order/changeOrderDate',
                     'type':'GET',
