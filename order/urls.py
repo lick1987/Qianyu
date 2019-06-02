@@ -15,6 +15,7 @@ urlpatterns = [
     url(r'^getCustomer$',get_Customer,name='getCustomer'),
     url(r'^getUnit$',get_Unit,name='getUnit'),
     url(r'^deletSource/(\d*)$', deletOrder_views, name='deletSource'),
+    url(r'^delteDate/(\d*)$', delteDate_views, name='delteDate'),
     url(r'^orderDate/(\d*)$', orderDate_views, name='orderDate'),
     url(r'^changeOrderDate$', changeOrderDate_views, name='changeOrderDate'),
     url(r'^againOrder/(\d*)$', againOrder_views, name='againOrder'),

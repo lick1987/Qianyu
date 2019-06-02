@@ -5,6 +5,7 @@ import time
 import xlwt
 from django.conf import settings
 from django.core import serializers
+from django.db.models import Q
 from django.urls import reverse
 
 from customer.models import userCusterData
@@ -25,6 +26,7 @@ def order_view(request):
         '2': '待寄出',
         '3': '待付款',
         '4': '已完结',
+        '5': '未完成',
 
     }
     flag = False
@@ -96,7 +98,8 @@ def status_views(request,status):
         '1':'已安排',
         '2':'待寄出',
         '3':'待付款',
-        '4':'已完结'
+        '4':'已完结',
+        '5':'未完成'
     }
     # status = request.GET.get('status', None)
     flag = False
@@ -104,7 +107,10 @@ def status_views(request,status):
         uname = request.session['uname']
         flag = True
     status1=dic[status]
-    userCust = order.objects.filter(user=id, isActive=1,status=status1)
+    if status1=='未完成':
+        userCust = order.objects.filter(~Q(status=dic[4]),user=id, isActive=1)
+    else:
+        userCust = order.objects.filter(user=id, isActive=1,status=status1)
     userCust1=serializers.serialize('json',userCust)
     return render(request,'order.html',locals())
 #改变显示信息
@@ -116,6 +122,13 @@ def change_show(request):
     startTime='%s-%02d'%(year,int(month))
     if status=='所有状态':
         userCust = order.objects.filter(user=id, isActive=1)
+    elif status=='未完成':
+        userCust = order.objects.filter(~Q(status='已完结'), user=id, isActive=1).order_by('-startTime')
+        userList = []
+        for i in userCust:
+            s = i.to_dict()
+            userList.append(s)
+        return HttpResponse(json.dumps(userList))
     else:
         userCust = order.objects.filter(user=id, isActive=1, status=status)
     userList=[]
@@ -419,6 +432,8 @@ def changeOrderDate_views(request):
         }
         orderDate(**dic).save()
     return  HttpResponse(json.dumps('修改成功'))
+
+
 #再次下单
 def againOrder_views(request,getId):
     id = request.session.get('id')

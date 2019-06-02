@@ -1,10 +1,10 @@
 $(function () {
     $("#header li").mouseover(function () {
         $("#header li>a").eq($(this).index()).css("color","red");
-    })
+    });
      $("#header li").mouseout(function () {
         $("#header li>a").eq($(this).index()).css("color","white");
-    })
+    });
      //点击登录事件
     $(".login:eq(0)").click(function(){
         var $div=$("<div></div>");
@@ -12,12 +12,12 @@ $(function () {
         $div.attr('id','mask');
         $("body").append($div);
         $("#dialog").css("display","block")
-    })
+    });
     //点击x按钮
     $(".closeBtn:eq(0)").click(function(){
         $("#dialog:eq(0)").css("display","none")
         $(".mask:eq(0)").remove()
-    })
+    });
     //用户名失去焦点事件
     $('.text:eq(0)').blur(function () {
         if($('.text:eq(0)').val()){
@@ -25,7 +25,7 @@ $(function () {
         }else{
            $('.t:eq(0)').text('用户名不能为空')
            $('.t:eq(0)').css('display','block')}
-        })
+        });
     //用户输入密码失去焦点事件
     $('.text:eq(1)').blur(function () {
         if($('.text:eq(1)').val()){
@@ -33,14 +33,14 @@ $(function () {
         }else{
            $('.t:eq(0)').text('密码不能为空')
            $('.t:eq(0)').css('display','block')}
-        })
+        });
     // 绑定submit登录事件全为空不能登录
     $('#formReg').submit(function(){
         if($('.text:eq(0)').val()&&$('.text:eq(1)').val()){
             return true
         }
         return false
-    })
+    });
     //绑定内容输入文本框失去焦点事件
     $('.input_text').blur(function(){
         $('#text').attr('value',$('.input_text').val());
@@ -54,11 +54,12 @@ $(function () {
     });
 
 
-})
+});
  function check_login() {
             $.ajax({
                     'url':'/checkLogin',
                     'type':'POST',
+                    async:false,
                     'data':{
                         'uname':$('#uname').val(),
                         'upwd':$('#upwd').val(),
@@ -85,6 +86,7 @@ $(function () {
             $.ajax({
                     'url':'/addUnit',
                     'type':'POST',
+                async:false,
                     'data':{
                         'uname':$('#uname1').val(),
                         'upwd':$('#upwd1').val(),
