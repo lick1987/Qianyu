@@ -39,8 +39,8 @@ def order_view(request):
     month=int(time.strftime('%m', time.localtime(time.time())))
     year=int(time.strftime('%Y', time.localtime(time.time())))
     day=int(time.strftime('%d', time.localtime(time.time())))
-    monthList=['所有月份']+list(range(1,13))
-    yearList=['所有年份']+list(range(2019,2030))
+    monthList=list(range(1,13))
+    yearList=list(range(2019,2030))
     # 只显示当前月份的所有信息
 
     userMes=[]
@@ -82,7 +82,8 @@ def order_view(request):
         estimatProfit+=i.estimatProfit
         actualProfit+=i.actualProfit
         totalCount+=int(i.count)
-        notComple+=int(i.notComple)
+        if i.notComple:
+            notComple+=int(i.notComple)
     return render(request,'order.html',locals())
 #获取状态信息用于状态颜色显示
 def get_status(request):
@@ -119,24 +120,51 @@ def change_show(request):
     status = request.GET.get('status', None)
     month = request.GET.get('month', None)
     year = request.GET.get('year', None)
-    startTime='%s-%02d'%(year,int(month))
-    if status=='所有状态':
-        userCust = order.objects.filter(user=id, isActive=1)
-    elif status=='未完成':
-        userCust = order.objects.filter(~Q(status='已完结'), user=id, isActive=1).order_by('-startTime')
+    search = request.GET.get('search', None)
+    if int(month)==13:
+        startTime=''
+    else:
+        startTime = '%s-%02d' % (year, int(month))
+    #有搜索需求
+    if search:
+        startTime = '%s-%02d' % (year, int(month))
+        if status == '所有状态':
+            userCust = order.objects.filter(user=id, isActive=1)
+        elif status == '未完成':
+            userCust = order.objects.filter(~Q(status='已完结'), user=id, isActive=1).order_by('-startTime')
+            userList = []
+            for i in userCust:
+                s = i.to_dict()
+                if search in str(s):
+                    userList.append(s)
+            return HttpResponse(json.dumps(userList))
+        else:
+            userCust = order.objects.filter(user=id, isActive=1, status=status)
         userList = []
         for i in userCust:
-            s = i.to_dict()
-            userList.append(s)
+            if startTime in i.startTime:
+                s = i.to_dict()
+                if search in str(s):
+                    userList.append(s)
         return HttpResponse(json.dumps(userList))
     else:
-        userCust = order.objects.filter(user=id, isActive=1, status=status)
-    userList=[]
-    for i in userCust:
-        if startTime in i.startTime:
-            s=i.to_dict()
-            userList.append(s)
-    return HttpResponse(json.dumps(userList))
+        if status=='所有状态':
+            userCust = order.objects.filter(user=id, isActive=1)
+        elif status=='未完成':
+            userCust = order.objects.filter(~Q(status='已完结'), user=id, isActive=1).order_by('-startTime')
+            userList = []
+            for i in userCust:
+                s = i.to_dict()
+                userList.append(s)
+            return HttpResponse(json.dumps(userList))
+        else:
+            userCust = order.objects.filter(user=id, isActive=1, status=status)
+        userList=[]
+        for i in userCust:
+            if startTime in i.startTime:
+                s=i.to_dict()
+                userList.append(s)
+        return HttpResponse(json.dumps(userList))
 #修改订单
 def modifyOrder(request,getId=None):
     if request.method == 'GET':
