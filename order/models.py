@@ -28,15 +28,15 @@ class order(models.Model):
     style=models.CharField(max_length=10,verbose_name='发票类型',default='纸质发票')
     uTax = models.CharField(max_length=10, verbose_name='发票点子', default='4')
     #应收
-    recivable = models.IntegerField(verbose_name='应收', default=0)
+    recivable = models.CharField(max_length=30,verbose_name='应收', default=0)
     #实收
 
-    netReceiots=models.IntegerField( verbose_name='实收', default=0)
-    estimateCost=models.IntegerField( verbose_name='预计成本', default=0)
-    actualCost=models.IntegerField( verbose_name='实际成本', default=0)
-    estimatProfit=models.IntegerField( verbose_name='预计利润', default=0)
-    Delivery=models.CharField(max_length=10,verbose_name='发货方式',default='韵达快递')
-    actualProfit=models.IntegerField(verbose_name='实际利润', default=0)
+    netReceiots=models.CharField(max_length=30, verbose_name='实收', default=0)
+    estimateCost=models.CharField(max_length=30, verbose_name='预计成本', default=0)
+    actualCost=models.CharField(max_length=30, verbose_name='实际成本', default=0)
+    estimatProfit=models.CharField(max_length=30, verbose_name='预计利润', default=0)
+    Delivery=models.CharField(max_length=30,verbose_name='发货方式',default='韵达快递')
+    actualProfit=models.CharField(max_length=30,verbose_name='实际利润', default=0)
     isActive = models.BooleanField(default=True, verbose_name='状态')
     def __str__(self):
         return str(self.customerName)

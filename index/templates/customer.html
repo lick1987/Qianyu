@@ -4,23 +4,11 @@
 {%endblock%}
 {% block style %}
     <style>
-    #addCustomer{
-    font-weight: bold;
-    margin-top: 15px;
-    list-style: none;
-    cursor:pointer;
-    color: white;
-    text-decoration:none ;
-    background-color: #614cf3;
-    text-align: left;
-    font-size: 20px;
-    }
-
     </style>
 {% endblock %}
 {% block body %}
      <div>
-            <a href="{% url 'customer:addCuster' %}" id="addCustomer">增加客户</a>
+            <a href="{% url 'customer:addCuster' %}" id="addCustomer"  class="btn btn-info">增加客户</a>
         </div>
    <table border="1" class="gridtable">
     <tr>

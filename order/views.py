@@ -36,9 +36,9 @@ def order_view(request):
     userCust=order.objects.filter(user=id,isActive=1).order_by('-startTime','customerName')
     # 获取当前月份和年份
     getTime = time.strftime('%Y-%m', time.localtime(time.time()))
-    month=int(time.strftime('%m', time.localtime(time.time())))
-    year=int(time.strftime('%Y', time.localtime(time.time())))
-    day=int(time.strftime('%d', time.localtime(time.time())))
+    month=float(time.strftime('%m', time.localtime(time.time())))
+    year=float(time.strftime('%Y', time.localtime(time.time())))
+    day=float(time.strftime('%d', time.localtime(time.time())))
     monthList=list(range(1,13))
     yearList=list(range(2019,2030))
     # 只显示当前月份的所有信息
@@ -56,12 +56,12 @@ def order_view(request):
         if total:
             s=total[0].saveNumber.split(',')
             for index,j in enumerate(s):
-                if index<5*day:
+                if index<=5*day:
                     if j:
-                        totalNumber+=int(j)
+                        totalNumber+=float(j)
             #剩余金额
-            s1=int(i.count)-totalNumber
-            if s1!=int(i.notComple):
+            s1=float(i.count)-totalNumber
+            if s1!=float(i.notComple):
                 i.notComple=s1
                 i.save()
     #获取总共数量等
@@ -75,15 +75,15 @@ def order_view(request):
     totalCount=0
     notComple=0
     for i in userCust:
-        recivable+=i.recivable
-        netReceiots+=i.netReceiots
-        estimateCost+=i.estimateCost
-        actualCost+=i.actualCost
-        estimatProfit+=i.estimatProfit
-        actualProfit+=i.actualProfit
-        totalCount+=int(i.count)
+        recivable+=float(i.recivable)
+        netReceiots+=float(i.netReceiots)
+        estimateCost+=float(i.estimateCost)
+        actualCost+=float(i.actualCost)
+        estimatProfit+=float(i.estimatProfit)
+        actualProfit+=float(i.actualProfit)
+        totalCount+=float(i.count)
         if i.notComple:
-            notComple+=int(i.notComple)
+            notComple+=float(i.notComple)
     return render(request,'order.html',locals())
 #获取状态信息用于状态颜色显示
 def get_status(request):
@@ -109,9 +109,9 @@ def status_views(request,status):
         flag = True
     status1=dic[status]
     if status1=='未完成':
-        userCust = order.objects.filter(~Q(status=dic[4]),user=id, isActive=1)
+        userCust = order.objects.filter(~Q(status=dic[4]),user=id, isActive=1).order_by('-startTime','customerName')
     else:
-        userCust = order.objects.filter(user=id, isActive=1,status=status1)
+        userCust = order.objects.filter(user=id, isActive=1,status=status1).order_by('-startTime','customerName')
     userCust1=serializers.serialize('json',userCust)
     return render(request,'order.html',locals())
 #改变显示信息
@@ -121,17 +121,17 @@ def change_show(request):
     month = request.GET.get('month', None)
     year = request.GET.get('year', None)
     search = request.GET.get('search', None)
-    if int(month)==13:
+    if float(month)==13:
         startTime=''
     else:
-        startTime = '%s-%02d' % (year, int(month))
+        startTime = '%s-%02d' % (year, float(month))
     #有搜索需求
     if search:
-        startTime = '%s-%02d' % (year, int(month))
+        startTime = '%s-%02d' % (year, float(month))
         if status == '所有状态':
-            userCust = order.objects.filter(user=id, isActive=1)
+            userCust = order.objects.filter(user=id, isActive=1).order_by('-startTime','customerName')
         elif status == '未完成':
-            userCust = order.objects.filter(~Q(status='已完结'), user=id, isActive=1).order_by('-startTime')
+            userCust = order.objects.filter(~Q(status='已完结'), user=id, isActive=1).order_by('-startTime','customerName')
             userList = []
             for i in userCust:
                 s = i.to_dict()
@@ -139,7 +139,7 @@ def change_show(request):
                     userList.append(s)
             return HttpResponse(json.dumps(userList))
         else:
-            userCust = order.objects.filter(user=id, isActive=1, status=status)
+            userCust = order.objects.filter(user=id, isActive=1, status=status).order_by('-startTime','customerName')
         userList = []
         for i in userCust:
             if startTime in i.startTime:
@@ -149,16 +149,16 @@ def change_show(request):
         return HttpResponse(json.dumps(userList))
     else:
         if status=='所有状态':
-            userCust = order.objects.filter(user=id, isActive=1)
+            userCust = order.objects.filter(user=id, isActive=1).order_by('-startTime','customerName')
         elif status=='未完成':
-            userCust = order.objects.filter(~Q(status='已完结'), user=id, isActive=1).order_by('-startTime')
+            userCust = order.objects.filter(~Q(status='已完结'), user=id, isActive=1).order_by('-startTime','customerName')
             userList = []
             for i in userCust:
                 s = i.to_dict()
                 userList.append(s)
             return HttpResponse(json.dumps(userList))
         else:
-            userCust = order.objects.filter(user=id, isActive=1, status=status)
+            userCust = order.objects.filter(user=id, isActive=1, status=status).order_by('-startTime','customerName')
         userList=[]
         for i in userCust:
             if startTime in i.startTime:
@@ -174,7 +174,7 @@ def modifyOrder(request,getId=None):
         if id:
             uname = request.session['uname']
             flag = True
-        if int(getId)!=0:
+        if float(getId)!=0:
             orderMes = order.objects.get(id=getId)
             return render(request,'modifyOrder.html',locals())
         else:
@@ -222,7 +222,7 @@ def modifyOrder(request,getId=None):
         # order_actualProfit = request.POST.get('order_actualProfit', None)
 
         #修改订单
-        if int(getId)!=0:
+        if float(getId)!=0:
             au = order.objects.get(id=getId)
             au.orderName=order_orderName
             au.startTime=order_startTime
@@ -239,28 +239,28 @@ def modifyOrder(request,getId=None):
             au.customerAddress=order_customerAddress
             au.uTax=order_uTax
             #应收
-            recivable=int(order_count)*int(order_uTax)/100.0
+            recivable=float(order_count)*float(order_uTax)/100.0
             au.recivable=recivable
             au.netReceiots=order_netReceiots
             #预计成本
-            au.estimateCost=int(order_count)*0.03
+            au.estimateCost=float(order_count)*0.03
             #实际成本
             au.actualCost=order_actualCost
             #预计利润
-            estimatProfit=int(order_count)*int(order_uTax)/100.0-int(order_count)*0.03
+            estimatProfit=float(order_count)*float(order_uTax)/100.0-float(order_count)*0.03
             au.estimatProfit=estimatProfit
             #如果输入实际成本
-            if int(order_actualCost):
+            if float(order_actualCost):
                 #如果输入实收
-                if int(order_netReceiots):
-                    au.actualProfit =int(order_netReceiots)-int(order_actualCost)
+                if float(order_netReceiots):
+                    au.actualProfit =float(order_netReceiots)-float(order_actualCost)
                 else:
                     #实际利润
-                    au.actualProfit=int(order_count)*int(order_uTax)/100.0-int(order_netReceiots)
+                    au.actualProfit=float(order_count)*float(order_uTax)/100.0-float(order_netReceiots)
             else:
                 #如果输入了实收
-                if int(order_netReceiots):
-                    au.actualProfit=int(order_netReceiots)-au.estimateCost
+                if float(order_netReceiots):
+                    au.actualProfit=float(order_netReceiots)-au.estimateCost
                 else:
                     au.actualProfit=estimatProfit
             au.save()
@@ -297,19 +297,19 @@ def modifyOrder(request,getId=None):
         #增加订单
         else:
             #如果输入实际成本
-            if int(order_actualCost):
+            if float(order_actualCost):
                 #如果输入实收
-                if int(order_netReceiots):
-                    actualProfit =int(order_netReceiots)-int(order_actualCost)
+                if float(order_netReceiots):
+                    actualProfit =float(order_netReceiots)-float(order_actualCost)
                 else:
                     #实际利润
-                    actualProfit=int(order_count)*int(order_uTax)/100.0-int(order_netReceiots)
+                    actualProfit=float(order_count)*float(order_uTax)/100.0-float(order_netReceiots)
             else:
                 #如果输入了实收
-                if int(order_netReceiots):
-                    actualProfit=int(order_netReceiots)-int(order_count)*0.03
+                if float(order_netReceiots):
+                    actualProfit=float(order_netReceiots)-float(order_count)*0.03
                 else:
-                    actualProfit=int(order_count)*int(order_uTax)/100.0-int(order_count)*0.03
+                    actualProfit=float(order_count)*float(order_uTax)/100.0-float(order_count)*0.03
 
             dic={
                 'user':user1,
@@ -326,21 +326,20 @@ def modifyOrder(request,getId=None):
                 'status':  order_status,
                 'Delivery':order_Delivery,
                 'customerAddress':order_customerAddress,
+                'notComple':order_count,
                 'uTax':order_uTax,
                 # 应收
-                'recivable':(int(order_count) * int(order_uTax) / 100.0),
-                'netReceiots': int(order_netReceiots),
+                'recivable':(float(order_count) * float(order_uTax) / 100.0),
+                'netReceiots': float(order_netReceiots),
                 # 预计成本
-                'estimateCost':(int(order_count) * 0.03),
+                'estimateCost':(float(order_count) * 0.03),
                 # 实际成本
                 'actualCost':order_actualCost,
                 # 预计利润
-                'estimatProfit':(int(order_count) * int(order_uTax) / 100.0 - int(order_count) * 0.03),
-                'actualProfit':int(actualProfit)
+                'estimatProfit':(float(order_count) * float(order_uTax) / 100.0 - float(order_count) * 0.03),
+                'actualProfit':float(actualProfit)
             }
             order_List=order.objects.filter(**dic)
-            if len(order_List)!=0:
-                return HttpResponseRedirect('/order')
             order(**dic).save()
             # 如果单位不存在就保存在单位数据库
             # 查询是否存在
@@ -428,16 +427,19 @@ def orderDate_views(request,getid):
     if id:
         uname = request.session['uname']
         flag = True
-    oDate = orderDate.objects.filter(order=int(getid))
+    oDate = orderDate.objects.filter(order=float(getid))
     DList = {}
     if oDate:
         oDate=oDate[0]
         dateList=oDate.saveNumber.split(',')
         for index,i in enumerate(dateList):
             try:
-                DList['d%d'%index]=int(i)
+                DList['d%d'%index]=float(i)
             except:
                 DList['d%d' % index] = ''
+            # if DList['d%d'%index]:
+            #     getTime = time.strftime('%Y-%m', time.localtime(time.time()))
+            #
     else:
         for i in range(155):
             DList['d%d'%i]=''
@@ -489,7 +491,6 @@ def againOrder_views(request,getId):
     id1=order.objects.filter(user=user1).order_by('-id')[0]
     order1=order.objects.filter(user=user1,id=getId)
     imgMes1 = img.objects.filter(user=user1, order=order1[0],isActive=1)
-    print(imgMes1)
     for imgMes in imgMes1:
         dic={
             'user':user1,

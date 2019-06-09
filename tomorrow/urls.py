@@ -21,4 +21,7 @@ from .views import *
 
 urlpatterns = [
     url(r'^$',tomorrow_views),
+    url(r'^changeSource$',changeSource_views),
+    url(r'^allOrderDate$',tomorrow_all_views),
+    url(r'^changeShow$',changeShow_views),
 ]

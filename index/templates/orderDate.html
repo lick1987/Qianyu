@@ -267,6 +267,7 @@
         var s='';
         for(var i=7;i<162;i++){
             s1=$('body input').eq(i).val();
+               s1=s1.replace(/\s+/,'');
                s+=s1+',';
         }
          $.ajax({

@@ -34,8 +34,8 @@
 {% endblock %}
 {% block body %}
     <div>
-            <a href="{% url 'order:modifyOrder' 0 %}" id="addOrder">增加订单</a>
-        <a href="{% url 'order:saveOrder' %}">保存订单</a>
+            <a href="{% url 'order:modifyOrder' 0 %}" id="addOrder" class="btn btn-primary">增加订单</a>
+        <a href="{% url 'order:saveOrder' %} " class="btn btn-success">保存订单</a>
     </div>
     <div>
     年份：
@@ -192,25 +192,13 @@
     <script>
     $(function () {
        $('#search').blur(function () {
-           $.ajax({
-                    'url':'/order/changeShow',
-                    'type':'GET',
-                    'data':{
-                        'month':$('#mouth_select').val(),
-                        'year':$('#year_select').val(),
-                        'status':$('#status_select').val(),
-                        'search':$('#search').val()
-                        },
-                    'dataType':'json',
-                    'success':function (data) {
-                        get_allOrder(data)
-                    }
-                    });
-              $(document).on('dblclick','.change',function () {
-            var rows = $(this).parent().parent().find('tr').index($(this).parent());
-            var href=$('table tr').eq(rows).find('a').eq(3).attr('href');
-            window.open(href)
-        });
+           search()
+       });
+       $('#search').keyup(function () {
+           search()
+       });
+       $('#search').keydown(function () {
+           search()
        });
         $('.change').dblclick(function () {
             var rows = $(this).parent().parent().find('tr').index($(this).parent());
@@ -396,6 +384,26 @@
             );
      }
 
-
+    function search() {
+        $.ajax({
+                    'url':'/order/changeShow',
+                    'type':'GET',
+                    'data':{
+                        'month':$('#mouth_select').val(),
+                        'year':$('#year_select').val(),
+                        'status':$('#status_select').val(),
+                        'search':$('#search').val()
+                        },
+                    'dataType':'json',
+                    'success':function (data) {
+                        get_allOrder(data)
+                    }
+                    });
+              $(document).on('dblclick','.change',function () {
+            var rows = $(this).parent().parent().find('tr').index($(this).parent());
+            var href=$('table tr').eq(rows).find('a').eq(3).attr('href');
+            window.open(href)
+        });
+    }
     </script>
 {% endblock %}

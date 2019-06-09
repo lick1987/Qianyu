@@ -8,17 +8,6 @@
            text-align:left;
 
         }
-      #addCustomer{
-    font-weight: bold;
-    margin-top: 15px;
-    list-style: none;
-    cursor:pointer;
-    color: white;
-    text-decoration:none ;
-    background-color: #614cf3;
-    text-align: left;
-    font-size: 20px;
-    }
     </style>
 {% endblock %}
 {% block body %}
@@ -39,7 +28,7 @@
     </tr>
     {% endfor %}
      <div>
-            <a href="/addUnit" id="addCustomer">增加单位</a>
+            <a href="/addUnit" id="addCustomer" class="btn btn-info" >增加单位</a>
         </div>
 
 </table>
