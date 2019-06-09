@@ -1,0 +1,116 @@
+{%extends 'qianduan.html'%}
+{%block title%}
+修改单位
+{%endblock%}
+{% block style %}
+    <style>
+    #addCustomer{
+    font-weight: bold;
+    margin-top: 15px;
+    list-style: none;
+    cursor:pointer;
+    color: white;
+    text-decoration:none ;
+    background-color: #614cf3;
+    text-align: left;
+    font-size: 20px;
+    }
+
+    </style>
+{% endblock %}
+{% block body %}
+    搜索：<input type="text" id="tomorrow_search">
+   <table border="1" class="gridtable" id="tomorrow_body">
+   <tr>
+       <th>行号</th>
+       <th>时间</th>
+       <th>单位</th>
+       <th>金额</th>
+       <th>开票员</th>
+       <th>客户</th>
+       <th>需求</th>
+   </tr>
+   {% for i in tomorrowList %}
+       <tr>
+        <input type="hidden" name="id" value="{{i.id}}">
+            <th>{{ forloop.counter }}</th>
+            <th>{{ i.times }}</th>
+           <th>{{ i.customerUnit }}<br>{{ i.customerPwd }}</th>
+           <th>{{ i.arrange }}</th>
+           <th contenteditable="True" class="tomorrow_sourceName"><span>{{ i.sourceName }}</span></th>
+       <th>{{ i.customerName }}</th>
+       <th>{{ i.explain }}</th>
+       </tr>
+   {% endfor %}
+</table>
+{% endblock %}
+{% block end %}
+    <script>
+     $(".tomorrow_sourceName").blur(function () {
+         var rows = $(this).parent().parent().find('tr').index($(this).parent());
+            var source=$('table tr').eq(rows).find('span').text();
+            var Id = $('table tr').eq(rows).find('input').val();
+             $.ajax({
+                    'url':'/tomorrow/changeSource',
+                    'type':'GET',
+                    'data':{
+                        'sourceName':source,
+                        'Id':Id,
+                        },
+                    'dataType':'json',
+                    'success':function (data) {
+                        console.log(data)
+                    }
+                    });
+        });
+     $("#tomorrow_search").keyup(function () {
+         search()
+     });
+  $('#tomorrow_search').blur(function () {
+       search()
+   });
+   $('#tomorrow_search').keydown(function () {
+       search()
+   });
+     function search() {
+        $.ajax({
+                    'url':'/tomorrow/changeShow',
+                    'type':'GET',
+                    'data':{
+                        'search':$('#tomorrow_search').val()
+                        },
+                    'dataType':'json',
+                    'success':function (data) {
+                        get_allOrder(data)
+                    }
+                    });
+
+    }
+     function get_allOrder(data) {
+         $(function () {
+             html1 = "<tr>\n" +
+                 "       <th>行号</th>\n" +
+                 "       <th>时间</th>\n" +
+                 "       <th>单位</th>\n" +
+                 "       <th>金额</th>\n" +
+                 "       <th>开票员</th>\n" +
+                 "       <th>客户</th>\n" +
+                 "       <th>需求</th>\n" +
+                 "   </tr>";
+             for (var i = 0; i < data.length; i++) {
+                 html1 += "<tr>\n" +
+                     "        <input type=\"hidden\" name=\"id\" value=\""+data[i].id+"\">\n" +
+                     "            <th>"+(i+1)+"</th>\n" +
+                     "            <th>"+data[i].times+"</th>\n" +
+                     "           <th>"+data[i].customerUnit+"<br>"+data[i].customerPwd+ "</th>\n" +
+                     "           <th>"+data[i].arrange+"</th>\n" +
+                     "           <th contenteditable=\"True\" class=\"tomorrow_sourceName\"><span>"+data[i].sourceName+"</span></th>\n" +
+                     "       <th>"+data[i].customerName+"</th>\n" +
+                     "       <th>"+data[i].explain+"</th>\n" +
+                     "       </tr>";
+             }
+             $("#tomorrow_body").html(html1);
+         });
+     }
+    </script>
+{% endblock %}
