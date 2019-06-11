@@ -46,32 +46,32 @@
 {% endblock %}
 {% block end %}
     <script>
-     $(".tomorrow_sourceName").blur(function () {
-         var rows = $(this).parent().parent().find('tr').index($(this).parent());
-            var source=$('table tr').eq(rows).find('span').text();
-            var Id = $('table tr').eq(rows).find('input').val();
-             $.ajax({
-                    'url':'/tomorrow/changeSource',
-                    'type':'GET',
-                    'data':{
-                        'sourceName':source,
-                        'Id':Id,
-                        },
-                    'dataType':'json',
-                    'success':function (data) {
-                        console.log(data)
-                    }
-                    });
-        });
-     $("#tomorrow_search").keyup(function () {
-         search()
-     });
-  $('#tomorrow_search').blur(function () {
-       search()
-   });
-   $('#tomorrow_search').keydown(function () {
-       search()
-   });
+     {#$(".tomorrow_sourceName").blur(function () {#}
+     {#    var rows = $(this).parent().parent().find('tr').index($(this).parent());#}
+     {#       var source=$('table tr').eq(rows).find('span').text();#}
+     {#       var Id = $('table tr').eq(rows).find('input').val();#}
+     {#        $.ajax({#}
+     {#               'url':'/tomorrow/changeSource',#}
+     {#               'type':'GET',#}
+     {#               'data':{#}
+     {#                   'sourceName':source,#}
+     {#                   'Id':Id,#}
+     {#                   },#}
+     {#               'dataType':'json',#}
+     {#               'success':function (data) {#}
+     {#                   console.log(data)#}
+     {#               }#}
+     {#               });#}
+     {#   });#}
+  {#   $("#tomorrow_search").keyup(function () {#}
+  {#       search()#}
+  {#   });#}
+  {#$('#tomorrow_search').blur(function () {#}
+  {#     search()#}
+  {# });#}
+  {# $('#tomorrow_search').keydown(function () {#}
+  {#     search()#}
+  {# });#}
      function search() {
         $.ajax({
                     'url':'/tomorrow/changeShow',

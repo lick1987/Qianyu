@@ -1,4 +1,5 @@
 import json
+import re
 import time
 
 from django.core import serializers
@@ -26,37 +27,26 @@ def tomorrow_views(request):
         flag = True
     getTime = time.strftime('%Y-%m', time.localtime(time.time()))
     day = int(time.strftime('%d', time.localtime(time.time())))
-    orderList = order.objects.exclude(notComple='0').order_by('sourceName')
+    orderList = order.objects.exclude(notComple='0').filter(isActive=True,user=id,startTime__icontains=getTime).order_by('sourceName')
     tomorrowList=[]
     for orders in orderList:
         tomorrowDict={}
-        if orders.user.id==int(id) and orders.isActive==True:
-            if orders.notComple!=0:
-                #同月份
-                if getTime in orders.startTime:
-                    oDate=orderDate.objects.filter(order=orders)
-                    if oDate:
-                        sNumber=oDate[0].saveNumber.split(',')
-                        str1=''
-                        for i in sNumber[5*day:5*day+5]:
-                            if i:
-                                str1+=i+','
-                        if str1:
-                            tomorrowDict['arrange']=str1[:-1]
-                            tomorrowDict['times']=time.strftime('%Y-%m-%d', time.localtime(time.time()))
-                            tomorrowDict['customerUnit']=orders.customerUnit
-                            tomorrowDict['customerPwd']=orders.customerPwd
-                            tomorrowDict['sourceName']=orders.sourceName
-                            tomorrowDict['customerName']=orders.customerName
-                            tomorrowDict['explain']=orders.explain
-                            tomorrowList.append(tomorrowDict)
-                            tomorrows=tomorrow.objects.filter(times=tomorrowDict['times'],customerName=orders.customerName,customerUnit=tomorrowDict['customerUnit'])
-                            if tomorrows:
-                                pass
-                            else:
-                                tomorrow(**tomorrowDict).save()
-    tomorrowList=tomorrow.objects.filter(times=time.strftime('%Y-%m-%d', time.localtime(time.time())))
-    # total = orderDate.objects.filter(user=id, order=i)
+        oDate=orderDate.objects.filter(order=orders)
+        if oDate:
+            sNumber=oDate[0].saveNumber.split(',')
+            str1=''
+            for i in sNumber[5*day:5*day+5]:
+                if i:
+                    str1+=i+','
+            if re.search('\d+',str1):
+                tomorrowDict['arrange']=str1[:-1]
+                tomorrowDict['times']=getTime+'-%s'%(day+1)
+                tomorrowDict['customerUnit']=orders.customerUnit
+                tomorrowDict['customerPwd']=orders.customerPwd
+                tomorrowDict['sourceName']=orders.sourceName
+                tomorrowDict['customerName']=orders.customerName
+                tomorrowDict['explain']=orders.explain
+                tomorrowList.append(tomorrowDict)
     return render(request,'tomorrow.html',locals())
 def tomorrow_all_views(request):
     id = request.session.get('id')
@@ -64,7 +54,29 @@ def tomorrow_all_views(request):
     if id:
         uname = request.session['uname']
         flag = True
-    tomorrowList = tomorrow.objects.all().order_by('-times')
+    getTime = time.strftime('%Y-%m', time.localtime(time.time()))
+    orderList = order.objects.filter(isActive=True, user=id, startTime__icontains=getTime).order_by('sourceName')
+    day1 = int(time.strftime('%d', time.localtime(time.time())))
+    tomorrowList = []
+    for day in range(day1,0,-1):
+        for orders in orderList:
+            tomorrowDict={}
+            oDate=orderDate.objects.filter(order=orders)
+            if oDate:
+                sNumber=oDate[0].saveNumber.split(',')
+                str1=''
+                for i in sNumber[5*day:5*day+5]:
+                    if i:
+                        str1+=i+','
+                if re.search('\d+',str1):
+                    tomorrowDict['arrange']=str1[:-1]
+                    tomorrowDict['times']=getTime+'-%s'%(day+1)
+                    tomorrowDict['customerUnit']=orders.customerUnit
+                    tomorrowDict['customerPwd']=orders.customerPwd
+                    tomorrowDict['sourceName']=orders.sourceName
+                    tomorrowDict['customerName']=orders.customerName
+                    tomorrowDict['explain']=orders.explain
+                    tomorrowList.append(tomorrowDict)
     return render(request, 'alltomorrow.html', locals())
 def changeSource_views(request):
     sourceName = request.GET.get('sourceName', None)
