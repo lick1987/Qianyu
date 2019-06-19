@@ -39,9 +39,9 @@ def order_view(request):
     userCust=order.objects.filter(user=id,isActive=1).order_by('-startTime','customerName')
     # 获取当前月份和年份
     getTime = time.strftime('%Y-%m', time.localtime(time.time()))
-    month=float(time.strftime('%m', time.localtime(time.time())))
-    year=float(time.strftime('%Y', time.localtime(time.time())))
-    day=float(time.strftime('%d', time.localtime(time.time())))
+    month=int(time.strftime('%m', time.localtime(time.time())))
+    year=int(time.strftime('%Y', time.localtime(time.time())))
+    day=int(time.strftime('%d', time.localtime(time.time())))
     monthList=list(range(1,13))
     yearList=list(range(2019,2030))
     # 只显示当前月份的所有信息

@@ -19,6 +19,26 @@
     </style>
 {% endblock %}
 {% block body %}
+    年份：
+            <select id="year_select" name='year_select'>
+            {% for i in yearList %}
+                {% ifequal i year %}
+                     <option value ="{{ i }}" selected>{{ i }}</option>
+                     {% else %}
+                    <option value ="{{ i }}">{{ i }}</option>
+                {% endifequal %}
+            {% endfor %}
+            </select>
+    月份：
+            <select id="mouth_select" name='mouth_select'>
+            {% for i in monthList %}
+                {% ifequal i month %}
+                     <option value ="{{ i }}" selected>{{ i }}</option>
+                     {% else %}
+                    <option value ="{{ i }}">{{ i }}</option>
+                {% endifequal %}
+            {% endfor %}
+            </select>
 {#    搜索：<input type="text" id="tomorrow_search">#}
    <table border="1" class="gridtable" id="tomorrow_body">
    <tr>
@@ -107,7 +127,9 @@
                     'url':'/tomorrow/allOrderDate',
                     'type':'GET',
                     'data':{
-                    'search':rows
+                    'search':rows,
+                    'mouth_select':$('#mouth_select').val(),
+                    'year_select':$('#year_select').val(),
                         },
                     'dataType':'json',
                     'success':function (data) {
@@ -127,6 +149,7 @@
                  "       <th>开票员</th>\n" +
                  "       <th>客户</th>\n" +
                  "       <th>需求</th>\n" +
+                 "       <th>未完成</th>\n" +
                  "       <th>预期安排</th>\n" +
                  "   </tr>";
              for (var i = 0; i < data.length; i++) {
@@ -140,7 +163,8 @@
                      "           <th contenteditable=\"True\" class=\"tomorrow_sourceName\"><span>"+data[i].sourceName+"</span></th>\n" +
                      "       <th>"+data[i].customerName+"</th>\n" +
                      "       <th>"+data[i].explain+"</th>\n" +
-                     " <th><a href=\"/order/orderDate/"+data[i].id+"\">预期安排</a></th>" +
+                     "       <th>"+data[i].notComple+"</th>\n" +
+                     " <th><a href=\"/order/orderDate/"+data[i].id+"\" target=\"_blank\">预期安排</a></th>" +
                      "       </tr>";
              }
              $("#tomorrow_body").html(html1);

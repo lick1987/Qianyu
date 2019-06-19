@@ -49,18 +49,18 @@ def tomorrow_views(request):
                 tomorrowList.append(tomorrowDict)
     return render(request,'tomorrow.html',locals())
 def tomorrow_all_views(request):
-
     id = request.session.get('id')
     flag = False
     if id:
         uname = request.session['uname']
         flag = True
     day=request.GET.get('search','')
+    year_select=request.GET.get('year_select',time.strftime('%Y', time.localtime(time.time())))
+    mouth_select=request.GET.get('mouth_select',time.strftime('%m', time.localtime(time.time())))
     if day=='':
         day=int(time.strftime('%d', time.localtime(time.time())))+1
     day=int(day)
-    getTime = time.strftime('%Y-%m', time.localtime(time.time()))
-    sTime='%s-%s'%(getTime,day)
+    getTime = '%d-%02d'%(int(year_select),int(mouth_select))
     orderList = order.objects.filter(isActive=True, user=id, startTime__icontains=getTime).order_by('sourceName')
     tomorrowList = []
     day=day-1
@@ -82,8 +82,14 @@ def tomorrow_all_views(request):
                 tomorrowDict['sourceName']=orders.sourceName
                 tomorrowDict['customerName']=orders.customerName
                 tomorrowDict['explain']=orders.explain
+                tomorrowDict['notComple']=orders.notComple
                 tomorrowList.append(tomorrowDict)
     if request.GET.get('search','')=='':
+        month = int(time.strftime('%m', time.localtime(time.time())))
+        year = int(time.strftime('%Y', time.localtime(time.time())))
+        day = int(time.strftime('%d', time.localtime(time.time())))
+        monthList = list(range(1, 13))
+        yearList = list(range(2019, 2030))
         return render(request, 'alltomorrow.html', locals())
     else:
         return HttpResponse(json.dumps(tomorrowList))
