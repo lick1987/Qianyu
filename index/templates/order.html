@@ -33,6 +33,11 @@
     </style>
 {% endblock %}
 {% block body %}
+     <div class="progress">
+  <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 45%">
+    <span class="sr-only">{{ bfb }} Complete</span>
+  </div>
+</div>
     <div>
             <a href="{% url 'order:modifyOrder' 0 %}" id="addOrder" class="btn btn-primary">增加订单</a>
         <a href="{% url 'order:saveOrder' %} " class="btn btn-success">保存订单</a>
@@ -147,12 +152,12 @@
             <th class="change" contenteditable="false">{{ i.Delivery }}</th>
             <th class="change" contenteditable="false">{{ i.customerAddress }}</th>
             <th class="change" contenteditable="false">{{ i.uTax }}</th>
-            <th class="change" contenteditable="false">{{ i.recivable }}</th>
-            <th class="change" contenteditable="false">{{ i.netReceiots }}</th>
-            <th class="change" contenteditable="false">{{ i.estimateCost }}</th>
-            <th class="change" contenteditable="false">{{ i.actualCost }}</th>
-            <th class="change" contenteditable="false">{{ i.estimatProfit }}</th>
-            <th class="change" contenteditable="false">{{ i.actualProfit }}</th>
+            <th class="change" contenteditable="false">{{ i.recivable|floatformat }}</th>
+            <th class="change" contenteditable="false">{{ i.netReceiots|floatformat }}</th>
+            <th class="change" contenteditable="false">{{ i.estimateCost|floatformat }}</th>
+            <th class="change" contenteditable="false">{{ i.actualCost|floatformat }}</th>
+            <th class="change" contenteditable="false">{{ i.estimatProfit|floatformat }}</th>
+            <th class="change" contenteditable="false">{{ i.actualProfit|floatformat }}</th>
 
             <th ><a href="{% url 'order:modifyOrder' i.id %}">修改</a></th>
             <th ><a href="/order/deletSource/{{ i.id }}">删除</a></th>
@@ -187,6 +192,7 @@
             <th ></th>
         </tr>
 </table>
+
 {% endblock %}
 {% block end %}
     <script>
@@ -295,12 +301,12 @@
                  "    </tr>";
 
              for (var i = 0; i < data.length; i++) {
-                 recivable += data[i].recivable;
-                 netReceiots += data[i].netReceiots;
-                 estimateCost += data[i].estimateCost;
-                 actualCost += data[i].actualCost;
-                 estimatProfit += data[i].estimatProfit;
-                 actualProfit += data[i].actualProfit;
+                 recivable += parseFloat(data[i].recivable);
+                 netReceiots += parseFloat(data[i].netReceiots);
+                 estimateCost += parseFloat(data[i].estimateCost);
+                 actualCost += parseFloat(data[i].actualCost);
+                 estimatProfit += parseFloat(data[i].estimatProfit);
+                 actualProfit += parseFloat(data[i].actualProfit);
                  html1 += "<tr>\n" +
                      "            <th class=\"change\"  contenteditable=\"false\">" + data[i].startTime + "</th>\n" +
                      "            <th class=\"change\"  contenteditable=\"false\">" + data[i].tel + "</th>\n" +
@@ -319,12 +325,12 @@
                      "            <th class=\"change\" contenteditable=\"false\">" + data[i].Delivery + "</th>\n" +
                      "            <th class=\"change\" contenteditable=\"false\">" + data[i].address + "</th>\n" +
                      "            <th class=\"change\" contenteditable=\"false\">" + data[i].uTax + "</th>\n" +
-                     "            <th class=\"change\" contenteditable=\"false\">" + data[i].recivable + "</th>\n" +
-                     "            <th class=\"change\" contenteditable=\"false\">" + data[i].netReceiots + "</th>\n" +
-                     "            <th class=\"change\" contenteditable=\"false\">" + data[i].estimateCost + "</th>\n" +
-                     "            <th class=\"change\" contenteditable=\"false\">" + data[i].actualCost + "</th>\n" +
-                     "            <th class=\"change\" contenteditable=\"false\">" + data[i].estimatProfit + "</th>\n" +
-                     "            <th class=\"change\" contenteditable=\"false\">" + data[i].actualProfit + "</th>\n" +
+                     "            <th class=\"change\" contenteditable=\"false\">" + parseFloat(data[i].recivable).toFixed(1) + "</th>\n" +
+                     "            <th class=\"change\" contenteditable=\"false\">" + parseFloat(data[i].netReceiots).toFixed(1) + "</th>\n" +
+                     "            <th class=\"change\" contenteditable=\"false\">" + parseFloat(data[i].estimateCost).toFixed(1) + "</th>\n" +
+                     "            <th class=\"change\" contenteditable=\"false\">" + parseFloat(data[i].actualCost).toFixed(1) + "</th>\n" +
+                     "            <th class=\"change\" contenteditable=\"false\">" + parseFloat(data[i].estimatProfit).toFixed(1) + "</th>\n" +
+                     "            <th class=\"change\" contenteditable=\"false\">" + parseFloat(data[i].actualProfit).toFixed(1) + "</th>\n" +
                      "            <th contenteditable=\"false\"><a href=\"/order/modifyOrder/" + data[i].id + "\">修改</a></th>\n" +
                      "            <th contenteditable=\"false\"><a href=\"/order/deletSource/" + data[i].id + "\">删除</a></th>\n" +
                      "        </tr>";

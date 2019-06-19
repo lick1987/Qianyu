@@ -18,9 +18,6 @@ from order.forms import UploadFileForm
 from order.models import *
 from source.models import *
 #客户首页视图显示当前月份信息
-from tomorrow.models import tomorrow
-
-
 def order_view(request):
     id = request.session.get('id')
     dic = {
@@ -39,9 +36,9 @@ def order_view(request):
     userCust=order.objects.filter(user=id,isActive=1).order_by('-startTime','customerName')
     # 获取当前月份和年份
     getTime = time.strftime('%Y-%m', time.localtime(time.time()))
-    month=int(time.strftime('%m', time.localtime(time.time())))
-    year=int(time.strftime('%Y', time.localtime(time.time())))
-    day=int(time.strftime('%d', time.localtime(time.time())))
+    month=float(time.strftime('%m', time.localtime(time.time())))
+    year=float(time.strftime('%Y', time.localtime(time.time())))
+    day=float(time.strftime('%d', time.localtime(time.time())))
     monthList=list(range(1,13))
     yearList=list(range(2019,2030))
     # 只显示当前月份的所有信息
@@ -87,6 +84,7 @@ def order_view(request):
         totalCount+=float(i.count)
         if i.notComple:
             notComple+=float(i.notComple)
+    bfb="%s"%int(notComple/totalCount*100)+'%'
     return render(request,'order.html',locals())
 #获取状态信息用于状态颜色显示
 def get_status(request):
@@ -131,9 +129,7 @@ def change_show(request):
     #有搜索需求
     if search:
         startTime = '%s-%02d' % (year, float(month))
-
         if status == '所有状态':
-
             userCust = order.objects.filter(user=id, isActive=1).order_by('-startTime','customerName')
         elif status == '未完成':
             userCust = order.objects.filter(~Q(status='已完结'), user=id, isActive=1).order_by('-startTime','customerName')
@@ -406,7 +402,7 @@ def upload_views(request,getId):
             r6 = random.randint(0, 1000)
             r = str(r1) + str(r2) + str(r3) + str(r4) + str(r6)
             imgName='%s%s'%(r,imgName)
-            url = settings.STATICFILES_DIRS[0]+'/index/static/upload/%s'%imgName
+            url = settings.STATICFILES_DIRS[0]+'\index\static\\upload\%s'%imgName
             handle_uploaded_file(f,url)
             #保存进数据库
             user1=user.objects.get(id=id)
@@ -449,7 +445,6 @@ def orderDate_views(request,getid):
         for i in range(155):
             DList['d%d'%i]=''
     return render(request,'orderDate.html',locals())
-#保存预期安排
 def changeOrderDate_views(request):
     getId=request.GET.get('id')
     totalStr=request.GET.get('total')[:-1]
@@ -467,36 +462,6 @@ def changeOrderDate_views(request):
             'saveNumber':totalStr
         }
         orderDate(**dic).save()
-    orderDate1 = orderDate.objects.filter(user=user1, order=order1)
-    times=order1.startTime[:8]
-    if orderDate1:
-        orderDate1=orderDate1[0]
-        #发现数字
-        if re.search('\d+',orderDate1.saveNumber):
-            #更新数据库
-            s1=orderDate1.saveNumber.split(',')[:-1]
-            isFlag=True
-            str1=''
-            for index,i in enumerate(s1):
-                if re.search('\d+',i):
-                    s=index//5+1
-                    s=times+'%02d'%s
-                    #查询明日安排数据库是否有该数据
-                    tomo=tomorrow.objects.filter(times=s,arrange=i,order=order1)
-                    if tomo:
-                        pass
-                    else:
-                        dic = {}
-                        dic['order'] =order1
-                        # 接单时间
-                        dic['times'] = s
-                        dic['arrange'] = i
-                        dic['customerUnit'] = order1.customerUnit
-                        dic['customerPwd'] = order1.customerPwd
-                        dic['sourceName'] = order1.sourceName
-                        dic['customerName'] = order1.customerName
-                        dic['explain'] = order1.explain
-                        tomorrow(**dic).save()
     return  HttpResponse(json.dumps('修改成功'))
 
 
@@ -529,6 +494,7 @@ def againOrder_views(request,getId):
     imgMes1 = img.objects.filter(user=user1, order=order1[0],isActive=1)
     for imgMes in imgMes1:
         dic={
+            'title':imgMes.title,
             'user':user1,
             'order':id1,
             'filePath':imgMes.filePath
