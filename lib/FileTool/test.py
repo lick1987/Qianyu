@@ -1,4 +1,4 @@
-import re
-s2='asdfads.f.png'
-s1=re.sub(r'[\s\S]*\.','3.',s2)
-print(s1)
+s=6//5
+s1='2019-09-15'
+print(s1[:8])
+print(s)

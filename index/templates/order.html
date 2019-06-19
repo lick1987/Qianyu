@@ -192,13 +192,13 @@
     <script>
     $(function () {
        $('#search').blur(function () {
-           search()
+           search();
        });
        $('#search').keyup(function () {
            search()
        });
        $('#search').keydown(function () {
-           search()
+           search();
        });
         $('.change').dblclick(function () {
             var rows = $(this).parent().parent().find('tr').index($(this).parent());
@@ -399,11 +399,19 @@
                         get_allOrder(data)
                     }
                     });
-              $(document).on('dblclick','.change',function () {
-            var rows = $(this).parent().parent().find('tr').index($(this).parent());
-            var href=$('table tr').eq(rows).find('a').eq(3).attr('href');
-            window.open(href)
-        });
+
+           {#$(document).on('dblclick','.change',function () {#}
+           {#       var rows = $(this).parent().parent().find('tr').index($(this).parent());#}
+           {#       var href = $('table tr').eq(rows).find('a').eq(3).attr('href');#}
+           {#       window.open(href)#}
+           {#   });#}
+           $(document).off("dblclick").on('dblclick','.change',btn);
+            function btn() {
+
+                       var rows = $(this).parent().parent().find('tr').index($(this).parent());
+                       var href = $('table tr').eq(rows).find('a').eq(3).attr('href');
+                       window.open(href)
+                   }
     }
     </script>
 {% endblock %}

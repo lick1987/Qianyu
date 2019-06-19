@@ -1,4 +1,3 @@
-from django.db import models
 
 # Create your models here.
 from django.db import models
@@ -7,7 +6,11 @@ from index.models import *
 
 
 #加油员表
+from order.models import *
+
+
 class tomorrow(models.Model):
+    order=models.ForeignKey(order,True,default='',verbose_name='订单')
     times = models.CharField(max_length=11,verbose_name='日期')
     arrange = models.CharField(max_length=20,verbose_name='具体金额')
     customerUnit = models.CharField(max_length=20,verbose_name='单位')
@@ -25,6 +28,7 @@ class tomorrow(models.Model):
         verbose_name_plural = verbose_name
     def to_dic(self):
         dic = {}
+        dic['order']=self.order
         dic['id'] = self.id
         # 接单时间
         dic['times'] = self.times

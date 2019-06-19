@@ -18,6 +18,9 @@ from order.forms import UploadFileForm
 from order.models import *
 from source.models import *
 #客户首页视图显示当前月份信息
+from tomorrow.models import tomorrow
+
+
 def order_view(request):
     id = request.session.get('id')
     dic = {
@@ -128,7 +131,9 @@ def change_show(request):
     #有搜索需求
     if search:
         startTime = '%s-%02d' % (year, float(month))
+
         if status == '所有状态':
+
             userCust = order.objects.filter(user=id, isActive=1).order_by('-startTime','customerName')
         elif status == '未完成':
             userCust = order.objects.filter(~Q(status='已完结'), user=id, isActive=1).order_by('-startTime','customerName')
@@ -444,6 +449,7 @@ def orderDate_views(request,getid):
         for i in range(155):
             DList['d%d'%i]=''
     return render(request,'orderDate.html',locals())
+#保存预期安排
 def changeOrderDate_views(request):
     getId=request.GET.get('id')
     totalStr=request.GET.get('total')[:-1]
@@ -461,6 +467,36 @@ def changeOrderDate_views(request):
             'saveNumber':totalStr
         }
         orderDate(**dic).save()
+    orderDate1 = orderDate.objects.filter(user=user1, order=order1)
+    times=order1.startTime[:8]
+    if orderDate1:
+        orderDate1=orderDate1[0]
+        #发现数字
+        if re.search('\d+',orderDate1.saveNumber):
+            #更新数据库
+            s1=orderDate1.saveNumber.split(',')[:-1]
+            isFlag=True
+            str1=''
+            for index,i in enumerate(s1):
+                if re.search('\d+',i):
+                    s=index//5+1
+                    s=times+'%02d'%s
+                    #查询明日安排数据库是否有该数据
+                    tomo=tomorrow.objects.filter(times=s,arrange=i,order=order1)
+                    if tomo:
+                        pass
+                    else:
+                        dic = {}
+                        dic['order'] =order1
+                        # 接单时间
+                        dic['times'] = s
+                        dic['arrange'] = i
+                        dic['customerUnit'] = order1.customerUnit
+                        dic['customerPwd'] = order1.customerPwd
+                        dic['sourceName'] = order1.sourceName
+                        dic['customerName'] = order1.customerName
+                        dic['explain'] = order1.explain
+                        tomorrow(**dic).save()
     return  HttpResponse(json.dumps('修改成功'))
 
 

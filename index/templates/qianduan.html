@@ -14,6 +14,7 @@
     <link rel="stylesheet" type="text/css" href="/static/bootstrap-3.3.7-dist/css/bootstrap.min.css">
         {% endblock %}
     <script src="/static/js/jquery-1.11.3.js"></script>
+    <script src="/static/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
         {% block js %}
     <script src='/static/js/index.js'></script>
         {% endblock %}
@@ -59,8 +60,8 @@
         <li><a href="/unit">单位管理</a></li>
         <li><a href="/customer">客户管理</a></li>
         <li><a href="/source">开票员管理</a></li>
-        <li><a href="/tomorrow">明日安排</a></li>
-        <li><a href="/tomorrow/allOrderDate">所有安排</a></li>
+{#        <li><a href="/tomorrow">明日安排</a></li>#}
+        <li><a href="/tomorrow/allOrderDate">安排</a></li>
         <li><a href="/admin" target="_blank">数据管理</a></li>
         {% if flag  %}
             <li id="useload">
